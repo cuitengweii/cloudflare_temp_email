@@ -15,8 +15,81 @@ const {
 const adClient = import.meta.env.VITE_GOOGLE_AD_CLIENT;
 const adSlot = import.meta.env.VITE_GOOGLE_AD_SLOT;
 const { locale } = useI18n({});
+
 const theme = computed(() => isDark.value ? darkTheme : null)
 const localeConfig = computed(() => locale.value == 'zh' ? zhCN : null)
+
+const themeOverrides = computed(() => ({
+  common: {
+    primaryColor: '#5DD62C',
+    primaryColorHover: '#7AE055',
+    primaryColorPressed: '#4BB020',
+    primaryColorSuppl: '#5DD62C',
+    successColor: '#28A745',
+    warningColor: '#FF9900',
+    errorColor: '#FF3366',
+    infoColor: '#00A3FF',
+    bodyColor: isDark.value ? '#0F0F0F' : '#F5F7FA',
+    cardColor: isDark.value ? '#202020' : '#FFFFFF',
+    modalColor: isDark.value ? '#202020' : '#FFFFFF',
+    popoverColor: isDark.value ? '#202020' : '#FFFFFF',
+    borderColor: isDark.value ? '#333333' : '#EBEEF5',
+    dividerColor: isDark.value ? '#333333' : '#EBEEF5',
+    textColorBase: isDark.value ? '#E0E0E0' : '#1A1A1A',
+    textColor1: isDark.value ? '#E0E0E0' : '#1A1A1A',
+    textColor2: isDark.value ? '#888888' : '#666666',
+    textColor3: isDark.value ? '#888888' : '#666666',
+    placeholderColor: isDark.value ? '#888888' : '#666666',
+    fontFamily: "'Inter', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif",
+    fontFamilyMono: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+    borderRadius: '4px',
+    borderRadiusSmall: '2px',
+  },
+  Button: {
+    borderRadiusSmall: '2px',
+    borderRadiusMedium: '4px',
+    borderRadiusLarge: '4px',
+  },
+  Card: {
+    borderRadius: '8px',
+  },
+  Input: {
+    borderRadius: '4px',
+  },
+  Select: {
+    peers: {
+      InternalSelection: {
+        borderRadius: '4px',
+      }
+    }
+  },
+  DataTable: {
+    borderRadius: '8px',
+  },
+  Tabs: {
+    tabTextColorLine: isDark.value ? '#888888' : '#666666',
+    tabTextColorActiveLine: '#5DD62C',
+    tabTextColorHoverLine: isDark.value ? '#E0E0E0' : '#1A1A1A',
+    colorSegment: isDark.value ? '#202020' : '#FFFFFF',
+    tabBorderColor: isDark.value ? '#333333' : '#EBEEF5',
+    barColor: '#5DD62C',
+  },
+  Tag: {
+    borderRadius: '2px',
+  },
+  Message: {
+    borderRadius: '8px',
+  },
+  Notification: {
+    borderRadius: '8px',
+  },
+  Modal: {
+    borderRadius: '8px',
+  },
+  Drawer: {
+    borderRadius: '8px',
+  },
+}));
 const isMobile = useIsMobile()
 const showSideMargin = computed(() => !isMobile.value && useSideMargin.value);
 const showAd = computed(() => !isMobile.value && adClient && adSlot);
@@ -77,7 +150,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-config-provider :locale="localeConfig" :theme="theme">
+  <n-config-provider :locale="localeConfig" :theme="theme" :theme-overrides="themeOverrides">
     <n-global-style />
     <n-spin description="loading..." :show="loading">
       <n-notification-provider container-style="margin-top: 60px;">
@@ -116,6 +189,8 @@ onMounted(async () => {
 
 
 <style>
+@import './assets/cyber-industrial-theme.css';
+
 .n-switch {
   margin-left: 10px;
   margin-right: 10px;

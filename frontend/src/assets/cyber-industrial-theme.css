@@ -1,0 +1,548 @@
+/* ========================================
+   GasGx-UI-v6.0 - Cyber-Industrial Theme
+   赛博工业 (Cyber-Industrial) / 科技风 (Tech-Driven)
+   ======================================== */
+
+/* 1. 字体排版规范 (Typography) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ========================================
+   2. CSS 变量与主题系统 (Design Tokens)
+   ======================================== */
+:root {
+  /* 基础色彩 - 深色模式 (默认) */
+  --bg-main: #0F0F0F;
+  --bg-card: #202020;
+  --text-primary: #E0E0E0;
+  --text-secondary: #888888;
+  --border-line: #333333;
+  --accent-aurora: #5DD62C;
+  --gradient-dark: #337418;
+
+  /* 状态色彩 */
+  --status-success: #28A745;
+  --status-warning: #FF9900;
+  --status-danger: #FF3366;
+  --status-info: #00A3FF;
+
+  /* 极光绿透明度变体 */
+  --accent-aurora-rgb: 93, 214, 44;
+  --accent-aurora-rgb-40: rgba(93, 214, 44, 0.4);
+  --accent-aurora-rgb-15: rgba(93, 214, 44, 0.15);
+  --accent-aurora-rgb-10: rgba(93, 214, 44, 0.1);
+
+  /* 浅色模式变量 */
+  --bg-main-light: #F5F7FA;
+  --bg-card-light: #FFFFFF;
+  --text-primary-light: #1A1A1A;
+  --text-secondary-light: #666666;
+  --border-line-light: #EBEEF5;
+  --accent-aurora-light: #00B853;
+  --gradient-dark-light: #E8F5E9;
+
+  /* 数据字体 */
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* 浅色模式覆盖 */
+html.light {
+  --bg-main: var(--bg-main-light);
+  --bg-card: var(--bg-card-light);
+  --text-primary: var(--text-primary-light);
+  --text-secondary: var(--text-secondary-light);
+  --border-line: var(--border-line-light);
+  --accent-aurora: var(--accent-aurora-light);
+  --gradient-dark: var(--gradient-dark-light);
+}
+
+/* ========================================
+   3. 全局字体与基础样式
+   ======================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 数据/仪表盘特效数字 */
+.data-numbers,
+.mono-font {
+  font-family: var(--font-mono);
+}
+
+/* ========================================
+   4. 视觉特效 (Visual Effects)
+   ======================================== */
+
+/* 4.1 毛玻璃效果 (Glassmorphism) */
+.glass-effect {
+  background: rgba(32, 32, 32, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(93, 214, 44, 0.15);
+  border-radius: 8px;
+}
+
+html.light .glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 184, 83, 0.1);
+}
+
+/* 4.2 呼吸发光特效 (Breathing Glow) */
+.glow-effect {
+  box-shadow: 0 0 12px rgba(93, 214, 44, 0.4);
+  animation: glow-breathe 2s ease-in-out infinite;
+}
+
+@keyframes glow-breathe {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(93, 214, 44, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(93, 214, 44, 0.6);
+  }
+}
+
+/* 4.3 深度内阴影 (Inner Shadows) - 仅深色模式 */
+.inner-shadow {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  background: var(--bg-main);
+  border: 1px solid var(--bg-card);
+}
+
+/* 4.4 渐变背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(93, 214, 44, 0.1) 100%);
+}
+
+/* ========================================
+   5. 工业风形状与间距
+   ======================================== */
+.card-radius {
+  border-radius: 4px;
+}
+
+.btn-radius {
+  border-radius: 2px;
+}
+
+.card-radius-lg {
+  border-radius: 8px;
+}
+
+/* 全局 8px 栅格系统 */
+.gap-sm { gap: 4px; }
+.gap-md { gap: 8px; }
+.gap-lg { gap: 16px; }
+.gap-xl { gap: 24px; }
+
+/* ========================================
+   6. 组件防坑与全局强制重写 (Naive UI Hacks)
+   ======================================== */
+
+/* 6.1 通用边框与分割线覆写 */
+.n-card {
+  --n-border-color: var(--border-line) !important;
+  border-color: var(--border-line) !important;
+}
+
+.n-card > .n-card-header {
+  border-color: var(--border-line) !important;
+}
+
+.n-divider {
+  --n-border-color: var(--border-line) !important;
+  border-color: var(--border-line) !important;
+}
+
+/* 6.2 下拉列表样式覆写 - 拦截 Portal 弹窗 */
+.el-select-dropdown__item,
+.ant-select-item-option,
+.n-base-select-menu,
+.n-base-select-option,
+[role="option"] {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+.el-select-dropdown__item:hover,
+.el-select-dropdown__item.selected,
+.ant-select-item-option-active,
+.ant-select-item-option-selected,
+.n-base-select-option:hover,
+.n-base-select-option--selected,
+[role="option"]:hover,
+[role="option"][aria-selected="true"] {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+  color: var(--accent-aurora) !important;
+  border-left: 2px solid var(--accent-aurora) !important;
+}
+
+/* Naive UI Select 覆写 */
+.n-select-menu {
+  background-color: var(--bg-card) !important;
+}
+
+.n-select-option {
+  background-color: transparent !important;
+}
+
+.n-select-option:hover {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+}
+
+.n-select-option--selected {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 6.3 表格样式覆写 */
+.n-data-table {
+  --n-border-color: var(--border-line) !important;
+  --n-th-color: var(--bg-card) !important;
+  --n-td-color: transparent !important;
+  --n-td-color-striped: rgba(93, 214, 44, 0.05) !important;
+}
+
+.n-data-table-th {
+  background-color: var(--bg-card) !important;
+  color: var(--text-secondary) !important;
+}
+
+.n-data-table-td {
+  border-color: var(--border-line) !important;
+}
+
+.n-data-table-tr:hover {
+  background-color: rgba(93, 214, 44, 0.1) !important;
+}
+
+/* 表格行悬停 */
+.n-data-table-tr:hover:not(.n-data-table-tr--selected) {
+  background-color: rgba(93, 214, 44, 0.1) !important;
+}
+
+/* 6.4 分页器覆写 */
+.n-pagination-item:hover:not(.n-pagination-item--disabled) {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+  color: var(--accent-aurora) !important;
+}
+
+.n-pagination-item--active {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+  color: var(--accent-aurora) !important;
+  border-color: var(--accent-aurora) !important;
+}
+
+/* 6.5 表单控件尺寸锁定 (防畸变) */
+.n-checkbox-box,
+.n-radio-button,
+.custom-checkbox-inner,
+.custom-radio-inner,
+.n-base-select-arrow svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box;
+}
+
+.form-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 6.6 输入框样式覆写 */
+.n-input {
+  --n-border: 1px solid var(--border-line) !important;
+  --n-border-hover: 1px solid var(--accent-aurora) !important;
+  --n-border-focus: 1px solid var(--accent-aurora) !important;
+  --n-color: var(--bg-main) !important;
+  --n-color-focus: var(--bg-main) !important;
+  --n-text-color: var(--text-primary) !important;
+  --n-placeholder-color: var(--text-secondary) !important;
+}
+
+.n-input:hover:not(.n-input--focus) {
+  border-color: var(--accent-aurora) !important;
+}
+
+.n-input--focus {
+  border-color: var(--accent-aurora) !important;
+  box-shadow: 0 0 8px rgba(93, 214, 44, 0.3) !important;
+}
+
+html.light .n-input {
+  --n-color: var(--bg-card-light) !important;
+  --n-color-focus: var(--bg-card-light) !important;
+}
+
+/* 6.7 按钮样式覆写 */
+.n-button {
+  --n-border: 1px solid var(--border-line) !important;
+  --n-border-hover: 1px solid var(--accent-aurora) !important;
+  --n-border-pressed: 1px solid var(--accent-aurora) !important;
+  --n-color: var(--bg-card) !important;
+  --n-color-hover: rgba(93, 214, 44, 0.1) !important;
+  --n-color-pressed: rgba(93, 214, 44, 0.2) !important;
+  --n-text-color: var(--text-primary) !important;
+  --n-text-color-hover: var(--accent-aurora) !important;
+  --n-text-color-pressed: var(--accent-aurora) !important;
+  border-radius: 2px !important;
+}
+
+.n-button--primary-type {
+  --n-color: var(--accent-aurora) !important;
+  --n-color-hover: rgba(93, 214, 44, 0.8) !important;
+  --n-color-pressed: rgba(93, 214, 44, 0.6) !important;
+  --n-text-color: #0F0F0F !important;
+  --n-text-color-hover: #0F0F0F !important;
+  --n-text-color-pressed: #0F0F0F !important;
+}
+
+.n-button--primary-type:hover {
+  box-shadow: 0 0 8px rgba(93, 214, 44, 0.4) !important;
+}
+
+/* 6.8 标签页样式覆写 */
+.n-tabs {
+  --n-bar-color: var(--accent-aurora) !important;
+  --n-tab-text-color: var(--text-secondary) !important;
+  --n-tab-text-color-active: var(--accent-aurora) !important;
+  --n-tab-text-color-hover: var(--text-primary) !important;
+}
+
+.n-tabs-nav {
+  background-color: var(--bg-card) !important;
+  border-radius: 4px 4px 0 0;
+}
+
+.n-tab {
+  border-color: var(--border-line) !important;
+}
+
+.n-tab--active {
+  background-color: rgba(93, 214, 44, 0.1) !important;
+}
+
+/* 6.9 提示图标强制可见性 (Info Icons) */
+.info-help-icon,
+.info-help-icon svg,
+.n-base-icon,
+.n-icon {
+  color: var(--text-secondary) !important;
+  opacity: 0.8;
+}
+
+.info-help-icon:hover,
+.n-icon:hover {
+  color: var(--accent-aurora) !important;
+  opacity: 1;
+}
+
+/* 6.10 顶部切换器组 (分段控制器 Segmented Control) */
+.toggle-group-container {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-line);
+  border-radius: 6px;
+}
+
+html.light .toggle-group-container {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.toggle-group-btn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-group-btn:hover {
+  color: var(--text-primary);
+}
+
+.toggle-group-btn.active {
+  background-color: rgba(93, 214, 44, 0.15);
+  color: var(--accent-aurora);
+}
+
+/* 6.11 弹窗/抽屉样式覆写 */
+.n-modal,
+.n-drawer,
+.n-card,
+.n-popover,
+.n-basic-selection-overlay {
+  --n-color: var(--bg-card) !important;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-line) !important;
+}
+
+html.light .n-modal,
+html.light .n-drawer,
+html.light .n-card,
+html.light .n-popover,
+html.light .n-basic-selection-overlay {
+  --n-color: var(--bg-card-light) !important;
+  background-color: var(--bg-card-light) !important;
+}
+
+/* 6.12 消息提示样式覆写 */
+.n-message {
+  --n-color: var(--bg-card) !important;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-line) !important;
+}
+
+html.light .n-message {
+  --n-color: var(--bg-card-light) !important;
+  background-color: var(--bg-card-light) !important;
+}
+
+/* 6.13 通知提示样式覆写 */
+.n-notification {
+  --n-color: var(--bg-card) !important;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-line) !important;
+}
+
+/* 6.14 开关样式覆写 */
+.n-switch {
+  --n-rail-color: var(--border-line) !important;
+  --n-rail-color-active: rgba(93, 214, 44, 0.5) !important;
+  --n-rail-color-hover: var(--border-line) !important;
+  --n-rail-color-hover-active: rgba(93, 214, 44, 0.6) !important;
+}
+
+.n-switch--active {
+  --n-rail-color: rgba(93, 214, 44, 0.7) !important;
+  --n-button-color: var(--accent-aurora) !important;
+}
+
+/* 6.15 进度条样式覆写 */
+.n-progress {
+  --n-indicator-color: var(--accent-aurora) !important;
+  --n-rail-color: var(--border-line) !important;
+}
+
+.n-progress__rail {
+  background-color: var(--border-line) !important;
+}
+
+/* 6.16 标签样式覆写 */
+.n-tag {
+  --n-color: var(--bg-card) !important;
+  --n-border: 1px solid var(--border-line) !important;
+  --n-text-color: var(--text-primary) !important;
+}
+
+.n-tag--success-type {
+  --n-color: rgba(40, 167, 69, 0.15) !important;
+  --n-text-color: var(--status-success) !important;
+  --n-border: 1px solid var(--status-success) !important;
+}
+
+.n-tag--warning-type {
+  --n-color: rgba(255, 153, 0, 0.15) !important;
+  --n-text-color: var(--status-warning) !important;
+  --n-border: 1px solid var(--status-warning) !important;
+}
+
+.n-tag--error-type {
+  --n-color: rgba(255, 51, 102, 0.15) !important;
+  --n-text-color: var(--status-danger) !important;
+  --n-border: 1px solid var(--status-danger) !important;
+}
+
+.n-tag--info-type {
+  --n-color: rgba(0, 163, 255, 0.15) !important;
+  --n-text-color: var(--status-info) !important;
+  --n-border: 1px solid var(--status-info) !important;
+}
+
+/* 6.17 徽章样式覆写 */
+.n-badge {
+  --n-color: var(--accent-aurora) !important;
+}
+
+/* 6.18 骨架屏样式覆写 */
+.n-skeleton {
+  --n-color: var(--bg-card) !important;
+  --n-color-modal: var(--bg-card) !important;
+}
+
+/* 6.19 折叠面板样式覆写 */
+.n-collapse {
+  --n-border-color: var(--border-line) !important;
+}
+
+.n-collapse-item {
+  border-color: var(--border-line) !important;
+}
+
+.n-collapse-item__header {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.n-collapse-item__content {
+  background-color: var(--bg-main) !important;
+}
+
+/* 6.20 统计数据样式 */
+.stat-value {
+  font-family: var(--font-mono);
+  color: var(--accent-aurora);
+  font-weight: 600;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+
+/* ========================================
+   7. 滚动条样式
+   ======================================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-line);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ========================================
+   8. 选中文字样式
+   ======================================== */
+::selection {
+  background-color: rgba(93, 214, 44, 0.3);
+  color: var(--text-primary);
+}

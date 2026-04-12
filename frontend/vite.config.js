@@ -10,6 +10,9 @@ import wasm from "vite-plugin-wasm";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    allowedHosts: ['.monkeycode-ai.online']
+  },
   build: {
     outDir: './dist',
   },
