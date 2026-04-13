@@ -178,8 +178,118 @@ html:not(.dark) .inner-shadow {
 .gap-xl { gap: 24px; }
 
 /* ========================================
-   6. Naive UI 组件全局覆写
+   6. 组件防坑与全局强制重写
    ======================================== */
+
+/* ========================================
+   6.0 导航栏统一层 - 修复多层背景问题
+   ======================================== */
+
+/* 整个导航区域统一为单层背景 */
+.n-layout-header,
+.n-layout-header > div,
+.n-layout-header > div > div,
+.n-page-header,
+.n-page-header > div,
+.n-page-header__header,
+.n-page-header__header > div,
+.n-page-header__main {
+  background-color: var(--bg-card) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border-line) !important;
+}
+
+/* 导航内部元素全部透明 */
+.n-page-header__header > div,
+.n-page-header__main {
+  border: none !important;
+}
+
+/* 标题和副标题 */
+.n-page-header__title {
+  color: var(--text-primary) !important;
+}
+
+.n-page-header__subtitle {
+  color: var(--text-secondary) !important;
+}
+
+/* Logo 区域 */
+.n-page-header__avatar,
+.n-page-header__avatar > div {
+  background-color: transparent !important;
+}
+
+/* 菜单容器统一透明 */
+.n-menu,
+.n-menu-menu,
+.n-menu--horizontal {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.n-menu-item,
+.n-menu-item-content,
+.n-menu-item-content-wrapper {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+}
+
+.n-menu-item:hover > .n-menu-item-content,
+.n-menu-item-content:hover {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+.n-menu-item--selected > .n-menu-item-content,
+.n-menu-item-content--selected {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+.n-menu-item-content__icon {
+  color: var(--text-secondary) !important;
+}
+
+.n-menu-item:hover .n-menu-item-content__icon,
+.n-menu-item--selected .n-menu-item-content__icon {
+  color: var(--accent-aurora) !important;
+}
+
+/* 顶部工具按钮（暗色模式下默认透明） */
+.n-page-header .n-button,
+.n-layout-header .n-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--text-secondary) !important;
+}
+
+.n-page-header .n-button:hover,
+.n-layout-header .n-button:hover {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 主按钮（登录等）保持极光绿 */
+.n-page-header .n-button--primary-type,
+.n-layout-header .n-button--primary-type {
+  background-color: var(--accent-aurora) !important;
+  border: 1px solid var(--accent-aurora) !important;
+  color: var(--text-on-primary) !important;
+}
+
+/* Select 在 Header 内透明 */
+.n-page-header .n-select,
+.n-layout-header .n-select {
+  background-color: transparent !important;
+}
+
+.n-page-header .n-select .n-selector,
+.n-layout-header .n-select .n-selector {
+  background-color: transparent !important;
+  border: none !important;
+}
 
 /* 6.1 通用边框与分割线 */
 .n-card,
@@ -539,139 +649,6 @@ html:not(.dark) .n-input .n-input__textarea-el {
 .n-date-cell--selected {
   background-color: var(--hover-bg-accent) !important;
   color: var(--accent-aurora) !important;
-}
-
-/* 6.18 Menu 导航菜单 - 统一透明背景 */
-.n-menu,
-.n-menu-menu,
-html.dark .n-menu,
-html.light .n-menu,
-html:not(.dark) .n-menu {
-  background-color: transparent !important;
-  color: var(--text-primary) !important;
-}
-
-.n-menu-item,
-.n-menu-item-content,
-.n-menu-item-content-wrapper {
-  background-color: transparent !important;
-  color: var(--text-primary) !important;
-}
-
-.n-menu-item:hover > .n-menu-item-content,
-.n-menu-item-content:hover {
-  background-color: var(--hover-bg) !important;
-  color: var(--accent-aurora) !important;
-}
-
-.n-menu-item--selected > .n-menu-item-content,
-.n-menu-item-content--selected {
-  background-color: var(--hover-bg-accent) !important;
-  color: var(--accent-aurora) !important;
-}
-
-.n-menu-item-content__icon {
-  color: var(--text-secondary) !important;
-}
-
-.n-menu-item:hover .n-menu-item-content__icon,
-.n-menu-item--selected .n-menu-item-content__icon {
-  color: var(--accent-aurora) !important;
-}
-
-/* ========================================
-   6.18.5 顶部导航栏按钮幽灵化 (Header Ghost Buttons)
-   顶导内的按钮默认全透明，悬浮时才呈现微光
-   ======================================== */
-.n-page-header,
-.n-layout-header,
-.header-container {
-  background-color: var(--bg-card) !important;
-  border-bottom: 1px solid var(--border-line) !important;
-}
-
-.n-page-header .n-button,
-.header-container .n-button,
-.n-layout-header .n-button {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: var(--text-secondary) !important;
-}
-
-.n-page-header .n-button:hover,
-.header-container .n-button:hover,
-.n-layout-header .n-button:hover {
-  background-color: var(--hover-bg-accent) !important;
-  color: var(--accent-aurora) !important;
-}
-
-.n-page-header .n-button--primary-type,
-.header-container .n-button--primary-type,
-.n-layout-header .n-button--primary-type {
-  background-color: var(--accent-aurora) !important;
-  border: 1px solid var(--accent-aurora) !important;
-  color: var(--text-on-primary) !important;
-}
-
-.n-page-header .n-button--primary-type:hover,
-.header-container .n-button--primary-type:hover,
-.n-layout-header .n-button--primary-type:hover {
-  opacity: 0.85;
-  box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
-}
-
-/* Select 触发器在 Header 内也要透明化 */
-.n-page-header .n-base-select,
-.n-page-header .n-select,
-.header-container .n-base-select,
-.header-container .n-select,
-.n-layout-header .n-base-select,
-.n-layout-header .n-select {
-  background-color: transparent !important;
-}
-
-.n-page-header .n-base-select .n-base-select-trigger,
-.n-page-header .n-select .n-selector,
-.header-container .n-base-select .n-base-select-trigger,
-.header-container .n-select .n-selector {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* 修复 PageHeader 内部布局 */
-.n-page-header > .n-page-header__header {
-  background-color: transparent !important;
-}
-
-/* 6.19 PageHeader */
-.n-page-header,
-.n-page-header__header,
-.n-page-header__main {
-  background-color: var(--bg-card) !important;
-  border-color: var(--border-line) !important;
-  color: var(--text-primary) !important;
-}
-
-.n-page-header__title {
-  color: var(--text-primary) !important;
-}
-
-.n-page-header__subtitle {
-  color: var(--text-secondary) !important;
-}
-
-.n-page-header__avatar {
-  background-color: transparent !important;
-}
-
-.n-page-header__title {
-  color: var(--text-primary) !important;
-}
-
-.n-page-header__subtitle {
-  color: var(--text-secondary) !important;
 }
 
 /* 6.20 Alert */
