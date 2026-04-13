@@ -49,9 +49,9 @@ const themeOverrides = {
     borderRadiusSmall: '2px',
     borderRadiusMedium: '4px',
     borderRadiusLarge: '4px',
-    textColorPrimary: '#FFFFFF',
-    textColorHoverPrimary: '#FFFFFF',
-    textColorPressedPrimary: '#FFFFFF',
+    textColorPrimary: '#1A1A1A',
+    textColorHoverPrimary: '#1A1A1A',
+    textColorPressedPrimary: '#1A1A1A',
   },
   Card: {
     borderRadius: '8px',
@@ -295,8 +295,6 @@ onMounted(async () => {
   margin-left: 10px;
   margin-right: 10px;
 }
-
-/* test marker */
 </style>
 
 <style scoped>

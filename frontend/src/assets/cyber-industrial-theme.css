@@ -507,16 +507,26 @@ html:not(.dark) .n-input .n-input__textarea-el {
 
 /* 主按钮 (极光绿底色) - 必须使用深色文字 */
 .n-button--primary-type,
-.n-button[class*="primary"] {
+.n-button[class*="primary"],
+.n-button[ type="primary" ] {
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
-  color: var(--text-on-primary) !important;
+  color: #1A1A1A !important;
 }
 
-.n-button--primary-type:hover:not(.n-button--disabled) {
+.n-button--primary-type:hover:not(.n-button--disabled),
+.n-button[ type="primary" ]:hover {
   background-color: var(--accent-aurora) !important;
   opacity: 0.85;
   box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
+  color: #1A1A1A !important;
+}
+
+/* secondary 类型的主按钮也要是深色文字 */
+.n-button--secondary-type[ type="primary" ],
+.n-button[ type="primary" ].n-button--secondary-type {
+  background-color: var(--accent-aurora) !important;
+  color: #1A1A1A !important;
 }
 
 .n-button--quaternary-type:hover {

@@ -93,145 +93,67 @@ const version = import.meta.env.PACKAGE_VERSION ? `v${import.meta.env.PACKAGE_VE
 
 const menuOptions = computed(() => [
     {
-        label: () => h(NButton,
-            {
-                text: true,
-                size: "small",
-                type: menuValue.value == "home" ? "primary" : "default",
-                style: "width: 100%",
-                onClick: async () => {
-                    await router.push(getRouterPathWithLang('/', locale.value));
-                    showMobileMenu.value = false;
-                }
-            },
-            {
-                default: () => t('home'),
-                icon: () => h(NIcon, { component: Home })
-            }),
-        key: "home"
+        label: () => t('home'),
+        key: "home",
+        icon: () => h(NIcon, { component: Home }),
+        show: true,
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                type: menuValue.value == "user" ? "primary" : "default",
-                style: "width: 100%",
-                onClick: async () => {
-                    await router.push(getRouterPathWithLang("/user", locale.value));
-                    showMobileMenu.value = false;
-                }
-            },
-            {
-                default: () => t('user'),
-                icon: () => h(NIcon, { component: User }),
-            }
-        ),
+        label: () => t('user'),
         key: "user",
-        show: !isTelegram.value
+        icon: () => h(NIcon, { component: User }),
+        show: !isTelegram.value,
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                type: menuValue.value == "admin" ? "primary" : "default",
-                style: "width: 100%",
-                onClick: async () => {
-                    loading.value = true;
-                    await router.push(getRouterPathWithLang('/admin', locale.value));
-                    loading.value = false;
-                    showMobileMenu.value = false;
-                }
-            },
-            {
-                default: () => "Admin",
-                icon: () => h(NIcon, { component: AdminPanelSettingsFilled }),
-            }
-        ),
+        label: () => "Admin",
+        key: "admin",
+        icon: () => h(NIcon, { component: AdminPanelSettingsFilled }),
         show: showAdminPage.value,
-        key: "admin"
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                style: "width: 100%",
-                onClick: () => { toggleDark(); showMobileMenu.value = false; }
-            },
-            {
-                default: () => isDark.value ? t('light') : t('dark'),
-                icon: () => h(
-                    NIcon, { component: isDark.value ? LightModeFilled : DarkModeFilled }
-                )
-            }
-        ),
-        key: "theme"
+        label: () => isDark.value ? t('light') : t('dark'),
+        key: "theme",
+        icon: () => h(NIcon, { component: isDark.value ? LightModeFilled : DarkModeFilled }),
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                style: "width: 100%",
-                onClick: async () => {
-                    locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh');
-                    showMobileMenu.value = false;
-                }
-            },
-            {
-                default: () => locale.value == 'zh' ? "English" : "中文",
-                icon: () => h(
-                    NIcon, { component: Language }
-                )
-            }
-        ),
-        key: "lang"
+        label: () => locale.value == 'zh' ? "English" : "中文",
+        key: "lang",
+        icon: () => h(NIcon, { component: Language }),
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                style: "width: 100%",
-                tag: "a",
-                target: "_blank",
-                href: openSettings.value?.statusUrl,
-            },
-            {
-                default: () => t('status'),
-                icon: () => h(NIcon, { component: MonitorHeartFilled })
-            }
-        ),
+        label: () => t('status'),
+        key: "status",
+        icon: () => h(NIcon, { component: MonitorHeartFilled }),
         show: !!openSettings.value?.statusUrl,
-        key: "status"
     },
     {
-        label: () => h(
-            NButton,
-            {
-                text: true,
-                size: "small",
-                style: "width: 100%",
-                tag: "a",
-                target: "_blank",
-                href: "https://github.com/dreamhunter2333/cloudflare_temp_email",
-            },
-            {
-                default: () => version || "Github",
-                icon: () => h(NIcon, { component: GithubAlt })
-            }
-        ),
+        label: () => version || "Github",
+        key: "github",
+        icon: () => h(NIcon, { component: GithubAlt }),
         show: openSettings.value?.showGithub,
-        key: "github"
     }
 ]);
+
+const handleMenuUpdate = async (key) => {
+    showMobileMenu.value = false;
+    if (key === 'home') {
+        await router.push(getRouterPathWithLang('/', locale.value));
+    } else if (key === 'user') {
+        await router.push(getRouterPathWithLang("/user", locale.value));
+    } else if (key === 'admin') {
+        loading.value = true;
+        await router.push(getRouterPathWithLang('/admin', locale.value));
+        loading.value = false;
+    } else if (key === 'theme') {
+        toggleDark();
+    } else if (key === 'lang') {
+        locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh');
+    } else if (key === 'status') {
+        window.open(openSettings.value?.statusUrl, '_blank');
+    } else if (key === 'github') {
+        window.open("https://github.com/dreamhunter2333/cloudflare_temp_email", '_blank');
+    }
+};
 
 useHead({
     title: () => openSettings.value.title || t('title'),
@@ -274,13 +196,13 @@ onMounted(async () => {
                 <h3>{{ openSettings.title || t('title') }}</h3>
             </template>
             <template #avatar>
-                <div @click="logoClick">
-                    <n-avatar style="margin-left: 10px;" src="/logo.png" />
+                <div @click="logoClick" style="margin-left: 10px; cursor: pointer;">
+                    <img src="/logo.svg" alt="logo" style="width: 40px; height: 40px;" />
                 </div>
             </template>
             <template #extra>
                 <n-space>
-                    <n-menu v-if="!isMobile" mode="horizontal" :options="menuOptions" responsive />
+                    <n-menu v-if="!isMobile" mode="horizontal" :options="menuOptions" :value="menuValue" @update:value="handleMenuUpdate" responsive />
                     <n-button v-else :text="true" @click="showMobileMenu = !showMobileMenu" style="margin-right: 10px;">
                         <template #icon>
                             <n-icon :component="MenuFilled" />
@@ -292,7 +214,7 @@ onMounted(async () => {
         </n-page-header>
         <n-drawer v-model:show="showMobileMenu" placement="top" style="height: 100vh;">
             <n-drawer-content :title="t('menu')" closable>
-                <n-menu :options="menuOptions" />
+                <n-menu :options="menuOptions" :value="menuValue" @update:value="handleMenuUpdate" />
             </n-drawer-content>
         </n-drawer>
         <n-modal v-model:show="showAuth" :closable="false" :closeOnEsc="false" :maskClosable="false" preset="dialog"
