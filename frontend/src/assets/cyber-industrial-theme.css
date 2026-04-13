@@ -952,5 +952,62 @@ html:not(.dark) .toggle-group-container {
 .info-help-icon:hover,
 .info-help-icon svg:hover {
   color: var(--accent-aurora) !important;
-  opacity: 1;
+}
+
+/* ========================================
+   15. 强制所有主按钮文字为深色（最高优先级）
+   ======================================== */
+html.dark .n-button--primary-type,
+html.dark .n-button[class*="primary"],
+html.dark .n-button[ type="primary" ],
+html .dark .n-button--primary-type,
+html .dark .n-button[class*="primary"],
+html .dark .n-button[ type="primary" ],
+.n-button--primary-type,
+.n-button[class*="primary"],
+.n-button[ type="primary" ] {
+  color: #1A1A1A !important;
+}
+
+html.dark .n-button--primary-type:hover,
+html.dark .n-button[class*="primary"]:hover,
+html.dark .n-button[ type="primary" ]:hover,
+html .dark .n-button--primary-type:hover,
+html .dark .n-button[class*="primary"]:hover,
+html .dark .n-button[ type="primary" ]:hover,
+.n-button--primary-type:hover,
+.n-button[class*="primary"]:hover,
+.n-button[ type="primary" ]:hover {
+  color: #1A1A1A !important;
+}
+
+/* naive-ui dark theme override */
+.dark-theme .n-button--primary-type,
+.dark-theme .n-button[class*="primary"],
+.dark-theme .n-button[ type="primary" ] {
+  color: #1A1A1A !important;
+}
+
+.dark-theme .n-button--primary-type:hover,
+.dark-theme .n-button[class*="primary"]:hover,
+.dark-theme .n-button[ type="primary" ]:hover {
+  color: #1A1A1A !important;
+}
+
+/* 确保 secondary 类型的主按钮也是深色文字 */
+html.dark .n-button--secondary-type,
+html .dark .n-button--secondary-type,
+.dark-theme .n-button--secondary-type {
+  color: #1A1A1A !important;
+}
+
+html.dark .n-button--secondary-type:hover,
+html .dark .n-button--secondary-type:hover,
+.dark-theme .n-button--secondary-type:hover {
+  color: #1A1A1A !important;
+}
+
+/* 全局强制 - 解决 naive-ui 内联样式问题 */
+.n-button[ type="primary" ] {
+  color: #1A1A1A !important;
 }
