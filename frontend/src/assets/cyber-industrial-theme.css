@@ -541,8 +541,9 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: var(--accent-aurora) !important;
 }
 
-/* 6.18 Menu 导航菜单 */
+/* 6.18 Menu 导航菜单 - 统一透明背景 */
 .n-menu,
+.n-menu-menu,
 html.dark .n-menu,
 html.light .n-menu,
 html:not(.dark) .n-menu {
@@ -551,18 +552,19 @@ html:not(.dark) .n-menu {
 }
 
 .n-menu-item,
-.n-menu-item-content {
+.n-menu-item-content,
+.n-menu-item-content-wrapper {
   background-color: transparent !important;
   color: var(--text-primary) !important;
 }
 
-.n-menu-item:hover,
+.n-menu-item:hover > .n-menu-item-content,
 .n-menu-item-content:hover {
   background-color: var(--hover-bg) !important;
   color: var(--accent-aurora) !important;
 }
 
-.n-menu-item--selected,
+.n-menu-item--selected > .n-menu-item-content,
 .n-menu-item-content--selected {
   background-color: var(--hover-bg-accent) !important;
   color: var(--accent-aurora) !important;
@@ -581,6 +583,13 @@ html:not(.dark) .n-menu {
    6.18.5 顶部导航栏按钮幽灵化 (Header Ghost Buttons)
    顶导内的按钮默认全透明，悬浮时才呈现微光
    ======================================== */
+.n-page-header,
+.n-layout-header,
+.header-container {
+  background-color: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-line) !important;
+}
+
 .n-page-header .n-button,
 .header-container .n-button,
 .n-layout-header .n-button {
@@ -590,9 +599,9 @@ html:not(.dark) .n-menu {
   color: var(--text-secondary) !important;
 }
 
-.n-page-header .n-button:hover:not(.n-button--disabled),
-.header-container .n-button:hover:not(.n-button--disabled),
-.n-layout-header .n-button:hover:not(.n-button--disabled) {
+.n-page-header .n-button:hover,
+.header-container .n-button:hover,
+.n-layout-header .n-button:hover {
   background-color: var(--hover-bg-accent) !important;
   color: var(--accent-aurora) !important;
 }
@@ -631,11 +640,30 @@ html:not(.dark) .n-menu {
   box-shadow: none !important;
 }
 
+/* 修复 PageHeader 内部布局 */
+.n-page-header > .n-page-header__header {
+  background-color: transparent !important;
+}
+
 /* 6.19 PageHeader */
-.n-page-header {
+.n-page-header,
+.n-page-header__header,
+.n-page-header__main {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
   color: var(--text-primary) !important;
+}
+
+.n-page-header__title {
+  color: var(--text-primary) !important;
+}
+
+.n-page-header__subtitle {
+  color: var(--text-secondary) !important;
+}
+
+.n-page-header__avatar {
+  background-color: transparent !important;
 }
 
 .n-page-header__title {
@@ -729,7 +757,7 @@ html:not(.dark) .n-menu {
 }
 
 /* ========================================
-   7. 布局组件
+   7. 布局组件 - 统一 Header 背景
    ======================================== */
 .n-layout,
 html.dark .n-layout,
@@ -739,9 +767,11 @@ html:not(.dark) .n-layout {
   color: var(--text-primary) !important;
 }
 
-.n-layout-header {
+.n-layout-header,
+.n-layout-header > div {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
+  border-bottom: 1px solid var(--border-line) !important;
   color: var(--text-primary) !important;
 }
 
