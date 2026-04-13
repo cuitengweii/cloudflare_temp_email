@@ -12,6 +12,8 @@
 
 ### Bug Fixes
 
+- fix: |UI| 修复暗色模式下多处文字颜色对比度不足导致看不清的问题，优化 n-text、pre、链接等元素的暗色模式样式
+
 ### Improvements
 
 ## v1.5.0(main)

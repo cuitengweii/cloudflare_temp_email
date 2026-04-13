@@ -257,10 +257,15 @@ const handleSaveToS3 = async (filename, blob) => {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  color: var(--text-primary, #E0E0E0);
 }
 
 .dark-mode .mail-text {
   color: #e0e0e0;
+}
+
+html.light .mail-text {
+  color: var(--text-primary-light, #1A1A1A);
 }
 
 .mail-iframe {

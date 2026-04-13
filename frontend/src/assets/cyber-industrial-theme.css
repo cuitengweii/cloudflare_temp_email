@@ -151,6 +151,70 @@ html.light .glass-effect {
    6. 组件防坑与全局强制重写 (Naive UI Hacks)
    ======================================== */
 
+/* 6.0 文字可见性修复 - 暗色模式 */
+.n-text {
+  color: var(--text-primary) !important;
+}
+
+html.light .n-text {
+  color: var(--text-primary-light) !important;
+}
+
+.n-text[depth="1"],
+.n-text[depth="2"],
+.n-text[depth="3"] {
+  color: var(--text-secondary) !important;
+}
+
+html.light .n-text[depth="1"],
+html.light .n-text[depth="2"],
+html.light .n-text[depth="3"] {
+  color: var(--text-secondary-light) !important;
+}
+
+/* pre 和 code 标签文字颜色 */
+pre, code {
+  color: var(--text-primary);
+}
+
+/* text 类型按钮在暗色模式下的可见性 */
+.n-button--text-type {
+  color: var(--text-primary) !important;
+}
+
+.n-button--text-type:hover {
+  color: var(--accent-aurora) !important;
+}
+
+/* n-thing 标题文字 */
+.n-thing .n-thing-main .n-thing-header__title {
+  color: var(--text-primary) !important;
+}
+
+/* n-list-item 文字 */
+.n-list-item {
+  color: var(--text-primary);
+}
+
+/* n-result 文字 */
+.n-result .n-result-header__title {
+  color: var(--text-primary) !important;
+}
+
+.n-result .n-result-content {
+  color: var(--text-secondary) !important;
+}
+
+/* n-empty 文字 */
+.n-empty .n-empty__description {
+  color: var(--text-secondary) !important;
+}
+
+/* n-skeleton 文字 */
+.n-skeleton {
+  color: var(--text-secondary) !important;
+}
+
 /* 6.1 通用边框与分割线覆写 */
 .n-card {
   --n-border-color: var(--border-line) !important;
@@ -504,6 +568,15 @@ html.light .n-message {
 
 .n-collapse-item__content {
   background-color: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+}
+
+.n-collapse-item__header-main {
+  color: var(--text-primary) !important;
+}
+
+.n-collapse-item__content-wrapper {
+  color: var(--text-primary) !important;
 }
 
 /* 6.20 统计数据样式 */
@@ -516,6 +589,108 @@ html.light .n-message {
 .stat-label {
   color: var(--text-secondary);
   font-size: 0.85em;
+}
+
+/* 6.21 弹窗/对话框文字样式 */
+.n-dialog {
+  color: var(--text-primary) !important;
+}
+
+.n-dialog__title {
+  color: var(--text-primary) !important;
+}
+
+.n-dialog__content {
+  color: var(--text-secondary) !important;
+}
+
+/* 6.22 抽屉内容文字样式 */
+.n-drawer-content {
+  color: var(--text-primary) !important;
+}
+
+.n-drawer-header__title {
+  color: var(--text-primary) !important;
+}
+
+/* 6.23 表单标签文字 */
+.n-form-item-label {
+  color: var(--text-primary) !important;
+}
+
+.n-form-item-feedback {
+  color: var(--text-secondary) !important;
+}
+
+/* 6.24 描述列表文字 */
+.n-descriptions {
+  color: var(--text-primary) !important;
+}
+
+.n-descriptions-table-header {
+  color: var(--text-secondary) !important;
+}
+
+/* 6.25 下拉菜单文字 */
+.n-dropdown-menu {
+  background-color: var(--bg-card) !important;
+}
+
+.n-dropdown-option {
+  color: var(--text-primary) !important;
+}
+
+.n-dropdown-option:hover {
+  background-color: rgba(93, 214, 44, 0.15) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 6.26 菜单文字 */
+.n-menu-item {
+  color: var(--text-secondary) !important;
+}
+
+.n-menu-item:hover {
+  color: var(--text-primary) !important;
+}
+
+.n-menu-item--selected {
+  color: var(--accent-aurora) !important;
+}
+
+.n-menu-item-content {
+  color: inherit !important;
+}
+
+/* 6.27 页头文字 */
+.n-page-header {
+  color: var(--text-primary) !important;
+}
+
+.n-page-header__title {
+  color: var(--text-primary) !important;
+}
+
+/* 6.28 步骤条文字 */
+.n-steps {
+  color: var(--text-secondary) !important;
+}
+
+.n-step--active .n-step__title {
+  color: var(--accent-aurora) !important;
+}
+
+.n-step__title {
+  color: var(--text-secondary) !important;
+}
+
+/* 6.29 时间线文字 */
+.n-timeline-item-content__title {
+  color: var(--text-primary) !important;
+}
+
+.n-timeline-item-content__content {
+  color: var(--text-secondary) !important;
 }
 
 /* ========================================
@@ -545,4 +720,46 @@ html.light .n-message {
 ::selection {
   background-color: rgba(93, 214, 44, 0.3);
   color: var(--text-primary);
+}
+
+/* ========================================
+   9. 暗色模式文字对比度增强
+   ======================================== */
+
+/* 确保深色 depth 文字在暗色背景下可见 */
+html:not(.light) .n-text[depth="1"] {
+  color: #B8B8B8 !important;
+}
+
+html:not(.light) .n-text[depth="2"] {
+  color: #A0A0A0 !important;
+}
+
+html:not(.light) .n-text[depth="3"] {
+  color: #909090 !important;
+}
+
+/* 暗色模式下的链接颜色 */
+html:not(.light) a {
+  color: #A8C7FA;
+}
+
+html:not(.light) a:hover {
+  color: #7BB3F8;
+}
+
+/* 暗色模式下禁用状态的文字 */
+html:not(.light) .n-button--disabled {
+  opacity: 0.5;
+}
+
+/* 暗色模式下的占位符文字 */
+html:not(.light) input::placeholder,
+html:not(.light) textarea::placeholder {
+  color: #666666 !important;
+}
+
+/* 暗色模式下的分割线文字 */
+html:not(.light) .n-divider__title {
+  color: var(--text-secondary) !important;
 }

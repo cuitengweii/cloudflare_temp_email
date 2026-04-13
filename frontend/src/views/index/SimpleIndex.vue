@@ -209,7 +209,7 @@ onBeforeUnmount(() => {
                     </n-button>
                 </n-flex>
                 <div v-if="isFirstPage" style="text-align: center; margin-top: 12px;">
-                    <n-text depth="3" size="12">
+                    <n-text :depth="isDark ? 2 : 3" size="12">
                         {{ t('refreshAfter', { msg: Math.max(0, currentAutoRefreshInterval) }) }}
                     </n-text>
                 </div>

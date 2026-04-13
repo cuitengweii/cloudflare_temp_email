@@ -12,6 +12,8 @@
 
 ### Bug Fixes
 
+- fix: |UI| Fixed low text contrast in dark mode across multiple components, improved styling for n-text, pre, links and other elements
+
 ### Improvements
 
 ## v1.5.0(main)
