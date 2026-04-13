@@ -1,5 +1,5 @@
 /* ========================================
-   GasGx-UI-v6.0 - Cyber-Industrial Theme
+   GasGx-UI-v6.1 - Cyber-Industrial Theme
    赛博工业 (Cyber-Industrial) / 科技风 (Tech-Driven)
    ======================================== */
 
@@ -18,6 +18,7 @@ html.dark {
   --bg-card: #202020;
   --text-primary: #E0E0E0;
   --text-secondary: #888888;
+  --text-on-primary: #0F0F0F;
   --border-line: #333333;
   --accent-aurora: #5DD62C;
   --accent-aurora-rgb: 93, 214, 44;
@@ -51,6 +52,7 @@ html:not(.dark) {
   --bg-card: #FFFFFF;
   --text-primary: #1A1A1A;
   --text-secondary: #666666;
+  --text-on-primary: #FFFFFF;
   --border-line: #EBEEF5;
   --accent-aurora: #00B853;
   --accent-aurora-rgb: 0, 184, 83;
@@ -327,7 +329,7 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: var(--text-secondary) !important;
 }
 
-/* 6.6 按钮 */
+/* 6.6 按钮 - 主按钮必须使用深色文字确保对比度 */
 .n-button {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
@@ -339,10 +341,12 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: var(--accent-aurora) !important;
 }
 
-.n-button--primary-type {
+/* 主按钮 (极光绿底色) - 必须使用深色文字 */
+.n-button--primary-type,
+.n-button[class*="primary"] {
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
-  color: #FFFFFF !important;
+  color: var(--text-on-primary) !important;
 }
 
 .n-button--primary-type:hover:not(.n-button--disabled) {
@@ -571,6 +575,60 @@ html:not(.dark) .n-menu {
 .n-menu-item:hover .n-menu-item-content__icon,
 .n-menu-item--selected .n-menu-item-content__icon {
   color: var(--accent-aurora) !important;
+}
+
+/* ========================================
+   6.18.5 顶部导航栏按钮幽灵化 (Header Ghost Buttons)
+   顶导内的按钮默认全透明，悬浮时才呈现微光
+   ======================================== */
+.n-page-header .n-button,
+.header-container .n-button,
+.n-layout-header .n-button {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--text-secondary) !important;
+}
+
+.n-page-header .n-button:hover:not(.n-button--disabled),
+.header-container .n-button:hover:not(.n-button--disabled),
+.n-layout-header .n-button:hover:not(.n-button--disabled) {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+.n-page-header .n-button--primary-type,
+.header-container .n-button--primary-type,
+.n-layout-header .n-button--primary-type {
+  background-color: var(--accent-aurora) !important;
+  border: 1px solid var(--accent-aurora) !important;
+  color: var(--text-on-primary) !important;
+}
+
+.n-page-header .n-button--primary-type:hover,
+.header-container .n-button--primary-type:hover,
+.n-layout-header .n-button--primary-type:hover {
+  opacity: 0.85;
+  box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
+}
+
+/* Select 触发器在 Header 内也要透明化 */
+.n-page-header .n-base-select,
+.n-page-header .n-select,
+.header-container .n-base-select,
+.header-container .n-select,
+.n-layout-header .n-base-select,
+.n-layout-header .n-select {
+  background-color: transparent !important;
+}
+
+.n-page-header .n-base-select .n-base-select-trigger,
+.n-page-header .n-select .n-selector,
+.header-container .n-base-select .n-base-select-trigger,
+.header-container .n-select .n-selector {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* 6.19 PageHeader */
