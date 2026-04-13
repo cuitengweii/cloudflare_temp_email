@@ -220,40 +220,94 @@ html:not(.dark) .inner-shadow {
   background-color: transparent !important;
 }
 
-/* 菜单容器统一透明 */
-.n-menu,
-.n-menu-menu,
-.n-menu--horizontal {
+/* 菜单容器统一透明 - 使用更精确的选择器 */
+div.n-menu,
+div.n-menu-menu,
+div.n-menu--horizontal,
+div.n-menu-horizontal {
   background-color: transparent !important;
   border: none !important;
-}
-
-.n-menu-item,
-.n-menu-item-content,
-.n-menu-item-content-wrapper {
-  background-color: transparent !important;
   color: var(--text-primary) !important;
-  border: none !important;
 }
 
-.n-menu-item:hover > .n-menu-item-content,
-.n-menu-item-content:hover {
-  background-color: var(--hover-bg-accent) !important;
-  color: var(--accent-aurora) !important;
+/* 所有菜单相关元素 */
+.n-menu * {
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  border-color: transparent !important;
 }
 
-.n-menu-item--selected > .n-menu-item-content,
-.n-menu-item-content--selected {
-  background-color: var(--hover-bg-accent) !important;
-  color: var(--accent-aurora) !important;
-}
-
-.n-menu-item-content__icon {
+/* 菜单项容器 */
+.n-menu-item {
+  background-color: transparent !important;
   color: var(--text-secondary) !important;
 }
 
-.n-menu-item:hover .n-menu-item-content__icon,
-.n-menu-item--selected .n-menu-item-content__icon {
+.n-menu-item:hover {
+  background-color: rgba(var(--accent-aurora-rgb), 0.12) !important;
+}
+
+.n-menu-item:hover * {
+  color: var(--accent-aurora) !important;
+}
+
+/* 菜单项选中状态 */
+.n-menu-item.n-menu-item--selected,
+.n-menu-item--selected {
+  background-color: rgba(var(--accent-aurora-rgb), 0.18) !important;
+  color: var(--accent-aurora) !important;
+  border-left: 3px solid var(--accent-aurora) !important;
+}
+
+.n-menu-item.n-menu-item--selected *,
+.n-menu-item--selected * {
+  color: var(--accent-aurora) !important;
+}
+
+/* 菜单项内容 */
+.n-menu-item-content {
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+.n-menu-item-content:hover {
+  background-color: rgba(var(--accent-aurora-rgb), 0.12) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 菜单项内容选中 */
+.n-menu-item-content--selected {
+  background-color: rgba(var(--accent-aurora-rgb), 0.18) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 菜单图标 */
+.n-menu-item-content__icon,
+.n-menu-item-content__icon svg {
+  color: var(--text-secondary) !important;
+}
+
+.n-menu-item:hover .n-menu-item-content__icon svg,
+.n-menu-item--selected .n-menu-item-content__icon svg {
+  color: var(--accent-aurora) !important;
+}
+
+/* 菜单分割线 */
+.n-menu-item-divider {
+  background-color: var(--border-line) !important;
+}
+
+/* 菜单水平模式 */
+.n-menu-horizontal .n-menu-item {
+  background-color: transparent !important;
+}
+
+.n-menu-horizontal .n-menu-item:hover {
+  background-color: rgba(var(--accent-aurora-rgb), 0.12) !important;
+}
+
+.n-menu-horizontal .n-menu-item--selected {
+  background-color: rgba(var(--accent-aurora-rgb), 0.18) !important;
   color: var(--accent-aurora) !important;
 }
 
