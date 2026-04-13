@@ -524,8 +524,19 @@ html:not(.dark) .n-input .n-input__textarea-el {
 
 /* secondary 类型的主按钮也要是深色文字 */
 .n-button--secondary-type[ type="primary" ],
-.n-button[ type="primary" ].n-button--secondary-type {
+.n-button[ type="primary" ].n-button--secondary-type,
+.n-button--secondary-type[class*="primary"],
+.n-button[class*="primary"].n-button--secondary-type {
   background-color: var(--accent-aurora) !important;
+  border-color: var(--accent-aurora) !important;
+  color: #1A1A1A !important;
+}
+
+.n-button--secondary-type[ type="primary" ]:hover,
+.n-button[ type="primary" ].n-button--secondary-type:hover {
+  background-color: var(--accent-aurora) !important;
+  opacity: 0.85;
+  box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
   color: #1A1A1A !important;
 }
 
@@ -1006,28 +1017,46 @@ html .dark .n-button[ type="primary" ]:hover,
 .dark-theme .n-button[class*="primary"],
 .dark-theme .n-button[ type="primary" ] {
   color: #1A1A1A !important;
+  background-color: var(--accent-aurora) !important;
+  border-color: var(--accent-aurora) !important;
 }
 
 .dark-theme .n-button--primary-type:hover,
 .dark-theme .n-button[class*="primary"]:hover,
 .dark-theme .n-button[ type="primary" ]:hover {
   color: #1A1A1A !important;
+  background-color: var(--accent-aurora) !important;
+  opacity: 0.85;
 }
 
-/* 确保 secondary 类型的主按钮也是深色文字 */
-html.dark .n-button--secondary-type,
-html .dark .n-button--secondary-type,
-.dark-theme .n-button--secondary-type {
+/* dark mode 下 secondary + primary 组合按钮 */
+html.dark .n-button--secondary-type[ type="primary" ],
+html.dark .n-button[ type="primary" ].n-button--secondary-type,
+html.dark .n-button--secondary-type[class*="primary"],
+html.dark .n-button[class*="primary"].n-button--secondary-type,
+html .dark .n-button--secondary-type[ type="primary" ],
+html .dark .n-button[ type="primary" ].n-button--secondary-type,
+.dark-theme .n-button--secondary-type[ type="primary" ],
+.dark-theme .n-button[ type="primary" ].n-button--secondary-type {
   color: #1A1A1A !important;
+  background-color: var(--accent-aurora) !important;
+  border-color: var(--accent-aurora) !important;
 }
 
-html.dark .n-button--secondary-type:hover,
-html .dark .n-button--secondary-type:hover,
-.dark-theme .n-button--secondary-type:hover {
+html.dark .n-button--secondary-type[ type="primary" ]:hover,
+html.dark .n-button[ type="primary" ].n-button--secondary-type:hover,
+html .dark .n-button--secondary-type[ type="primary" ]:hover,
+html .dark .n-button[ type="primary" ].n-button--secondary-type:hover,
+.dark-theme .n-button--secondary-type[ type="primary" ]:hover,
+.dark-theme .n-button[ type="primary" ].n-button--secondary-type:hover {
   color: #1A1A1A !important;
+  background-color: var(--accent-aurora) !important;
+  opacity: 0.85;
 }
 
 /* 全局强制 - 解决 naive-ui 内联样式问题 */
 .n-button[ type="primary" ] {
   color: #1A1A1A !important;
+  background-color: var(--accent-aurora) !important;
+  border-color: var(--accent-aurora) !important;
 }
