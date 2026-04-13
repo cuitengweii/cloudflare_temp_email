@@ -534,6 +534,26 @@ html:not(.dark) .n-input .n-input__textarea-el {
   background-color: var(--hover-bg-accent) !important;
 }
 
+/* tertiary 类型按钮在 dark mode 下的文字颜色 */
+html.dark .n-button--tertiary-type,
+html.dark .n-button[ type="tertiary" ],
+html .dark .n-button--tertiary-type,
+html .dark .n-button[ type="tertiary" ],
+.dark-theme .n-button--tertiary-type,
+.dark-theme .n-button[ type="tertiary" ] {
+  color: var(--text-primary) !important;
+}
+
+/* secondary 类型按钮（无 primary）在 dark mode 下的文字颜色 */
+html.dark .n-button--secondary-type:not([type="primary"]),
+html.dark .n-button[ type="secondary" ],
+html .dark .n-button--secondary-type:not([type="primary"]),
+html .dark .n-button[ type="secondary" ],
+.dark-theme .n-button--secondary-type:not([type="primary"]),
+.dark-theme .n-button[ type="secondary" ] {
+  color: var(--text-primary) !important;
+}
+
 /* 6.7 标签页 */
 .n-tabs-nav {
   background-color: var(--bg-card) !important;
