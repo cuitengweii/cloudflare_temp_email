@@ -1060,3 +1060,127 @@ html .dark .n-button[ type="primary" ].n-button--secondary-type:hover,
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
 }
+
+/* ========================================
+   16. 暗色模式文字对比度增强
+   ======================================== */
+
+/* 确保 n-text 文字在暗色模式下可见 */
+html.dark .n-text,
+html:not(.light) .n-text {
+  color: var(--text-primary) !important;
+}
+
+html.dark .n-text[depth="1"],
+html:not(.light) .n-text[depth="1"] {
+  color: #B8B8B8 !important;
+}
+
+html.dark .n-text[depth="2"],
+html:not(.light) .n-text[depth="2"] {
+  color: #A0A0A0 !important;
+}
+
+html.dark .n-text[depth="3"],
+html:not(.light) .n-text[depth="3"] {
+  color: #909090 !important;
+}
+
+/* pre 和 code 标签文字颜色 */
+pre, code {
+  color: var(--text-primary);
+}
+
+/* text 类型按钮在暗色模式下的可见性 */
+html.dark .n-button--text-type,
+html:not(.light) .n-button--text-type {
+  color: var(--text-primary) !important;
+}
+
+html.dark .n-button--text-type:hover,
+html:not(.light) .n-button--text-type:hover {
+  color: var(--accent-aurora) !important;
+}
+
+/* n-thing 标题文字 */
+.n-thing .n-thing-main .n-thing-header__title {
+  color: var(--text-primary) !important;
+}
+
+/* n-list-item 文字 */
+.n-list-item {
+  color: var(--text-primary);
+}
+
+/* n-result 文字 */
+.n-result .n-result-header__title {
+  color: var(--text-primary) !important;
+}
+
+.n-result .n-result-content {
+  color: var(--text-secondary) !important;
+}
+
+/* n-empty 文字 */
+.n-empty .n-empty__description {
+  color: var(--text-secondary) !important;
+}
+
+/* 暗色模式下的链接颜色 */
+html.dark a,
+html:not(.light) a {
+  color: #A8C7FA;
+}
+
+html.dark a:hover,
+html:not(.light) a:hover {
+  color: #7BB3F8;
+}
+
+/* 暗色模式下的占位符文字 */
+html.dark input::placeholder,
+html.dark textarea::placeholder,
+html:not(.light) input::placeholder,
+html:not(.light) textarea::placeholder {
+  color: #666666 !important;
+}
+
+/* 对话框文字 */
+.n-dialog {
+  color: var(--text-primary) !important;
+}
+
+.n-dialog__title {
+  color: var(--text-primary) !important;
+}
+
+.n-dialog__content {
+  color: var(--text-secondary) !important;
+}
+
+/* 抽屉内容文字 */
+.n-drawer-content {
+  color: var(--text-primary) !important;
+}
+
+.n-drawer-header__title {
+  color: var(--text-primary) !important;
+}
+
+/* 表单标签文字 */
+.n-form-item-label {
+  color: var(--text-primary) !important;
+}
+
+.n-form-item-feedback {
+  color: var(--text-secondary) !important;
+}
+
+/* 折叠面板内容文字 */
+.n-collapse-item__header-main {
+  color: var(--text-primary) !important;
+}
+
+.n-collapse-item__content-wrapper {
+  color: var(--text-primary) !important;
+}

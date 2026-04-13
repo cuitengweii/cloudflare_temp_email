@@ -407,5 +407,10 @@ onMounted(async () => {
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: var(--text-primary, #E0E0E0);
+}
+
+html.light pre {
+  color: var(--text-primary-light, #1A1A1A);
 }
 </style>
