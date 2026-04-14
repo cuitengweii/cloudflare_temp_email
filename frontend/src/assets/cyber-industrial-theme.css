@@ -1184,3 +1184,207 @@ html:not(.light) textarea::placeholder {
 .n-collapse-item__content-wrapper {
   color: var(--text-primary) !important;
 }
+
+/* ========================================
+   17. 表单控件文字对比度增强
+   ======================================== */
+
+/* 复选框文字 */
+.n-checkbox,
+.n-checkbox__label {
+  color: var(--text-primary) !important;
+}
+
+.n-checkbox-box {
+  border-color: var(--border-line) !important;
+}
+
+.n-checkbox--checked .n-checkbox-box {
+  border-color: var(--accent-aurora) !important;
+  background-color: var(--accent-aurora) !important;
+}
+
+.n-checkbox--checked .n-checkbox-box .n-checkbox-box__check {
+  color: #1A1A1A !important;
+}
+
+/* 单选按钮文字 */
+.n-radio,
+.n-radio__label {
+  color: var(--text-primary) !important;
+}
+
+.n-radio-button {
+  color: var(--text-primary) !important;
+  border-color: var(--border-line) !important;
+}
+
+.n-radio-button--checked {
+  background-color: var(--accent-aurora) !important;
+  color: #1A1A1A !important;
+  border-color: var(--accent-aurora) !important;
+}
+
+/* 开关文字 */
+.n-switch__label {
+  color: var(--text-primary) !important;
+}
+
+/* 下拉选择器 - 输入框内文字 */
+.n-base-selection,
+.n-select,
+.n-base-selection-label,
+.n-base-selection-input {
+  color: var(--text-primary) !important;
+}
+
+.n-base-selection-placeholder__inner {
+  color: var(--text-secondary) !important;
+}
+
+/* 下拉菜单选项文字 */
+.n-base-select-option,
+.n-select-option {
+  color: var(--text-primary) !important;
+}
+
+.n-base-select-option--selected,
+.n-select-option--selected {
+  color: var(--accent-aurora) !important;
+}
+
+.n-base-select-option--pending,
+.n-select-option--pending,
+.n-base-select-option:hover,
+.n-select-option:hover {
+  color: var(--text-primary) !important;
+}
+
+/* 多选标签 */
+.n-base-selection-tag {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 时间选择器 */
+.n-time-picker,
+.n-time-picker__input {
+  color: var(--text-primary) !important;
+}
+
+/* 日期选择器 */
+.n-date-picker,
+.n-date-picker__input {
+  color: var(--text-primary) !important;
+}
+
+.n-date-panel {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.n-date-panel__header,
+.n-date-panel__month,
+.n-date-panel__year {
+  color: var(--text-primary) !important;
+}
+
+.n-date-panel-date {
+  color: var(--text-primary) !important;
+}
+
+.n-date-panel-date--selected {
+  background-color: var(--accent-aurora) !important;
+  color: #1A1A1A !important;
+}
+
+.n-date-panel-date--current {
+  border-color: var(--accent-aurora) !important;
+}
+
+/* 数字输入框 */
+.n-input-number,
+.n-input-number__input {
+  color: var(--text-primary) !important;
+}
+
+/* 滑块 */
+.n-slider {
+  color: var(--text-primary) !important;
+}
+
+/* 颜色选择器 */
+.n-color-picker {
+  color: var(--text-primary) !important;
+}
+
+/* 传输框 */
+.n-transfer {
+  color: var(--text-primary) !important;
+}
+
+.n-transfer-list-header {
+  color: var(--text-primary) !important;
+}
+
+.n-transfer-list-item {
+  color: var(--text-primary) !important;
+}
+
+/* 级联选择器 */
+.n-cascader,
+.n-cascader__label {
+  color: var(--text-primary) !important;
+}
+
+.n-cascader-option {
+  color: var(--text-primary) !important;
+}
+
+.n-cascader-option--selected {
+  color: var(--accent-aurora) !important;
+}
+
+/* 树形选择 */
+.n-tree-node {
+  color: var(--text-primary) !important;
+}
+
+.n-tree-node--selected {
+  background-color: var(--hover-bg-accent) !important;
+  color: var(--accent-aurora) !important;
+}
+
+/* 自动补全 */
+.n-auto-complete,
+.n-auto-complete__input {
+  color: var(--text-primary) !important;
+}
+
+.n-auto-complete-option {
+  color: var(--text-primary) !important;
+}
+
+.n-auto-complete-option--selected {
+  color: var(--accent-aurora) !important;
+}
+
+/* mention 提及 */
+.n-mention,
+.n-mention__input {
+  color: var(--text-primary) !important;
+}
+
+.n-mention-option {
+  color: var(--text-primary) !important;
+}
+
+/* 动态标签 */
+.n-dynamic-tags {
+  color: var(--text-primary) !important;
+}
+
+/* 动态输入 */
+.n-dynamic-input {
+  color: var(--text-primary) !important;
+}
