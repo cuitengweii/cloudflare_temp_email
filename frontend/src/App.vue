@@ -299,23 +299,26 @@ onMounted(async () => {
 
 <style scoped>
 .side {
-  height: 100vh;
+  min-height: 100vh;
+  background-color: var(--bg-main);
 }
 
 .main {
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   text-align: center;
+  background-color: var(--bg-main);
 }
 
 .n-grid {
-  height: 100%;
+  min-height: 100vh;
 }
 
 .n-gi {
-  height: 100%;
+  min-height: 100vh;
 }
 
 .n-space {
-  height: 100%;
+  min-height: 100vh;
 }
 </style>

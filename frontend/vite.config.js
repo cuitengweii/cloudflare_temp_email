@@ -49,15 +49,15 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
       },
       manifest: {
-        name: 'Temp Email',
-        short_name: 'Temp Email',
-        description: 'Temp Email - Temporary Email',
+        name: 'GasGx Email',
+        short_name: 'GasGx Email',
+        description: 'GasGx Email',
         theme_color: '#ffffff',
         icons: [
           {
-            src: '/logo.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: '/logo.svg',
+            sizes: 'any',
+            type: 'image/svg+xml'
           }
         ]
       }

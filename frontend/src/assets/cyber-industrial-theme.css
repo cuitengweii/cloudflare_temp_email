@@ -1,19 +1,19 @@
-/* ========================================
+﻿/* ========================================
    GasGx-UI-v6.1 - Cyber-Industrial Theme
-   赛博工业 (Cyber-Industrial) / 科技风 (Tech-Driven)
+   璧涘崥宸ヤ笟 (Cyber-Industrial) / 绉戞妧椋?(Tech-Driven)
    ======================================== */
 
-/* 1. 字体排版规范 (Typography) */
+/* 1. 瀛椾綋鎺掔増瑙勮寖 (Typography) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ========================================
-   2. CSS 变量与主题系统 (Design Tokens)
+   2. CSS 鍙橀噺涓庝富棰樼郴缁?(Design Tokens)
    ======================================== */
 
-/* 深色模式变量 (默认) */
+/* 娣辫壊妯″紡鍙橀噺 (榛樿) */
 :root,
 html.dark {
-  /* 基础色彩 */
+  /* 鍩虹鑹插僵 */
   --bg-main: #0F0F0F;
   --bg-card: #202020;
   --text-primary: #E0E0E0;
@@ -24,30 +24,30 @@ html.dark {
   --accent-aurora-rgb: 93, 214, 44;
   --gradient-dark: #337418;
 
-  /* 状态色彩 */
+  /* 鐘舵€佽壊褰?*/
   --status-success: #28A745;
   --status-warning: #FF9900;
   --status-danger: #FF3366;
   --status-info: #00A3FF;
 
-  /* 阴影系统 */
+  /* 闃村奖绯荤粺 */
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.8);
   --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.9);
   --shadow-input: inset 0 2px 6px rgba(0, 0, 0, 0.6);
   
-  /* 悬浮态 */
+  /* 鎮诞鎬?*/
   --hover-bg: rgba(255, 255, 255, 0.04);
   --hover-bg-accent: rgba(93, 214, 44, 0.15);
   --striped-bg: rgba(255, 255, 255, 0.02);
 
-  /* 数据字体 */
+  /* 鏁版嵁瀛椾綋 */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 }
 
-/* 浅色模式覆盖 */
+/* 娴呰壊妯″紡瑕嗙洊 */
 html.light,
 html:not(.dark) {
-  /* 基础色彩 */
+  /* 鍩虹鑹插僵 */
   --bg-main: #F5F7FA;
   --bg-card: #FFFFFF;
   --text-primary: #1A1A1A;
@@ -58,22 +58,22 @@ html:not(.dark) {
   --accent-aurora-rgb: 0, 184, 83;
   --gradient-dark: #E8F5E9;
 
-  /* 阴影系统 */
+  /* 闃村奖绯荤粺 */
   --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.1);
   --shadow-input: none;
 
-  /* 悬浮态 */
+  /* 鎮诞鎬?*/
   --hover-bg: rgba(0, 0, 0, 0.02);
   --hover-bg-accent: rgba(0, 184, 83, 0.12);
   --striped-bg: rgba(0, 0, 0, 0.01);
 
-  /* 数据字体 */
+  /* 鏁版嵁瀛椾綋 */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 }
 
 /* ========================================
-   3. 全局字体与基础样式
+   3. 鍏ㄥ眬瀛椾綋涓庡熀纭€鏍峰紡
    ======================================== */
 * {
   box-sizing: border-box;
@@ -81,6 +81,13 @@ html:not(.dark) {
 
 html {
   font-size: 14px;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  background-color: var(--bg-main) !important;
 }
 
 body {
@@ -92,17 +99,17 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 数据/仪表盘特效数字 */
+/* 鏁版嵁/浠〃鐩樼壒鏁堟暟瀛?*/
 .data-numbers,
 .mono-font {
   font-family: var(--font-mono);
 }
 
 /* ========================================
-   4. 视觉特效 (Visual Effects)
+   4. 瑙嗚鐗规晥 (Visual Effects)
    ======================================== */
 
-/* 4.1 毛玻璃效果 (Glassmorphism) */
+/* 4.1 姣涚幓鐠冩晥鏋?(Glassmorphism) */
 .glass-effect {
   background: rgba(32, 32, 32, 0.75);
   backdrop-filter: blur(12px);
@@ -118,7 +125,7 @@ html:not(.dark) .glass-effect {
   border: 1px solid rgba(var(--accent-aurora-rgb), 0.12);
 }
 
-/* 4.2 呼吸发光特效 (Breathing Glow) */
+/* 4.2 鍛煎惛鍙戝厜鐗规晥 (Breathing Glow) */
 .glow-effect {
   box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
   animation: glow-breathe 2s ease-in-out infinite;
@@ -133,7 +140,7 @@ html:not(.dark) .glass-effect {
   }
 }
 
-/* 4.3 深度内阴影 (Inner Shadows) - 仅深色模式 */
+/* 4.3 娣卞害鍐呴槾褰?(Inner Shadows) - 浠呮繁鑹叉ā寮?*/
 .inner-shadow {
   box-shadow: var(--shadow-input);
   background: var(--bg-main);
@@ -146,7 +153,7 @@ html:not(.dark) .inner-shadow {
   border-color: var(--border-line);
 }
 
-/* 4.4 卡片悬浮效果 */
+/* 4.4 鍗＄墖鎮诞鏁堟灉 */
 .card-hover {
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -157,7 +164,7 @@ html:not(.dark) .inner-shadow {
 }
 
 /* ========================================
-   5. 工业风形状与间距
+   5. 宸ヤ笟椋庡舰鐘朵笌闂磋窛
    ======================================== */
 .card-radius {
   border-radius: 4px;
@@ -171,21 +178,21 @@ html:not(.dark) .inner-shadow {
   border-radius: 8px;
 }
 
-/* 全局 8px 栅格系统 */
+/* 鍏ㄥ眬 8px 鏍呮牸绯荤粺 */
 .gap-sm { gap: 4px; }
 .gap-md { gap: 8px; }
 .gap-lg { gap: 16px; }
 .gap-xl { gap: 24px; }
 
 /* ========================================
-   6. 组件防坑与全局强制重写
+   6. 缁勪欢闃插潙涓庡叏灞€寮哄埗閲嶅啓
    ======================================== */
 
 /* ========================================
-   6.0 导航栏统一层 - 修复多层背景问题
+   6.0 瀵艰埅鏍忕粺涓€灞?- 淇澶氬眰鑳屾櫙闂
    ======================================== */
 
-/* 整个导航区域统一为单层背景 */
+/* 鏁翠釜瀵艰埅鍖哄煙缁熶竴涓哄崟灞傝儗鏅?*/
 .n-layout-header,
 .n-layout-header > div,
 .n-layout-header > div > div,
@@ -199,13 +206,13 @@ html:not(.dark) .inner-shadow {
   border-bottom: 1px solid var(--border-line) !important;
 }
 
-/* 导航内部元素全部透明 */
+/* 瀵艰埅鍐呴儴鍏冪礌鍏ㄩ儴閫忔槑 */
 .n-page-header__header > div,
 .n-page-header__main {
   border: none !important;
 }
 
-/* 标题和副标题 */
+/* 鏍囬鍜屽壇鏍囬 */
 .n-page-header__title {
   color: var(--text-primary) !important;
 }
@@ -214,13 +221,13 @@ html:not(.dark) .inner-shadow {
   color: var(--text-secondary) !important;
 }
 
-/* Logo 区域 */
+/* Logo 鍖哄煙 */
 .n-page-header__avatar,
 .n-page-header__avatar > div {
   background-color: transparent !important;
 }
 
-/* 菜单容器统一透明 - 使用更精确的选择器 */
+/* 鑿滃崟瀹瑰櫒缁熶竴閫忔槑 - 浣跨敤鏇寸簿纭殑閫夋嫨鍣?*/
 div.n-menu,
 div.n-menu-menu,
 div.n-menu--horizontal,
@@ -230,14 +237,14 @@ div.n-menu-horizontal {
   color: var(--text-primary) !important;
 }
 
-/* 所有菜单相关元素 */
+/* 鎵€鏈夎彍鍗曠浉鍏冲厓绱?*/
 .n-menu * {
   background-color: transparent !important;
   color: var(--text-secondary) !important;
   border-color: transparent !important;
 }
 
-/* 菜单项容器 */
+/* 鑿滃崟椤瑰鍣?*/
 .n-menu-item {
   background-color: transparent !important;
   color: var(--text-secondary) !important;
@@ -251,7 +258,7 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 菜单项选中状态 */
+/* 鑿滃崟椤归€変腑鐘舵€?*/
 .n-menu-item.n-menu-item--selected,
 .n-menu-item--selected {
   background-color: rgba(var(--accent-aurora-rgb), 0.18) !important;
@@ -264,7 +271,7 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 菜单项内容 */
+/* 鑿滃崟椤瑰唴瀹?*/
 .n-menu-item-content {
   background-color: transparent !important;
   color: var(--text-secondary) !important;
@@ -275,13 +282,13 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 菜单项内容选中 */
+/* 鑿滃崟椤瑰唴瀹归€変腑 */
 .n-menu-item-content--selected {
   background-color: rgba(var(--accent-aurora-rgb), 0.18) !important;
   color: var(--accent-aurora) !important;
 }
 
-/* 菜单图标 */
+/* 鑿滃崟鍥炬爣 */
 .n-menu-item-content__icon,
 .n-menu-item-content__icon svg {
   color: var(--text-secondary) !important;
@@ -292,12 +299,12 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 菜单分割线 */
+/* 鑿滃崟鍒嗗壊绾?*/
 .n-menu-item-divider {
   background-color: var(--border-line) !important;
 }
 
-/* 菜单水平模式 */
+/* 鑿滃崟姘村钩妯″紡 */
 .n-menu-horizontal .n-menu-item {
   background-color: transparent !important;
 }
@@ -311,7 +318,25 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 顶部工具按钮（暗色模式下默认透明） */
+/* dark mode top menu (horizontal): avoid overly bright active block */
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item {
+  border-radius: 4px !important;
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected {
+  background: linear-gradient(180deg, rgba(93, 214, 44, 0.22), rgba(93, 214, 44, 0.16)) !important;
+  border: 1px solid rgba(93, 214, 44, 0.45) !important;
+  border-left: 1px solid rgba(93, 214, 44, 0.45) !important;
+  box-shadow: inset 0 0 0 1px rgba(18, 18, 18, 0.7);
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-menu-item-content-header,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-icon {
+  color: #0f1b0d !important;
+  font-weight: 600;
+}
+
+/* 椤堕儴宸ュ叿鎸夐挳锛堟殫鑹叉ā寮忎笅榛樿閫忔槑锛?*/
 .n-page-header .n-button,
 .n-layout-header .n-button {
   background-color: transparent !important;
@@ -325,7 +350,7 @@ div.n-menu-horizontal {
   color: var(--accent-aurora) !important;
 }
 
-/* 主按钮（登录等）保持极光绿 */
+/* 涓绘寜閽紙鐧诲綍绛夛級淇濇寔鏋佸厜缁?*/
 .n-page-header .n-button--primary-type,
 .n-layout-header .n-button--primary-type {
   background-color: var(--accent-aurora) !important;
@@ -333,7 +358,7 @@ div.n-menu-horizontal {
   color: var(--text-on-primary) !important;
 }
 
-/* Select 在 Header 内透明 */
+/* Select 鍦?Header 鍐呴€忔槑 */
 .n-page-header .n-select,
 .n-layout-header .n-select {
   background-color: transparent !important;
@@ -345,7 +370,7 @@ div.n-menu-horizontal {
   border: none !important;
 }
 
-/* 6.1 通用边框与分割线 */
+/* 6.1 閫氱敤杈规涓庡垎鍓茬嚎 */
 .n-card,
 html.dark .n-card,
 html.light .n-card,
@@ -374,7 +399,7 @@ html:not(.dark) .n-card {
   color: var(--text-secondary) !important;
 }
 
-/* 6.2 下拉列表和选择器 */
+/* 6.2 涓嬫媺鍒楄〃鍜岄€夋嫨鍣?*/
 .n-base-select-menu,
 .n-select-menu {
   background-color: var(--bg-card) !important;
@@ -396,7 +421,7 @@ html:not(.dark) .n-card {
   color: var(--accent-aurora) !important;
 }
 
-/* 6.3 表格 - 悬浮与斑马纹 */
+/* 6.3 琛ㄦ牸 - 鎮诞涓庢枒椹汗 */
 .n-data-table,
 html.dark .n-data-table,
 html.light .n-data-table,
@@ -417,6 +442,21 @@ html:not(.dark) .n-data-table {
   border-color: var(--border-line) !important;
 }
 
+html.dark .n-data-table .n-button--text-type {
+  color: #b6bcb6 !important;
+}
+
+html.dark .n-data-table .n-button--text-type:hover {
+  color: #dff4d1 !important;
+}
+
+html.dark .n-data-table .n-badge .n-badge-sup {
+  background-color: rgba(93, 214, 44, 0.3) !important;
+  color: #d7f8c6 !important;
+  border: 1px solid rgba(93, 214, 44, 0.6) !important;
+  box-shadow: none !important;
+}
+
 .n-data-table-tr:hover {
   background-color: var(--hover-bg) !important;
 }
@@ -429,12 +469,12 @@ html:not(.dark) .n-data-table {
   background-color: var(--hover-bg-accent) !important;
 }
 
-/* 斑马纹 */
+/* 鏂戦┈绾?*/
 .n-data-table-tr--striped {
   background-color: var(--striped-bg) !important;
 }
 
-/* 6.4 分页器 */
+/* 6.4 鍒嗛〉鍣?*/
 .n-pagination-item {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
@@ -460,7 +500,7 @@ html:not(.dark) .n-data-table {
   opacity: 0.5;
 }
 
-/* 6.5 输入框 - 独立底色与内阴影 */
+/* 6.5 杈撳叆妗?- 鐙珛搴曡壊涓庡唴闃村奖 */
 .n-input,
 .n-input .n-input__input-el,
 .n-input .n-input__textarea-el {
@@ -493,7 +533,7 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: var(--text-secondary) !important;
 }
 
-/* 6.6 按钮 - 主按钮必须使用深色文字确保对比度 */
+/* 6.6 鎸夐挳 - 涓绘寜閽繀椤讳娇鐢ㄦ繁鑹叉枃瀛楃‘淇濆姣斿害 */
 .n-button {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
@@ -505,26 +545,26 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: var(--accent-aurora) !important;
 }
 
-/* 主按钮 (极光绿底色) - 必须使用深色文字 */
+/* 涓绘寜閽?(鏋佸厜缁垮簳鑹? - 蹇呴』浣跨敤娣辫壊鏂囧瓧 */
 .n-button--primary-type,
 .n-button[class*="primary"],
-.n-button[ type="primary" ] {
+.n-button[type="primary"] {
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
   color: #1A1A1A !important;
 }
 
 .n-button--primary-type:hover:not(.n-button--disabled),
-.n-button[ type="primary" ]:hover {
+.n-button[type="primary"]:hover {
   background-color: var(--accent-aurora) !important;
   opacity: 0.85;
   box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
   color: #1A1A1A !important;
 }
 
-/* secondary 类型的主按钮也要是深色文字 */
-.n-button--secondary-type[ type="primary" ],
-.n-button[ type="primary" ].n-button--secondary-type,
+/* secondary 绫诲瀷鐨勪富鎸夐挳涔熻鏄繁鑹叉枃瀛?*/
+.n-button--secondary-type[type="primary"],
+.n-button[type="primary"].n-button--secondary-type,
 .n-button--secondary-type[class*="primary"],
 .n-button[class*="primary"].n-button--secondary-type {
   background-color: var(--accent-aurora) !important;
@@ -532,8 +572,8 @@ html:not(.dark) .n-input .n-input__textarea-el {
   color: #1A1A1A !important;
 }
 
-.n-button--secondary-type[ type="primary" ]:hover,
-.n-button[ type="primary" ].n-button--secondary-type:hover {
+.n-button--secondary-type[type="primary"]:hover,
+.n-button[type="primary"].n-button--secondary-type:hover {
   background-color: var(--accent-aurora) !important;
   opacity: 0.85;
   box-shadow: 0 0 12px rgba(var(--accent-aurora-rgb), 0.4);
@@ -545,27 +585,27 @@ html:not(.dark) .n-input .n-input__textarea-el {
   background-color: var(--hover-bg-accent) !important;
 }
 
-/* tertiary 类型按钮在 dark mode 下的文字颜色 */
+/* tertiary 绫诲瀷鎸夐挳鍦?dark mode 涓嬬殑鏂囧瓧棰滆壊 */
 html.dark .n-button--tertiary-type,
-html.dark .n-button[ type="tertiary" ],
+html.dark .n-button[type="tertiary"],
 html .dark .n-button--tertiary-type,
-html .dark .n-button[ type="tertiary" ],
+html .dark .n-button[type="tertiary"],
 .dark-theme .n-button--tertiary-type,
-.dark-theme .n-button[ type="tertiary" ] {
+.dark-theme .n-button[type="tertiary"] {
   color: var(--text-primary) !important;
 }
 
-/* secondary 类型按钮（无 primary）在 dark mode 下的文字颜色 */
+/* secondary 绫诲瀷鎸夐挳锛堟棤 primary锛夊湪 dark mode 涓嬬殑鏂囧瓧棰滆壊 */
 html.dark .n-button--secondary-type:not([type="primary"]),
-html.dark .n-button[ type="secondary" ],
+html.dark .n-button[type="secondary"],
 html .dark .n-button--secondary-type:not([type="primary"]),
-html .dark .n-button[ type="secondary" ],
+html .dark .n-button[type="secondary"],
 .dark-theme .n-button--secondary-type:not([type="primary"]),
-.dark-theme .n-button[ type="secondary" ] {
+.dark-theme .n-button[type="secondary"] {
   color: var(--text-primary) !important;
 }
 
-/* 6.7 标签页 */
+/* 6.7 鏍囩椤?*/
 .n-tabs-nav {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
@@ -592,7 +632,87 @@ html .dark .n-button[ type="secondary" ],
   border-color: var(--border-line) !important;
 }
 
-/* 6.8 图标 */
+/* card tabs in dark mode: improve contrast for unreadable light tabs */
+html.dark .n-tabs.n-tabs--card-type .n-tabs-tab,
+html.dark .n-tabs .n-tabs-nav--card-type .n-tabs-tab {
+  background-color: #181a18 !important;
+  border-color: #2d332d !important;
+  color: #c8d0c8 !important;
+}
+
+html.dark .n-tabs.n-tabs--card-type .n-tabs-tab:hover,
+html.dark .n-tabs .n-tabs-nav--card-type .n-tabs-tab:hover {
+  background-color: #232323 !important;
+  color: #f2f2f2 !important;
+}
+
+html.dark .n-tabs.n-tabs--card-type .n-tabs-tab.n-tabs-tab--active,
+html.dark .n-tabs .n-tabs-nav--card-type .n-tabs-tab.n-tabs-tab--active {
+  background-color: rgba(var(--accent-aurora-rgb), 0.22) !important;
+  border-color: rgba(var(--accent-aurora-rgb), 0.7) !important;
+  color: var(--accent-aurora) !important;
+  box-shadow: inset 0 -2px 0 rgba(var(--accent-aurora-rgb), 0.85);
+}
+
+/* pagination page-size selector in dark mode: force readable text/background */
+html.dark .n-pagination .n-base-selection {
+  background-color: #161a16 !important;
+  border: 1px solid #395436 !important;
+  color: #e8e8e8 !important;
+}
+
+html.dark .n-pagination .n-base-selection:hover,
+html.dark .n-pagination .n-base-selection.n-base-selection--active {
+  border-color: rgba(var(--accent-aurora-rgb), 0.75) !important;
+  box-shadow: 0 0 0 1px rgba(var(--accent-aurora-rgb), 0.25);
+}
+
+html.dark .n-pagination .n-base-selection .n-base-selection-label,
+html.dark .n-pagination .n-base-selection .n-base-selection-input,
+html.dark .n-pagination .n-base-selection .n-base-selection-placeholder {
+  color: #e8e8e8 !important;
+}
+
+html.dark .n-pagination .n-base-selection .n-base-suffix,
+html.dark .n-pagination .n-base-selection .n-base-icon {
+  color: #cfcfcf !important;
+}
+
+html.dark .n-base-select-menu,
+html.dark .n-base-select-menu .n-base-select-option {
+  background-color: #151715 !important;
+  color: #d7ddd7 !important;
+}
+
+html.dark .n-base-select-menu .n-base-select-option.n-base-select-option--selected {
+  background-color: rgba(var(--accent-aurora-rgb), 0.2) !important;
+  color: #b8f89c !important;
+}
+
+html.dark .n-base-select-menu .n-base-select-option.n-base-select-option--pending,
+html.dark .n-base-select-menu .n-base-select-option:hover {
+  background-color: rgba(var(--accent-aurora-rgb), 0.12) !important;
+}
+
+/* dark mode second-level bar tabs in admin pages */
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab {
+  color: #b8beb8 !important;
+}
+
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab:hover {
+  color: #e4eee0 !important;
+}
+
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab.n-tabs-tab--active {
+  color: #9af56d !important;
+  font-weight: 600;
+}
+
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-bar {
+  background-color: rgba(var(--accent-aurora-rgb), 0.85) !important;
+}
+
+/* 6.8 鍥炬爣 */
 .n-icon,
 .n-base-icon {
   color: var(--text-secondary) !important;
@@ -602,7 +722,7 @@ html .dark .n-button[ type="secondary" ],
   color: var(--accent-aurora) !important;
 }
 
-/* 6.9 弹窗/抽屉 - 浮层阴影 */
+/* 6.9 寮圭獥/鎶藉眽 - 娴眰闃村奖 */
 .n-modal,
 .n-drawer,
 .n-popover {
@@ -620,7 +740,7 @@ html .dark .n-button[ type="secondary" ],
   border-color: var(--border-line) !important;
 }
 
-/* 6.10 消息/通知 */
+/* 6.10 娑堟伅/閫氱煡 */
 .n-message,
 .n-notification {
   background-color: var(--bg-card) !important;
@@ -629,7 +749,7 @@ html .dark .n-button[ type="secondary" ],
   box-shadow: var(--shadow-float) !important;
 }
 
-/* 6.11 开关 */
+/* 6.11 寮€鍏?*/
 .n-switch {
   background-color: var(--border-line) !important;
 }
@@ -638,12 +758,12 @@ html .dark .n-button[ type="secondary" ],
   background-color: rgba(var(--accent-aurora-rgb), 0.6) !important;
 }
 
-/* 6.12 进度条 */
+/* 6.12 杩涘害鏉?*/
 .n-progress__rail {
   background-color: var(--border-line) !important;
 }
 
-/* 6.13 标签 */
+/* 6.13 鏍囩 */
 .n-tag {
   background-color: var(--bg-card) !important;
   border-color: var(--border-line) !important;
@@ -674,7 +794,7 @@ html .dark .n-button[ type="secondary" ],
   color: var(--status-info) !important;
 }
 
-/* 6.14 折叠面板 */
+/* 6.14 鎶樺彔闈㈡澘 */
 .n-collapse-item {
   border-color: var(--border-line) !important;
 }
@@ -815,7 +935,7 @@ html .dark .n-button[ type="secondary" ],
   color: var(--text-primary) !important;
 }
 
-/* 6.26 List 列表 */
+/* 6.26 List 鍒楄〃 */
 .n-list {
   background-color: transparent !important;
 }
@@ -829,7 +949,7 @@ html .dark .n-button[ type="secondary" ],
 }
 
 /* ========================================
-   7. 布局组件 - 统一 Header 背景
+   7. 甯冨眬缁勪欢 - 缁熶竴 Header 鑳屾櫙
    ======================================== */
 .n-layout,
 html.dark .n-layout,
@@ -864,7 +984,7 @@ html:not(.dark) .n-layout {
 }
 
 /* ========================================
-   8. 表单组件
+   8. 琛ㄥ崟缁勪欢
    ======================================== */
 .n-form-item-label {
   color: var(--text-primary) !important;
@@ -875,7 +995,7 @@ html:not(.dark) .n-layout {
 }
 
 /* ========================================
-   9. 全局文本颜色
+   9. 鍏ㄥ眬鏂囨湰棰滆壊
    ======================================== */
 h1, h2, h3, h4, h5, h6,
 p, span, div {
@@ -891,7 +1011,7 @@ a:hover {
 }
 
 /* ========================================
-   10. 全局滚动条强制接管 (Scrollbars)
+   10. 鍏ㄥ眬婊氬姩鏉″己鍒舵帴绠?(Scrollbars)
    ======================================== */
 ::-webkit-scrollbar {
   width: 8px;
@@ -911,14 +1031,14 @@ a:hover {
   background-color: var(--text-secondary);
 }
 
-/* Firefox 滚动条 */
+/* Firefox 婊氬姩鏉?*/
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border-line) transparent;
 }
 
 /* ========================================
-   11. 选中文字
+   11. 閫変腑鏂囧瓧
    ======================================== */
 ::selection {
   background-color: rgba(var(--accent-aurora-rgb), 0.3);
@@ -926,14 +1046,14 @@ a:hover {
 }
 
 /* ========================================
-   12. 加载条
+   12. 鍔犺浇鏉?
    ======================================== */
 .n-loading-bar {
   background-color: var(--accent-aurora) !important;
 }
 
 /* ========================================
-   13. 分段控制器 (Segmented Control)
+   13. 鍒嗘鎺у埗鍣?(Segmented Control)
    ======================================== */
 .toggle-group-container {
   display: inline-flex;
@@ -969,7 +1089,7 @@ html:not(.dark) .toggle-group-container {
 }
 
 /* ========================================
-   14. 提示图标 (Info Icons)
+   14. 鎻愮ず鍥炬爣 (Info Icons)
    ======================================== */
 .info-help-icon,
 .info-help-icon svg {
@@ -986,36 +1106,36 @@ html:not(.dark) .toggle-group-container {
 }
 
 /* ========================================
-   15. 强制所有主按钮文字为深色（最高优先级）
+   15. 寮哄埗鎵€鏈変富鎸夐挳鏂囧瓧涓烘繁鑹诧紙鏈€楂樹紭鍏堢骇锛?
    ======================================== */
 html.dark .n-button--primary-type,
 html.dark .n-button[class*="primary"],
-html.dark .n-button[ type="primary" ],
+html.dark .n-button[type="primary"],
 html .dark .n-button--primary-type,
 html .dark .n-button[class*="primary"],
-html .dark .n-button[ type="primary" ],
+html .dark .n-button[type="primary"],
 .n-button--primary-type,
 .n-button[class*="primary"],
-.n-button[ type="primary" ] {
+.n-button[type="primary"] {
   color: #1A1A1A !important;
 }
 
 html.dark .n-button--primary-type:hover,
 html.dark .n-button[class*="primary"]:hover,
-html.dark .n-button[ type="primary" ]:hover,
+html.dark .n-button[type="primary"]:hover,
 html .dark .n-button--primary-type:hover,
 html .dark .n-button[class*="primary"]:hover,
-html .dark .n-button[ type="primary" ]:hover,
+html .dark .n-button[type="primary"]:hover,
 .n-button--primary-type:hover,
 .n-button[class*="primary"]:hover,
-.n-button[ type="primary" ]:hover {
+.n-button[type="primary"]:hover {
   color: #1A1A1A !important;
 }
 
 /* naive-ui dark theme override */
 .dark-theme .n-button--primary-type,
 .dark-theme .n-button[class*="primary"],
-.dark-theme .n-button[ type="primary" ] {
+.dark-theme .n-button[type="primary"] {
   color: #1A1A1A !important;
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
@@ -1023,49 +1143,49 @@ html .dark .n-button[ type="primary" ]:hover,
 
 .dark-theme .n-button--primary-type:hover,
 .dark-theme .n-button[class*="primary"]:hover,
-.dark-theme .n-button[ type="primary" ]:hover {
+.dark-theme .n-button[type="primary"]:hover {
   color: #1A1A1A !important;
   background-color: var(--accent-aurora) !important;
   opacity: 0.85;
 }
 
-/* dark mode 下 secondary + primary 组合按钮 */
-html.dark .n-button--secondary-type[ type="primary" ],
-html.dark .n-button[ type="primary" ].n-button--secondary-type,
+/* dark mode 涓?secondary + primary 缁勫悎鎸夐挳 */
+html.dark .n-button--secondary-type[type="primary"],
+html.dark .n-button[type="primary"].n-button--secondary-type,
 html.dark .n-button--secondary-type[class*="primary"],
 html.dark .n-button[class*="primary"].n-button--secondary-type,
-html .dark .n-button--secondary-type[ type="primary" ],
-html .dark .n-button[ type="primary" ].n-button--secondary-type,
-.dark-theme .n-button--secondary-type[ type="primary" ],
-.dark-theme .n-button[ type="primary" ].n-button--secondary-type {
+html .dark .n-button--secondary-type[type="primary"],
+html .dark .n-button[type="primary"].n-button--secondary-type,
+.dark-theme .n-button--secondary-type[type="primary"],
+.dark-theme .n-button[type="primary"].n-button--secondary-type {
   color: #1A1A1A !important;
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
 }
 
-html.dark .n-button--secondary-type[ type="primary" ]:hover,
-html.dark .n-button[ type="primary" ].n-button--secondary-type:hover,
-html .dark .n-button--secondary-type[ type="primary" ]:hover,
-html .dark .n-button[ type="primary" ].n-button--secondary-type:hover,
-.dark-theme .n-button--secondary-type[ type="primary" ]:hover,
-.dark-theme .n-button[ type="primary" ].n-button--secondary-type:hover {
+html.dark .n-button--secondary-type[type="primary"]:hover,
+html.dark .n-button[type="primary"].n-button--secondary-type:hover,
+html .dark .n-button--secondary-type[type="primary"]:hover,
+html .dark .n-button[type="primary"].n-button--secondary-type:hover,
+.dark-theme .n-button--secondary-type[type="primary"]:hover,
+.dark-theme .n-button[type="primary"].n-button--secondary-type:hover {
   color: #1A1A1A !important;
   background-color: var(--accent-aurora) !important;
   opacity: 0.85;
 }
 
-/* 全局强制 - 解决 naive-ui 内联样式问题 */
-.n-button[ type="primary" ] {
+/* 鍏ㄥ眬寮哄埗 - 瑙ｅ喅 naive-ui 鍐呰仈鏍峰紡闂 */
+.n-button[type="primary"] {
   color: #1A1A1A !important;
   background-color: var(--accent-aurora) !important;
   border-color: var(--accent-aurora) !important;
 }
 
 /* ========================================
-   16. 暗色模式文字对比度增强
+   16. 鏆楄壊妯″紡鏂囧瓧瀵规瘮搴﹀寮?
    ======================================== */
 
-/* 确保 n-text 文字在暗色模式下可见 */
+/* 纭繚 n-text 鏂囧瓧鍦ㄦ殫鑹叉ā寮忎笅鍙 */
 html.dark .n-text,
 html:not(.light) .n-text {
   color: var(--text-primary) !important;
@@ -1086,12 +1206,12 @@ html:not(.light) .n-text[depth="3"] {
   color: #909090 !important;
 }
 
-/* pre 和 code 标签文字颜色 */
+/* pre 鍜?code 鏍囩鏂囧瓧棰滆壊 */
 pre, code {
   color: var(--text-primary);
 }
 
-/* text 类型按钮在暗色模式下的可见性 */
+/* text 绫诲瀷鎸夐挳鍦ㄦ殫鑹叉ā寮忎笅鐨勫彲瑙佹€?*/
 html.dark .n-button--text-type,
 html:not(.light) .n-button--text-type {
   color: var(--text-primary) !important;
@@ -1102,17 +1222,17 @@ html:not(.light) .n-button--text-type:hover {
   color: var(--accent-aurora) !important;
 }
 
-/* n-thing 标题文字 */
+/* n-thing 鏍囬鏂囧瓧 */
 .n-thing .n-thing-main .n-thing-header__title {
   color: var(--text-primary) !important;
 }
 
-/* n-list-item 文字 */
+/* n-list-item 鏂囧瓧 */
 .n-list-item {
   color: var(--text-primary);
 }
 
-/* n-result 文字 */
+/* n-result 鏂囧瓧 */
 .n-result .n-result-header__title {
   color: var(--text-primary) !important;
 }
@@ -1121,12 +1241,12 @@ html:not(.light) .n-button--text-type:hover {
   color: var(--text-secondary) !important;
 }
 
-/* n-empty 文字 */
+/* n-empty 鏂囧瓧 */
 .n-empty .n-empty__description {
   color: var(--text-secondary) !important;
 }
 
-/* 暗色模式下的链接颜色 */
+/* 鏆楄壊妯″紡涓嬬殑閾炬帴棰滆壊 */
 html.dark a,
 html:not(.light) a {
   color: #A8C7FA;
@@ -1137,7 +1257,7 @@ html:not(.light) a:hover {
   color: #7BB3F8;
 }
 
-/* 暗色模式下的占位符文字 */
+/* 鏆楄壊妯″紡涓嬬殑鍗犱綅绗︽枃瀛?*/
 html.dark input::placeholder,
 html.dark textarea::placeholder,
 html:not(.light) input::placeholder,
@@ -1145,7 +1265,7 @@ html:not(.light) textarea::placeholder {
   color: #666666 !important;
 }
 
-/* 对话框文字 */
+/* 瀵硅瘽妗嗘枃瀛?*/
 .n-dialog {
   color: var(--text-primary) !important;
 }
@@ -1158,7 +1278,7 @@ html:not(.light) textarea::placeholder {
   color: var(--text-secondary) !important;
 }
 
-/* 抽屉内容文字 */
+/* 鎶藉眽鍐呭鏂囧瓧 */
 .n-drawer-content {
   color: var(--text-primary) !important;
 }
@@ -1167,7 +1287,7 @@ html:not(.light) textarea::placeholder {
   color: var(--text-primary) !important;
 }
 
-/* 表单标签文字 */
+/* 琛ㄥ崟鏍囩鏂囧瓧 */
 .n-form-item-label {
   color: var(--text-primary) !important;
 }
@@ -1176,7 +1296,7 @@ html:not(.light) textarea::placeholder {
   color: var(--text-secondary) !important;
 }
 
-/* 折叠面板内容文字 */
+/* 鎶樺彔闈㈡澘鍐呭鏂囧瓧 */
 .n-collapse-item__header-main {
   color: var(--text-primary) !important;
 }
@@ -1186,10 +1306,10 @@ html:not(.light) textarea::placeholder {
 }
 
 /* ========================================
-   17. 表单控件文字对比度增强
+   17. 琛ㄥ崟鎺т欢鏂囧瓧瀵规瘮搴﹀寮?
    ======================================== */
 
-/* 复选框文字 */
+/* 澶嶉€夋鏂囧瓧 */
 .n-checkbox,
 .n-checkbox__label {
   color: var(--text-primary) !important;
@@ -1208,7 +1328,7 @@ html:not(.light) textarea::placeholder {
   color: #1A1A1A !important;
 }
 
-/* 单选按钮文字 */
+/* 鍗曢€夋寜閽枃瀛?*/
 .n-radio,
 .n-radio__label {
   color: var(--text-primary) !important;
@@ -1225,12 +1345,12 @@ html:not(.light) textarea::placeholder {
   border-color: var(--accent-aurora) !important;
 }
 
-/* 开关文字 */
+/* 寮€鍏虫枃瀛?*/
 .n-switch__label {
   color: var(--text-primary) !important;
 }
 
-/* 下拉选择器 - 输入框内文字 */
+/* 涓嬫媺閫夋嫨鍣?- 杈撳叆妗嗗唴鏂囧瓧 */
 .n-base-selection,
 .n-select,
 .n-base-selection-label,
@@ -1242,7 +1362,7 @@ html:not(.light) textarea::placeholder {
   color: var(--text-secondary) !important;
 }
 
-/* 下拉菜单选项文字 */
+/* 涓嬫媺鑿滃崟閫夐」鏂囧瓧 */
 .n-base-select-option,
 .n-select-option {
   color: var(--text-primary) !important;
@@ -1260,19 +1380,19 @@ html:not(.light) textarea::placeholder {
   color: var(--text-primary) !important;
 }
 
-/* 多选标签 */
+/* 澶氶€夋爣绛?*/
 .n-base-selection-tag {
   background-color: var(--hover-bg-accent) !important;
   color: var(--accent-aurora) !important;
 }
 
-/* 时间选择器 */
+/* 鏃堕棿閫夋嫨鍣?*/
 .n-time-picker,
 .n-time-picker__input {
   color: var(--text-primary) !important;
 }
 
-/* 日期选择器 */
+/* 鏃ユ湡閫夋嫨鍣?*/
 .n-date-picker,
 .n-date-picker__input {
   color: var(--text-primary) !important;
@@ -1302,23 +1422,23 @@ html:not(.light) textarea::placeholder {
   border-color: var(--accent-aurora) !important;
 }
 
-/* 数字输入框 */
+/* 鏁板瓧杈撳叆妗?*/
 .n-input-number,
 .n-input-number__input {
   color: var(--text-primary) !important;
 }
 
-/* 滑块 */
+/* 婊戝潡 */
 .n-slider {
   color: var(--text-primary) !important;
 }
 
-/* 颜色选择器 */
+/* 棰滆壊閫夋嫨鍣?*/
 .n-color-picker {
   color: var(--text-primary) !important;
 }
 
-/* 传输框 */
+/* 浼犺緭妗?*/
 .n-transfer {
   color: var(--text-primary) !important;
 }
@@ -1331,7 +1451,7 @@ html:not(.light) textarea::placeholder {
   color: var(--text-primary) !important;
 }
 
-/* 级联选择器 */
+/* 绾ц仈閫夋嫨鍣?*/
 .n-cascader,
 .n-cascader__label {
   color: var(--text-primary) !important;
@@ -1345,7 +1465,7 @@ html:not(.light) textarea::placeholder {
   color: var(--accent-aurora) !important;
 }
 
-/* 树形选择 */
+/* 鏍戝舰閫夋嫨 */
 .n-tree-node {
   color: var(--text-primary) !important;
 }
@@ -1355,7 +1475,7 @@ html:not(.light) textarea::placeholder {
   color: var(--accent-aurora) !important;
 }
 
-/* 自动补全 */
+/* 鑷姩琛ュ叏 */
 .n-auto-complete,
 .n-auto-complete__input {
   color: var(--text-primary) !important;
@@ -1369,7 +1489,7 @@ html:not(.light) textarea::placeholder {
   color: var(--accent-aurora) !important;
 }
 
-/* mention 提及 */
+/* mention 鎻愬強 */
 .n-mention,
 .n-mention__input {
   color: var(--text-primary) !important;
@@ -1379,12 +1499,186 @@ html:not(.light) textarea::placeholder {
   color: var(--text-primary) !important;
 }
 
-/* 动态标签 */
+/* 鍔ㄦ€佹爣绛?*/
 .n-dynamic-tags {
   color: var(--text-primary) !important;
 }
 
-/* 动态输入 */
+/* 鍔ㄦ€佽緭鍏?*/
 .n-dynamic-input {
   color: var(--text-primary) !important;
 }
+
+/* ========================================
+   18. Dark Contrast Hotfix (Admin)
+   ======================================== */
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 -2px 0 rgba(124, 235, 79, 0.95) !important;
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-menu-item-content-header,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-icon {
+  color: #f7fff1 !important;
+  font-weight: 700;
+}
+
+html.dark .n-tabs.n-tabs--card-type .n-tabs-tab.n-tabs-tab--active,
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab.n-tabs-tab--active {
+  color: #efffdf !important;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(93, 214, 44, 0.22);
+}
+
+html.dark .n-tabs.n-tabs--card-type .n-tabs-tab.n-tabs-tab--active {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 -2px 0 rgba(124, 235, 79, 0.95) !important;
+  text-shadow: none !important;
+}
+
+html.dark .n-pagination .n-base-selection {
+  background-color: #111812 !important;
+  border-color: rgba(93, 214, 44, 0.42) !important;
+  box-shadow: inset 0 0 0 1px rgba(24, 40, 20, 0.85);
+  color: #eefde8 !important;
+}
+
+html.dark .n-pagination .n-base-selection .n-base-selection-label,
+html.dark .n-pagination .n-base-selection .n-base-selection-input,
+html.dark .n-pagination .n-base-selection .n-base-selection-placeholder,
+html.dark .n-pagination .n-base-selection .n-base-selection-placeholder__inner {
+  color: #eefde8 !important;
+  font-weight: 600;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #eefde8 !important;
+}
+
+html.dark .n-pagination .n-base-selection .n-base-suffix,
+html.dark .n-pagination .n-base-selection .n-base-icon {
+  color: #d5efc8 !important;
+}
+
+html.dark .n-pagination .n-base-selection.n-base-selection--disabled {
+  background-color: #111812 !important;
+  border-color: rgba(93, 214, 44, 0.32) !important;
+}
+
+html.dark .n-pagination .n-base-selection.n-base-selection--disabled .n-base-selection-label,
+html.dark .n-pagination .n-base-selection.n-base-selection--disabled .n-base-selection-placeholder,
+html.dark .n-pagination .n-base-selection.n-base-selection--disabled .n-base-selection-placeholder__inner {
+  color: #d6ead0 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #d6ead0 !important;
+}
+
+html.dark .n-base-select-menu,
+html.dark .n-base-select-menu .n-base-select-option {
+  background-color: #101510 !important;
+  color: #d5e0d2 !important;
+}
+
+html.dark .n-base-select-menu .n-base-select-option.n-base-select-option--selected {
+  background-color: rgba(93, 214, 44, 0.22) !important;
+  color: #ebffe2 !important;
+  font-weight: 700;
+}
+
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  margin: 0 4px !important;
+  box-shadow: none !important;
+}
+
+html.dark .n-tabs.n-tabs--bar-type .n-tabs-tab.n-tabs-tab--active {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 -2px 0 rgba(124, 235, 79, 0.95) !important;
+  text-shadow: none !important;
+}
+
+html.dark .n-button--primary-type,
+html.dark .n-button[type="primary"],
+html.dark .n-button.n-button--primary-type .n-button__content {
+  color: #eaffde !important;
+  font-weight: 700;
+}
+
+html.dark .n-button--primary-type:hover,
+html.dark .n-button[type="primary"]:hover {
+  color: #f3ffe8 !important;
+}
+
+html.dark .n-button--primary-type,
+html.dark .n-button[type="primary"] {
+  background: linear-gradient(180deg, #3a8f33, #2f7b2a) !important;
+  border-color: #67bf58 !important;
+}
+
+html.dark .n-button--primary-type:hover,
+html.dark .n-button[type="primary"]:hover {
+  background: linear-gradient(180deg, #43a03a, #378a30) !important;
+  border-color: #7ad168 !important;
+}
+
+/* ========================================
+   19. Pagination Size Picker Force Dark
+   ======================================== */
+html.dark .n-pagination .n-base-selection,
+html.dark .n-pagination .n-base-selection.n-base-selection--disabled {
+  --n-color: #101711 !important;
+  --n-color-active: #142015 !important;
+  --n-color-disabled: #101711 !important;
+  --n-border: rgba(93, 214, 44, 0.42) !important;
+  --n-border-active: rgba(113, 226, 72, 0.86) !important;
+  --n-border-disabled: rgba(93, 214, 44, 0.32) !important;
+  --n-text-color: #ebffe2 !important;
+  --n-text-color-disabled: #d5ead0 !important;
+  --n-placeholder-color: #d5ead0 !important;
+  --n-arrow-color: #d0ebc3 !important;
+  background-color: #101711 !important;
+  border-color: rgba(93, 214, 44, 0.42) !important;
+  color: #ebffe2 !important;
+  opacity: 1 !important;
+}
+
+html.dark .n-pagination .n-base-selection .n-base-selection-label,
+html.dark .n-pagination .n-base-selection .n-base-selection-input,
+html.dark .n-pagination .n-base-selection .n-base-selection-input__content,
+html.dark .n-pagination .n-base-selection .n-base-selection-placeholder,
+html.dark .n-pagination .n-base-selection .n-base-selection-placeholder__inner {
+  color: #ebffe2 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #ebffe2 !important;
+}
+
+/* ========================================
+   20. Header Menu Active Underline (Dark)
+   ======================================== */
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item:hover {
+  background: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected:hover {
+  background: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  box-shadow: inset 0 -2px 0 rgba(124, 235, 79, 0.95) !important;
+}
+
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item .n-menu-item-content,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item .n-menu-item-content--selected {
+  background: transparent !important;
+  border: none !important;
+}
+

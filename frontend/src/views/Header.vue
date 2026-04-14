@@ -63,7 +63,7 @@ const changeLocale = async (lang) => {
 const { locale, t } = useI18n({
     messages: {
         en: {
-            title: 'GasGx Temp Email',
+            title: 'GasGx Email',
             dark: 'Dark',
             light: 'Light',
             accessHeader: 'Access Password',
@@ -87,6 +87,18 @@ const { locale, t } = useI18n({
             ok: '确定',
         }
     }
+});
+
+const fallbackTitle = computed(() => locale.value === 'zh' ? 'GasGx 邮箱' : 'GasGx Email');
+const cleanBrandTitle = (rawTitle) => String(rawTitle || '')
+    .replace(/临时/g, '')
+    .replace(/\btemporary\b/ig, '')
+    .replace(/\btemp\b/ig, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+const siteTitle = computed(() => {
+    const cleaned = cleanBrandTitle(openSettings.value.title || t('title'));
+    return cleaned || fallbackTitle.value;
 });
 
 const version = import.meta.env.PACKAGE_VERSION ? `v${import.meta.env.PACKAGE_VERSION}` : "";
@@ -156,9 +168,14 @@ const handleMenuUpdate = async (key) => {
 };
 
 useHead({
-    title: () => openSettings.value.title || t('title'),
+    title: () => siteTitle.value,
     meta: [
-        { name: "description", content: openSettings.value.description || t('title') },
+        { name: "description", content: openSettings.value.description || siteTitle.value },
+    ],
+    link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'apple-touch-icon', href: '/logo.svg' },
     ]
 });
 
@@ -193,7 +210,7 @@ onMounted(async () => {
     <div>
         <n-page-header>
             <template #title>
-                <h3>{{ openSettings.title || t('title') }}</h3>
+                <h3>{{ siteTitle }}</h3>
             </template>
             <template #avatar>
                 <div @click="logoClick" style="margin-left: 10px; cursor: pointer;">
