@@ -1682,3 +1682,252 @@ html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item .n-menu-item-co
   border: none !important;
 }
 
+/* ========================================
+   21. Admin Dark Active State Unified
+   ======================================== */
+html.dark {
+  --admin-dark-active-text: #f3ffe8;
+  --admin-dark-active-line: rgba(124, 235, 79, 0.95);
+  --dark-control-bg: #111812;
+  --dark-control-bg-hover: #162018;
+  --dark-control-bg-soft: rgba(93, 214, 44, 0.14);
+  --dark-control-border: rgba(93, 214, 44, 0.38);
+  --dark-control-border-strong: rgba(113, 226, 72, 0.82);
+  --dark-control-text: #eaf7e3;
+  --dark-control-text-muted: #c8d8c3;
+  --dark-primary-text: #0f160d;
+  --dark-danger-bg: rgba(255, 51, 102, 0.18);
+  --dark-danger-border: rgba(255, 91, 136, 0.42);
+  --dark-danger-text: #ffd7e4;
+  --dark-warning-bg: rgba(255, 153, 0, 0.16);
+  --dark-warning-border: rgba(255, 181, 71, 0.42);
+  --dark-warning-text: #ffe7bd;
+  --dark-info-bg: rgba(0, 163, 255, 0.16);
+  --dark-info-border: rgba(85, 188, 255, 0.42);
+  --dark-info-text: #d7f0ff;
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item:hover,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item:hover {
+  background: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected:hover,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected:hover {
+  background: transparent !important;
+  border: none !important;
+  border-left: none !important;
+  box-shadow: inset 0 -2px 0 var(--admin-dark-active-line) !important;
+}
+
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-menu-item-content-header,
+html.dark .n-layout-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-icon,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-menu-item-content-header,
+html.dark .n-page-header .n-menu.n-menu--horizontal .n-menu-item.n-menu-item--selected .n-icon {
+  color: var(--admin-dark-active-text) !important;
+  font-weight: 700 !important;
+}
+
+html.dark .admin-panel-shell .n-tabs.n-tabs--card-type .n-tabs-tab.n-tabs-tab--active,
+html.dark .admin-panel-shell .n-tabs .n-tabs-nav--card-type .n-tabs-tab.n-tabs-tab--active,
+html.dark .admin-panel-shell .n-tabs.n-tabs--bar-type .n-tabs-tab.n-tabs-tab--active {
+  color: var(--admin-dark-active-text) !important;
+  font-weight: 700 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 -2px 0 var(--admin-dark-active-line) !important;
+  text-shadow: none !important;
+}
+
+/* ========================================
+   22. Dark Form Controls And Buttons Unified
+   ======================================== */
+html.dark .n-input,
+html.dark .n-input .n-input__border,
+html.dark .n-input .n-input__state-border,
+html.dark .n-input .n-input__input-el,
+html.dark .n-input .n-input__textarea-el,
+html.dark .n-input-number,
+html.dark .n-input-number .n-input__input-el,
+html.dark .n-base-selection,
+html.dark .n-base-selection-label,
+html.dark .n-base-selection-input,
+html.dark .n-base-selection-placeholder,
+html.dark .n-base-selection-placeholder__inner,
+html.dark .n-date-picker .n-input__input-el,
+html.dark .n-time-picker .n-input__input-el {
+  background-color: var(--dark-control-bg) !important;
+  color: var(--dark-control-text) !important;
+  border-color: var(--dark-control-border) !important;
+}
+
+html.dark .n-input,
+html.dark .n-input-number,
+html.dark .n-base-selection {
+  box-shadow: inset 0 0 0 1px rgba(18, 28, 17, 0.88) !important;
+}
+
+html.dark .n-input:hover:not(.n-input--focus),
+html.dark .n-input-number:hover,
+html.dark .n-base-selection:hover {
+  background-color: var(--dark-control-bg-hover) !important;
+  border-color: var(--dark-control-border-strong) !important;
+}
+
+html.dark .n-input--focus,
+html.dark .n-input.n-input--focus,
+html.dark .n-input-number.n-input-number--focus,
+html.dark .n-base-selection.n-base-selection--active {
+  background-color: var(--dark-control-bg-hover) !important;
+  border-color: var(--dark-control-border-strong) !important;
+  box-shadow: 0 0 0 1px rgba(113, 226, 72, 0.18) !important;
+}
+
+html.dark .n-input .n-input__placeholder,
+html.dark .n-input input::placeholder,
+html.dark .n-input textarea::placeholder,
+html.dark .n-base-selection-placeholder,
+html.dark .n-base-selection-placeholder__inner {
+  color: var(--dark-control-text-muted) !important;
+  opacity: 0.9 !important;
+  -webkit-text-fill-color: var(--dark-control-text-muted) !important;
+}
+
+html.dark .n-input.n-input--disabled,
+html.dark .n-input.n-input--disabled .n-input__input-el,
+html.dark .n-input.n-input--disabled .n-input__textarea-el,
+html.dark .n-base-selection.n-base-selection--disabled,
+html.dark .n-input-number.n-input-number--disabled {
+  background-color: #0d120d !important;
+  color: #b8c4b3 !important;
+  border-color: rgba(93, 214, 44, 0.22) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #b8c4b3 !important;
+}
+
+html.dark .n-input-group .n-input,
+html.dark .n-input-group .n-base-selection,
+html.dark .n-input-group .n-button {
+  margin-bottom: 0 !important;
+}
+
+html.dark .n-button {
+  background-color: var(--dark-control-bg) !important;
+  border-color: var(--dark-control-border) !important;
+  color: var(--dark-control-text) !important;
+}
+
+html.dark .n-button:hover:not(.n-button--disabled) {
+  background-color: var(--dark-control-bg-hover) !important;
+  border-color: var(--dark-control-border-strong) !important;
+  color: #f3ffe8 !important;
+}
+
+html.dark .n-button--primary-type,
+html.dark .n-button[type="primary"],
+html.dark .n-button--secondary-type[type="primary"],
+html.dark .n-button[type="primary"].n-button--secondary-type,
+html.dark .n-button--secondary-type[class*="primary"],
+html.dark .n-button[class*="primary"].n-button--secondary-type,
+html.dark .n-button.n-button--primary-type .n-button__content,
+html.dark .n-button[type="primary"] .n-button__content {
+  background: linear-gradient(180deg, #78dc52, #58b73c) !important;
+  border-color: #89ea65 !important;
+  color: var(--dark-primary-text) !important;
+  font-weight: 700 !important;
+}
+
+html.dark .n-button--primary-type:hover,
+html.dark .n-button[type="primary"]:hover,
+html.dark .n-button--secondary-type[type="primary"]:hover,
+html.dark .n-button[type="primary"].n-button--secondary-type:hover {
+  background: linear-gradient(180deg, #89ea65, #66c347) !important;
+  border-color: #a0f17f !important;
+  color: var(--dark-primary-text) !important;
+  box-shadow: 0 0 0 1px rgba(137, 234, 101, 0.22) !important;
+  opacity: 1 !important;
+}
+
+html.dark .n-button--tertiary-type,
+html.dark .n-button[type="tertiary"],
+html.dark .n-button--secondary-type:not([type="primary"]),
+html.dark .n-button[type="secondary"],
+html.dark .n-button--quaternary-type,
+html.dark .n-button[type="quaternary"],
+html.dark .n-button--ghost {
+  background-color: var(--dark-control-bg-soft) !important;
+  border-color: var(--dark-control-border) !important;
+  color: var(--dark-control-text) !important;
+}
+
+html.dark .n-button--tertiary-type:hover,
+html.dark .n-button[type="tertiary"]:hover,
+html.dark .n-button--secondary-type:not([type="primary"]):hover,
+html.dark .n-button[type="secondary"]:hover,
+html.dark .n-button--quaternary-type:hover,
+html.dark .n-button[type="quaternary"]:hover,
+html.dark .n-button--ghost:hover {
+  background-color: rgba(93, 214, 44, 0.2) !important;
+  border-color: var(--dark-control-border-strong) !important;
+  color: #f3ffe8 !important;
+}
+
+html.dark .n-button[type="warning"],
+html.dark .n-button--warning-type {
+  background-color: var(--dark-warning-bg) !important;
+  border-color: var(--dark-warning-border) !important;
+  color: var(--dark-warning-text) !important;
+}
+
+html.dark .n-button[type="warning"]:hover,
+html.dark .n-button--warning-type:hover {
+  background-color: rgba(255, 153, 0, 0.22) !important;
+  border-color: rgba(255, 190, 92, 0.6) !important;
+  color: #fff1d5 !important;
+}
+
+html.dark .n-button[type="error"],
+html.dark .n-button--error-type {
+  background-color: var(--dark-danger-bg) !important;
+  border-color: var(--dark-danger-border) !important;
+  color: var(--dark-danger-text) !important;
+}
+
+html.dark .n-button[type="error"]:hover,
+html.dark .n-button--error-type:hover {
+  background-color: rgba(255, 51, 102, 0.24) !important;
+  border-color: rgba(255, 111, 151, 0.62) !important;
+  color: #ffe5ee !important;
+}
+
+html.dark .n-button[type="info"],
+html.dark .n-button--info-type {
+  background-color: var(--dark-info-bg) !important;
+  border-color: var(--dark-info-border) !important;
+  color: var(--dark-info-text) !important;
+}
+
+html.dark .n-button[type="info"]:hover,
+html.dark .n-button--info-type:hover {
+  background-color: rgba(0, 163, 255, 0.22) !important;
+  border-color: rgba(104, 201, 255, 0.6) !important;
+  color: #edf8ff !important;
+}
+
+html.dark .n-button.n-button--disabled,
+html.dark .n-button.n-button--disabled:hover {
+  background-color: #0d120d !important;
+  border-color: rgba(93, 214, 44, 0.16) !important;
+  color: #93a08f !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
