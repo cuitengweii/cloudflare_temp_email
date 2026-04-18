@@ -43,7 +43,8 @@ const fetchAddresData = async () => {
         const { results } = await api.fetch(
             `/user_api/bind_address`
         );
-        addressFilterOptions.value = results.map((item) => {
+        const safeResults = Array.isArray(results) ? results : [];
+        addressFilterOptions.value = safeResults.map((item) => {
             return {
                 label: item.name,
                 value: item.name
