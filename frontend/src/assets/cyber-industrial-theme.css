@@ -1801,6 +1801,34 @@ html.dark .n-base-selection-placeholder__inner {
   -webkit-text-fill-color: var(--dark-control-text-muted) !important;
 }
 
+html.dark .n-input .n-input__input-el,
+html.dark .n-input .n-input__textarea-el,
+html.dark .n-input .n-input-wrapper,
+html.dark .n-input input,
+html.dark .n-input textarea,
+html.dark .n-input-number input,
+html.dark .n-base-selection input,
+html.dark .n-base-selection .n-base-selection-input__content,
+html.dark .n-base-selection .n-base-selection-label,
+html.dark .n-base-selection .n-base-selection-placeholder__inner,
+html.dark .n-base-selection .n-base-selection-tags,
+html.dark .n-base-selection .n-tag__content,
+html.dark .n-base-selection .n-base-icon {
+  color: var(--dark-control-text) !important;
+  -webkit-text-fill-color: var(--dark-control-text) !important;
+  caret-color: var(--dark-control-text) !important;
+  opacity: 1 !important;
+}
+
+html.dark .n-input-group-label,
+html.dark .n-input-group-label__text,
+html.dark .n-input-group .n-input-group-label {
+  background-color: #2a2a2a !important;
+  color: #e7f5df !important;
+  border-color: var(--dark-control-border) !important;
+  -webkit-text-fill-color: #e7f5df !important;
+}
+
 html.dark .n-input.n-input--disabled,
 html.dark .n-input.n-input--disabled .n-input__input-el,
 html.dark .n-input.n-input--disabled .n-input__textarea-el,
@@ -1817,6 +1845,31 @@ html.dark .n-input-group .n-input,
 html.dark .n-input-group .n-base-selection,
 html.dark .n-input-group .n-button {
   margin-bottom: 0 !important;
+}
+
+html.dark .n-switch {
+  color: var(--dark-control-text) !important;
+}
+
+html.dark .n-switch .n-switch__rail {
+  background-color: #d9ded7 !important;
+  box-shadow: inset 0 0 0 1px rgba(15, 22, 13, 0.3) !important;
+}
+
+html.dark .n-switch.n-switch--active .n-switch__rail {
+  background-color: #58b73c !important;
+}
+
+html.dark .n-switch .n-switch__button {
+  background-color: #ffffff !important;
+}
+
+html.dark .n-switch .n-switch__children-placeholder,
+html.dark .n-switch .n-switch__checked,
+html.dark .n-switch .n-switch__unchecked {
+  color: var(--dark-control-text) !important;
+  -webkit-text-fill-color: var(--dark-control-text) !important;
+  opacity: 1 !important;
 }
 
 html.dark .n-button {
