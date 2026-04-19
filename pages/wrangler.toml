@@ -4,4 +4,5 @@ compatibility_date = "2024-05-13"
 
 [[services]]
 binding = "BACKEND"
-service = "cloudflare-temp-email-20260406"
+service = "cloudflare_temp_email"
+environment = "production"
