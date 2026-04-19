@@ -1925,23 +1925,25 @@ html.dark .n-input-group .n-button {
 
 html.dark .n-switch {
   color: var(--dark-control-text) !important;
-  --n-rail-color: #d9ded7 !important;
+  --n-rail-color: #111812 !important;
   --n-rail-color-active: #58b73c !important;
-  --n-button-color: #ffffff !important;
+  --n-button-color: #eef9e7 !important;
   --n-text-color: var(--dark-control-text) !important;
 }
 
 html.dark .n-switch .n-switch__rail {
-  background-color: #d9ded7 !important;
-  box-shadow: inset 0 0 0 1px rgba(15, 22, 13, 0.3) !important;
+  background-color: #111812 !important;
+  box-shadow: inset 0 0 0 1px rgba(93, 214, 44, 0.34) !important;
 }
 
 html.dark .n-switch.n-switch--active .n-switch__rail {
   background-color: #58b73c !important;
+  box-shadow: inset 0 0 0 1px rgba(133, 236, 98, 0.42) !important;
 }
 
 html.dark .n-switch .n-switch__button {
-  background-color: #ffffff !important;
+  background-color: #eef9e7 !important;
+  box-shadow: 0 0 0 1px rgba(93, 214, 44, 0.22) !important;
 }
 
 html.dark .n-switch .n-switch__children-placeholder,
@@ -1950,6 +1952,13 @@ html.dark .n-switch .n-switch__unchecked {
   color: var(--dark-control-text) !important;
   -webkit-text-fill-color: var(--dark-control-text) !important;
   opacity: 1 !important;
+}
+
+html.dark .n-switch:not(.n-switch--active) .n-switch__checked,
+html.dark .n-switch:not(.n-switch--active) .n-switch__unchecked,
+html.dark .n-switch:not(.n-switch--active) .n-switch__children-placeholder {
+  color: #d7e8cf !important;
+  -webkit-text-fill-color: #d7e8cf !important;
 }
 
 html.dark .n-input .n-input__suffix,
