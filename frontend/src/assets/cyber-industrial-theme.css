@@ -2060,16 +2060,32 @@ html.dark .n-button--error-type:hover {
 
 html.dark .n-button[type="info"],
 html.dark .n-button--info-type {
-  background-color: var(--dark-info-bg) !important;
-  border-color: var(--dark-info-border) !important;
-  color: var(--dark-info-text) !important;
+  background-color: rgba(93, 214, 44, 0.16) !important;
+  border-color: rgba(93, 214, 44, 0.34) !important;
+  color: #e9f8e1 !important;
 }
 
 html.dark .n-button[type="info"]:hover,
 html.dark .n-button--info-type:hover {
-  background-color: rgba(0, 163, 255, 0.22) !important;
-  border-color: rgba(104, 201, 255, 0.6) !important;
-  color: #edf8ff !important;
+  background-color: rgba(93, 214, 44, 0.24) !important;
+  border-color: rgba(126, 231, 87, 0.52) !important;
+  color: #f2ffe9 !important;
+}
+
+html.dark .n-tag,
+html.dark .n-tag .n-tag__content {
+  background-color: rgba(93, 214, 44, 0.12) !important;
+  border-color: rgba(93, 214, 44, 0.28) !important;
+  color: #e8f7e0 !important;
+  -webkit-text-fill-color: #e8f7e0 !important;
+}
+
+html.dark .n-tag--info-type,
+html.dark .n-tag--info-type .n-tag__content {
+  background-color: rgba(93, 214, 44, 0.14) !important;
+  border-color: rgba(93, 214, 44, 0.32) !important;
+  color: #edfbe7 !important;
+  -webkit-text-fill-color: #edfbe7 !important;
 }
 
 html.dark .n-button.n-button--disabled,
