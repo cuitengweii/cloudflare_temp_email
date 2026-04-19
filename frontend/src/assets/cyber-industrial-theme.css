@@ -1345,6 +1345,15 @@ html:not(.light) textarea::placeholder {
   border-color: var(--accent-aurora) !important;
 }
 
+html.dark .n-radio-button.n-radio-button--checked,
+html.dark .n-radio-button.n-radio-button--checked .n-radio-button__state-border,
+html.dark .n-radio-button.n-radio-button--checked .n-radio-button__button,
+html.dark .n-radio-button.n-radio-button--checked .n-radio-button__label,
+html.dark .n-radio-button.n-radio-button--checked span {
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+}
+
 /* 寮€鍏虫枃瀛?*/
 .n-switch__label {
   color: var(--text-primary) !important;
