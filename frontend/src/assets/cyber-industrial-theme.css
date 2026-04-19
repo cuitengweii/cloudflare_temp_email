@@ -2004,6 +2004,16 @@ html.dark .n-button[type="primary"] .n-button__content {
   font-weight: 700 !important;
 }
 
+html.dark .n-button--primary-type .n-icon,
+html.dark .n-button--primary-type .n-base-icon,
+html.dark .n-button[type="primary"] .n-icon,
+html.dark .n-button[type="primary"] .n-base-icon,
+html.dark .n-button--primary-type .n-button__icon,
+html.dark .n-button[type="primary"] .n-button__icon {
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+}
+
 html.dark .n-button--primary-type:hover,
 html.dark .n-button[type="primary"]:hover,
 html.dark .n-button--secondary-type[type="primary"]:hover,
@@ -2083,7 +2093,7 @@ html.dark .n-button--info-type:hover {
 
 html.dark .n-tag,
 html.dark .n-tag .n-tag__content {
-  background-color: rgba(93, 214, 44, 0.12) !important;
+  background-color: transparent !important;
   border-color: rgba(93, 214, 44, 0.28) !important;
   color: #e8f7e0 !important;
   -webkit-text-fill-color: #e8f7e0 !important;
@@ -2091,7 +2101,7 @@ html.dark .n-tag .n-tag__content {
 
 html.dark .n-tag--info-type,
 html.dark .n-tag--info-type .n-tag__content {
-  background-color: rgba(93, 214, 44, 0.14) !important;
+  background-color: transparent !important;
   border-color: rgba(93, 214, 44, 0.32) !important;
   color: #edfbe7 !important;
   -webkit-text-fill-color: #edfbe7 !important;
