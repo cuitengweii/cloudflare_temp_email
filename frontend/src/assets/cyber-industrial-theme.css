@@ -2116,6 +2116,13 @@ html.dark .n-tag--info-type .n-tag__content {
   -webkit-text-fill-color: #edfbe7 !important;
 }
 
+html.dark .n-tag.n-tag--info-type {
+  --n-border: 1px solid rgba(93, 214, 44, 0.32) !important;
+  --n-border-hover: 1px solid rgba(113, 226, 72, 0.52) !important;
+  --n-color: transparent !important;
+  --n-text-color: #edfbe7 !important;
+}
+
 html.dark .n-button.n-button--disabled,
 html.dark .n-button.n-button--disabled:hover {
   background-color: #0d120d !important;
