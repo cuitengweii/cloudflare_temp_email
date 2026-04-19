@@ -608,6 +608,11 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
+:deep(.n-list-item .n-thing .n-tag) {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
