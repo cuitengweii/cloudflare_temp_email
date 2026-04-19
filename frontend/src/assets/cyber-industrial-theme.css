@@ -1751,8 +1751,6 @@ html.dark .admin-panel-shell .n-tabs.n-tabs--bar-type .n-tabs-tab.n-tabs-tab--ac
    22. Dark Form Controls And Buttons Unified
    ======================================== */
 html.dark .n-input,
-html.dark .n-input .n-input__border,
-html.dark .n-input .n-input__state-border,
 html.dark .n-input .n-input__input-el,
 html.dark .n-input .n-input__textarea-el,
 html.dark .n-input-number,
@@ -1766,6 +1764,12 @@ html.dark .n-date-picker .n-input__input-el,
 html.dark .n-time-picker .n-input__input-el {
   background-color: var(--dark-control-bg) !important;
   color: var(--dark-control-text) !important;
+  border-color: var(--dark-control-border) !important;
+}
+
+html.dark .n-input .n-input__border,
+html.dark .n-input .n-input__state-border {
+  background-color: transparent !important;
   border-color: var(--dark-control-border) !important;
 }
 
