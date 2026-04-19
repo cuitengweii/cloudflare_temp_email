@@ -1863,6 +1863,39 @@ html.dark .n-base-selection .n-base-icon {
   opacity: 1 !important;
 }
 
+html.dark .n-input input:-webkit-autofill,
+html.dark .n-input input:-webkit-autofill:hover,
+html.dark .n-input input:-webkit-autofill:focus,
+html.dark .n-input input:-webkit-autofill:active,
+html.dark .n-input input:-internal-autofill-selected,
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover,
+html.dark input:-webkit-autofill:focus,
+html.dark input:-webkit-autofill:active,
+html.dark input:-internal-autofill-selected {
+  -webkit-text-fill-color: var(--dark-control-text) !important;
+  caret-color: var(--dark-control-text) !important;
+  box-shadow: 0 0 0 1000px var(--dark-control-bg) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--dark-control-bg) inset !important;
+  border-radius: inherit !important;
+  transition: background-color 99999s ease-in-out 0s !important;
+}
+
+html.dark .n-input input[type="password"],
+html.dark .n-input input[type="password"]::placeholder {
+  color: var(--dark-control-text) !important;
+  -webkit-text-fill-color: var(--dark-control-text) !important;
+}
+
+html.dark .n-input .n-input__suffix,
+html.dark .n-input .n-input__password-toggle,
+html.dark .n-input .n-input__suffix .n-icon,
+html.dark .n-input .n-input__suffix .n-base-icon {
+  color: #d5e7cf !important;
+  -webkit-text-fill-color: #d5e7cf !important;
+  opacity: 1 !important;
+}
+
 html.dark .n-input-group-label,
 html.dark .n-input-group-label__text,
 html.dark .n-input-group .n-input-group-label {
