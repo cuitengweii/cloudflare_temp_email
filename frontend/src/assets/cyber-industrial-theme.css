@@ -2039,3 +2039,39 @@ html.dark .n-button.n-button--disabled:hover {
   opacity: 1 !important;
 }
 
+html.dark .n-button.n-button--disabled .n-button__content,
+html.dark .n-button.n-button--disabled .n-icon,
+html.dark .n-button.n-button--disabled .n-base-icon {
+  color: #c7d2c3 !important;
+  -webkit-text-fill-color: #c7d2c3 !important;
+  opacity: 1 !important;
+}
+
+html.dark .n-modal .n-data-table,
+html.dark .n-modal .n-data-table-wrapper,
+html.dark .n-modal .n-data-table-base-table,
+html.dark .n-modal .n-data-table-table {
+  background-color: #1f1f1f !important;
+  color: #edf8e7 !important;
+}
+
+html.dark .n-modal .n-data-table th,
+html.dark .n-modal .n-data-table td,
+html.dark .n-modal .n-data-table .n-data-table-th,
+html.dark .n-modal .n-data-table .n-data-table-td {
+  background-color: #1f1f1f !important;
+  color: #edf8e7 !important;
+  border-color: #313a2f !important;
+  -webkit-text-fill-color: #edf8e7 !important;
+}
+
+html.dark .n-modal .n-data-table th {
+  color: #cdd8c8 !important;
+  -webkit-text-fill-color: #cdd8c8 !important;
+}
+
+html.dark .n-modal .n-data-table tr:hover td,
+html.dark .n-modal .n-data-table tr:hover .n-data-table-td {
+  background-color: #232823 !important;
+}
+
