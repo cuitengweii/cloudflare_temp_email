@@ -173,9 +173,9 @@ useHead({
         { name: "description", content: openSettings.value.description || siteTitle.value },
     ],
     link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
-        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
-        { rel: 'apple-touch-icon', href: '/logo.svg' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg?v=20260420-logo' },
+        { rel: 'shortcut icon', type: 'image/svg+xml', href: '/logo.svg?v=20260420-logo' },
+        { rel: 'apple-touch-icon', href: '/logo.svg?v=20260420-logo' },
     ]
 });
 
