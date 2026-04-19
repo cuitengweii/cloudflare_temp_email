@@ -712,6 +712,15 @@ html.dark .n-tabs.n-tabs--bar-type .n-tabs-bar {
   background-color: rgba(var(--accent-aurora-rgb), 0.85) !important;
 }
 
+html.dark .n-tabs .n-tabs-nav,
+html.dark .n-tabs .n-tabs-nav-scroll-wrapper,
+html.dark .n-tabs .n-tabs-nav-scroll-content,
+html.dark .n-tabs .n-tabs-nav__suffix,
+html.dark .n-tabs .n-tabs-nav__prefix {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
 /* 6.8 鍥炬爣 */
 .n-icon,
 .n-base-icon {
