@@ -12,6 +12,7 @@ const DEFAULT_NAME_REGEX = /[^a-z0-9]/g;
 const DEFAULT_RANDOM_SUBDOMAIN_LENGTH = 8;
 const MAX_RANDOM_SUBDOMAIN_ATTEMPTS = 5;
 const MAX_DOMAIN_LENGTH = 253;
+const DEFAULT_INITIAL_SEND_BALANCE = 1000;
 const DOMAIN_LABEL_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
 
 const normalizeDomainValue = (domain: string): string => {
@@ -244,6 +245,21 @@ export function updateAddressUpdatedAt(
     })());
 }
 
+const ensureDefaultSenderAccess = async (
+    c: Context<HonoCustomType>,
+    address: string
+): Promise<void> => {
+    const defaultBalance = Math.max(
+        getIntValue(c.env.DEFAULT_SEND_BALANCE, DEFAULT_INITIAL_SEND_BALANCE),
+        1
+    );
+    await c.env.DB.prepare(
+        `INSERT INTO address_sender (address, balance, enabled)`
+        + ` VALUES (?, ?, 1)`
+        + ` ON CONFLICT(address) DO NOTHING`
+    ).bind(address, defaultBalance).run();
+}
+
 export const generateRandomPassword = (): string => {
     const charset = "abcdefghijklmnopqrstuvwxyz0123456789";
     let password = "";
@@ -403,6 +419,7 @@ export const newAddress = async (
             }
 
             // 如果启用地址密码功能，自动生成密码
+            await ensureDefaultSenderAccess(c, address);
             const generatedPassword = await generatePasswordForAddress(c, address);
 
             // create jwt
