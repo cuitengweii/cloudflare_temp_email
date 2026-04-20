@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
 
-import { useGlobalState } from '../../store'
-import { api } from '../../api'
+import { useGlobalState } from '../../store';
+import { api } from '../../api';
 
-const { loading } = useGlobalState()
-const message = useMessage()
+const { loading } = useGlobalState();
+const message = useMessage();
 
 const { t } = useI18n({
     messages: {
@@ -14,10 +14,10 @@ const { t } = useI18n({
             save: 'Save',
             successTip: 'Save Success',
             enable: 'Enable',
-            enableUserRegister: 'Allow User Register',
+            enableUserRegister: 'Allow Employee Self-Registration',
             enableMailVerify: 'Enable Mail Verify (Send address must be an address in the system with a balance and can send mail normally)',
             verifyMailSender: 'Verify Mail Sender',
-            enableMailAllowList: 'Enable Mail Address Allow List(Manually enterable)',
+            enableMailAllowList: 'Enable Mail Address Allow List (Manually enterable)',
             manualInputPrompt: 'Type and press Enter to add',
             mailAllowList: 'Mail Address Allow List',
             maxAddressCount: 'Maximum number of email addresses that can be binded',
@@ -25,67 +25,67 @@ const { t } = useI18n({
             enableEmailCheckRegex: 'Enable Email Check Regex',
         },
         zh: {
-            save: '保存',
-            successTip: '保存成功',
-            enable: '启用',
-            enableUserRegister: "允许用户注册",
-            enableMailVerify: '启用邮件验证(发送地址必须是系统中能有余额且能正常发送邮件的地址)',
-            verifyMailSender: '验证邮件发送地址',
-            enableMailAllowList: '启用邮件地址白名单(可手动输入, 回车增加)',
-            manualInputPrompt: '输入后按回车键添加',
-            mailAllowList: '邮件地址白名单',
-            maxAddressCount: '可绑定最大邮箱地址数量',
-            emailCheckRegex: "邮箱正则校验 (例如 ^[^.]+{'@'}.+$ 禁止{'@'}前面有.)",
-            enableEmailCheckRegex: '启用邮箱正则校验',
+            save: '\u4fdd\u5b58',
+            successTip: '\u4fdd\u5b58\u6210\u529f',
+            enable: '\u542f\u7528',
+            enableUserRegister: '\u5141\u8bb8\u5458\u5de5\u81ea\u52a9\u6ce8\u518c',
+            enableMailVerify: '\u542f\u7528\u90ae\u4ef6\u9a8c\u8bc1\uff08\u53d1\u9001\u5730\u5740\u5fc5\u987b\u662f\u7cfb\u7edf\u4e2d\u80fd\u6b63\u5e38\u53d1\u90ae\u4ef6\u7684\u5730\u5740\uff09',
+            verifyMailSender: '\u9a8c\u8bc1\u90ae\u4ef6\u53d1\u9001\u5730\u5740',
+            enableMailAllowList: '\u542f\u7528\u90ae\u7bb1\u57df\u540d\u767d\u540d\u5355\uff08\u53ef\u624b\u52a8\u8f93\u5165\uff0c\u56de\u8f66\u6dfb\u52a0\uff09',
+            manualInputPrompt: '\u8f93\u5165\u540e\u6309\u56de\u8f66\u952e\u6dfb\u52a0',
+            mailAllowList: '\u90ae\u7bb1\u57df\u540d\u767d\u540d\u5355',
+            maxAddressCount: '\u53ef\u7ed1\u5b9a\u7684\u6700\u5927\u90ae\u7bb1\u5730\u5740\u6570\u91cf',
+            emailCheckRegex: '\u90ae\u7bb1\u6b63\u5219\u6821\u9a8c\uff08\u4f8b\u5982 ^[^.]+{\'@\'}.+$ \u7528\u4e8e\u7981\u6b62 @ \u524d\u51fa\u73b0\u70b9\uff09',
+            enableEmailCheckRegex: '\u542f\u7528\u90ae\u7bb1\u6b63\u5219\u6821\u9a8c',
         }
     }
 });
 
 const commonMail = [
-    "gmail.com", "163.com", "126.com", "qq.com", "outlook.com", "hotmail.com",
-    "icloud.com", "yahoo.com", "foxmail.com"
-]
+    'gmail.com', '163.com', '126.com', 'qq.com', 'outlook.com', 'hotmail.com',
+    'icloud.com', 'yahoo.com', 'foxmail.com'
+];
 
-const mailAllowOptions = commonMail.map((item) => {
-    return { label: item, value: item }
-})
+const mailAllowOptions = commonMail.map((item) => ({
+    label: item,
+    value: item
+}));
 
 const userSettings = ref({
     enable: false,
     enableMailVerify: false,
-    verifyMailSender: "",
+    verifyMailSender: '',
     enableMailAllowList: false,
     mailAllowList: commonMail,
     maxAddressCount: 5,
     enableEmailCheckRegex: false,
-    emailCheckRegex: "",
+    emailCheckRegex: '',
 });
 
 const fetchData = async () => {
     try {
-        const res = await api.fetch(`/admin/user_settings`)
-        Object.assign(userSettings.value, res)
+        const res = await api.fetch('/admin/user_settings');
+        Object.assign(userSettings.value, res);
     } catch (error) {
-        message.error(error.message || "error");
+        message.error(error.message || 'error');
     }
-}
+};
 
 const save = async () => {
     try {
-        await api.fetch(`/admin/user_settings`, {
+        await api.fetch('/admin/user_settings', {
             method: 'POST',
             body: JSON.stringify(userSettings.value)
-        })
-        message.success(t('successTip'))
+        });
+        message.success(t('successTip'));
     } catch (error) {
-        message.error(error.message || "error");
+        message.error(error.message || 'error');
     }
-}
-
+};
 
 onMounted(async () => {
     await fetchData();
-})
+});
 </script>
 
 <template>
@@ -105,8 +105,12 @@ onMounted(async () => {
                         <n-checkbox v-model:checked="userSettings.enableMailVerify" style="width: 20%;">
                             {{ t('enable') }}
                         </n-checkbox>
-                        <n-input v-model:value="userSettings.verifyMailSender" v-if="userSettings.enableMailVerify"
-                            style="width: 80%;" :placeholder="t('verifyMailSender')" />
+                        <n-input
+                            v-if="userSettings.enableMailVerify"
+                            v-model:value="userSettings.verifyMailSender"
+                            style="width: 80%;"
+                            :placeholder="t('verifyMailSender')"
+                        />
                     </n-input-group>
                 </n-form-item-row>
                 <n-form-item-row :label="t('enableMailAllowList')">
@@ -114,9 +118,16 @@ onMounted(async () => {
                         <n-checkbox v-model:checked="userSettings.enableMailAllowList" style="width: 20%;">
                             {{ t('enable') }}
                         </n-checkbox>
-                        <n-select v-model:value="userSettings.mailAllowList" v-if="userSettings.enableMailAllowList"
-                            filterable multiple tag style="width: 80%;" :options="mailAllowOptions"
-                            :placeholder="t('mailAllowList')">
+                        <n-select
+                            v-if="userSettings.enableMailAllowList"
+                            v-model:value="userSettings.mailAllowList"
+                            filterable
+                            multiple
+                            tag
+                            style="width: 80%;"
+                            :options="mailAllowOptions"
+                            :placeholder="t('mailAllowList')"
+                        >
                             <template #empty>
                                 <n-text depth="3">
                                     {{ t('manualInputPrompt') }}
@@ -127,8 +138,10 @@ onMounted(async () => {
                 </n-form-item-row>
                 <n-form-item-row :label="t('maxAddressCount')">
                     <n-input-group>
-                        <n-input-number v-model:value="userSettings.maxAddressCount"
-                            :placeholder="t('maxAddressCount')" />
+                        <n-input-number
+                            v-model:value="userSettings.maxAddressCount"
+                            :placeholder="t('maxAddressCount')"
+                        />
                     </n-input-group>
                 </n-form-item-row>
                 <n-form-item-row :label="t('enableEmailCheckRegex')">
@@ -136,9 +149,12 @@ onMounted(async () => {
                         <n-checkbox v-model:checked="userSettings.enableEmailCheckRegex" style="flex: 0 0 auto;">
                             {{ t('enable') }}
                         </n-checkbox>
-                        <n-input v-model:value="userSettings.emailCheckRegex"
+                        <n-input
                             v-show="userSettings.enableEmailCheckRegex"
-                            style="flex: 1 1 auto;" :placeholder="t('emailCheckRegex')" />
+                            v-model:value="userSettings.emailCheckRegex"
+                            style="flex: 1 1 auto;"
+                            :placeholder="t('emailCheckRegex')"
+                        />
                     </n-flex>
                 </n-form-item-row>
             </n-form>
