@@ -225,9 +225,9 @@ const resetPasswordByCode = async () => {
 <template>
     <div class="center">
         <n-skeleton v-if="!userOpenSettings.fetched" style="height: 320px; width: 100%;" />
-        <n-tabs v-else value="signin" size="large" justify-content="space-evenly">
+        <n-tabs v-else value="signin" size="large" justify-content="space-evenly" class="auth-tabs">
             <n-tab-pane name="signin" :tab="t('login')">
-                <n-form>
+                <n-form class="auth-form">
                     <n-alert type="info" :show-icon="false" :bordered="false" style="margin-bottom: 16px;">
                         <div>{{ t('employeeLoginTip') }}</div>
                         <div v-if="allowedDomainsText" class="domain-hint">
@@ -314,6 +314,16 @@ const resetPasswordByCode = async () => {
 <style scoped>
 .center {
     width: 100%;
+}
+
+.auth-tabs {
+    width: 100%;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
 }
 
 .domain-hint {
