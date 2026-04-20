@@ -2,7 +2,7 @@
 import { ref, h, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useHead } from '@unhead/vue'
-import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useIsMobile } from '../utils/composables'
 import {
     MenuFilled, MonitorHeartFilled
@@ -27,7 +27,6 @@ const isMobile = useIsMobile()
 
 const showMobileMenu = ref(false)
 const menuValue = computed(() => {
-    if (route.path.includes("user")) return "user";
     if (route.path.includes("admin")) return "admin";
     return "home";
 });
@@ -63,25 +62,21 @@ const { locale, t } = useI18n({
     messages: {
         en: {
             title: 'GasGx Email',
-            dark: 'Dark',
-            light: 'Light',
             accessHeader: 'Access Password',
             accessTip: 'Please enter the correct access password',
             home: 'Home',
+            admin: 'Admin',
             menu: 'Menu',
-            user: 'User',
             status: 'Status',
             ok: 'OK',
         },
         zh: {
-            title: 'GasGx临时邮件',
-            dark: '暗色',
-            light: '亮色',
+            title: 'GasGx 邮箱',
             accessHeader: '访问密码',
-            accessTip: '请输入站点访问密码',
-            home: '主页',
+            accessTip: '请输入正确的访问密码',
+            home: '首页',
+            admin: 'Admin',
             menu: '菜单',
-            user: '用户',
             status: '状态',
             ok: '确定',
         }
@@ -100,38 +95,38 @@ const siteTitle = computed(() => {
     return cleaned || fallbackTitle.value;
 });
 
-const menuOptions = computed(() => [
-    {
-        label: () => t('home'),
-        key: "home",
-        icon: () => h(NIcon, { component: Home }),
-        show: true,
-    },
-    {
-        label: () => t('user'),
-        key: "user",
-        icon: () => h(NIcon, { component: User }),
-        show: !isTelegram.value,
-    },
-    {
-        label: () => locale.value == 'zh' ? "English" : "中文",
-        key: "lang",
-        icon: () => h(NIcon, { component: Language }),
-    },
-    {
-        label: () => t('status'),
-        key: "status",
-        icon: () => h(NIcon, { component: MonitorHeartFilled }),
-        show: !!openSettings.value?.statusUrl,
-    }
-]);
+const menuOptions = computed(() => {
+    const options = [
+        {
+            label: () => t('home'),
+            key: "home",
+            icon: () => h(NIcon, { component: Home }),
+        },
+        !isTelegram.value ? {
+            label: () => t('admin'),
+            key: "admin",
+            icon: () => h(NIcon, { component: User }),
+        } : null,
+        {
+            label: () => locale.value == 'zh' ? "English" : "中文",
+            key: "lang",
+            icon: () => h(NIcon, { component: Language }),
+        },
+        openSettings.value?.statusUrl ? {
+            label: () => t('status'),
+            key: "status",
+            icon: () => h(NIcon, { component: MonitorHeartFilled }),
+        } : null
+    ];
+    return options.filter(Boolean);
+});
 
 const handleMenuUpdate = async (key) => {
     showMobileMenu.value = false;
     if (key === 'home') {
         await router.push(getRouterPathWithLang('/', locale.value));
-    } else if (key === 'user') {
-        await router.push(getRouterPathWithLang("/user", locale.value));
+    } else if (key === 'admin') {
+        await router.push(getRouterPathWithLang('/admin', locale.value));
     } else if (key === 'lang') {
         locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh');
     } else if (key === 'status') {
@@ -173,9 +168,8 @@ const logoClick = async () => {
 
 onMounted(async () => {
     await api.getOpenSettings(message, notification);
-    // make sure user_id is fetched
     if (!userSettings.value.user_id) await api.getUserSettings(message);
-});
+})
 </script>
 
 <template>
@@ -191,7 +185,14 @@ onMounted(async () => {
             </template>
             <template #extra>
                 <n-space>
-                    <n-menu v-if="!isMobile" mode="horizontal" :options="menuOptions" :value="menuValue" @update:value="handleMenuUpdate" responsive />
+                    <n-menu
+                        v-if="!isMobile"
+                        mode="horizontal"
+                        :options="menuOptions"
+                        :value="menuValue"
+                        @update:value="handleMenuUpdate"
+                        responsive
+                    />
                     <n-button v-else :text="true" @click="showMobileMenu = !showMobileMenu" style="margin-right: 10px;">
                         <template #icon>
                             <n-icon :component="MenuFilled" />
@@ -206,8 +207,14 @@ onMounted(async () => {
                 <n-menu :options="menuOptions" :value="menuValue" @update:value="handleMenuUpdate" />
             </n-drawer-content>
         </n-drawer>
-        <n-modal v-model:show="showAuth" :closable="false" :closeOnEsc="false" :maskClosable="false" preset="dialog"
-            :title="t('accessHeader')">
+        <n-modal
+            v-model:show="showAuth"
+            :closable="false"
+            :closeOnEsc="false"
+            :maskClosable="false"
+            preset="dialog"
+            :title="t('accessHeader')"
+        >
             <p>{{ t('accessTip') }}</p>
             <n-input v-model:value="auth" type="password" show-password-on="click" />
             <Turnstile ref="turnstileRef" v-if="openSettings.enableGlobalTurnstileCheck" v-model:value="cfToken" />

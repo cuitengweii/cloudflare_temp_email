@@ -16,20 +16,13 @@ import CreateAccount from './admin/CreateAccount.vue';
 import AccountSettings from './admin/AccountSettings.vue';
 import UserManagement from './admin/UserManagement.vue';
 import UserSettings from './admin/UserSettings.vue';
-import UserOauth2Settings from './admin/UserOauth2Settings.vue';
-import RoleAddressConfig from './admin/RoleAddressConfig.vue';
 import Mails from './admin/Mails.vue';
-import MailsUnknow from './admin/MailsUnknow.vue';
 import About from './common/About.vue';
 import Maintenance from './admin/Maintenance.vue';
 import DatabaseManager from './admin/DatabaseManager.vue';
 import Appearance from './common/Appearance.vue';
-import Telegram from './admin/Telegram.vue';
-import Webhook from './admin/Webhook.vue';
-import MailWebhook from './admin/MailWebhook.vue';
 import WorkerConfig from './admin/WorkerConfig.vue';
 import IpBlacklistSettings from './admin/IpBlacklistSettings.vue';
-import AiExtractSettings from './admin/AiExtractSettings.vue';
 
 const {
   adminAuth, showAdminAuth, adminTab, loading,
@@ -235,12 +228,6 @@ onMounted(async () => {
           <n-tab-pane name="ipBlacklistSettings" :tab="t('ipBlacklistSettings')">
             <IpBlacklistSettings />
           </n-tab-pane>
-          <n-tab-pane name="aiExtractSettings" :tab="t('aiExtractSettings')">
-            <AiExtractSettings />
-          </n-tab-pane>
-          <n-tab-pane name="webhook" :tab="t('webhookSettings')">
-            <Webhook />
-          </n-tab-pane>
         </n-tabs>
       </n-tab-pane>
       <n-tab-pane name="user" :tab="t('user')">
@@ -251,12 +238,6 @@ onMounted(async () => {
           <n-tab-pane name="user_settings" :tab="t('user_settings')">
             <UserSettings />
           </n-tab-pane>
-          <n-tab-pane name="userOauth2Settings" :tab="t('userOauth2Settings')">
-            <UserOauth2Settings />
-          </n-tab-pane>
-          <n-tab-pane name="roleAddressConfig" :tab="t('roleAddressConfig')">
-            <RoleAddressConfig />
-          </n-tab-pane>
         </n-tabs>
       </n-tab-pane>
       <n-tab-pane name="mails" :tab="t('mails')">
@@ -264,22 +245,13 @@ onMounted(async () => {
           <n-tab-pane name="mails" :tab="t('mails')">
             <Mails />
           </n-tab-pane>
-          <n-tab-pane name="unknow" :tab="t('unknow')">
-            <MailsUnknow />
-          </n-tab-pane>
           <n-tab-pane name="sendBox" :tab="t('sendBox')">
             <SendBox />
           </n-tab-pane>
           <n-tab-pane name="sendMail" :tab="t('sendMail')">
             <SendMail />
           </n-tab-pane>
-          <n-tab-pane name="mailWebhook" :tab="t('mailWebhook')">
-            <MailWebhook />
-          </n-tab-pane>
         </n-tabs>
-      </n-tab-pane>
-      <n-tab-pane name="telegram" :tab="t('telegram')">
-        <Telegram />
       </n-tab-pane>
       <n-tab-pane name="statistics" :tab="t('statistics')">
         <Statistics />

@@ -88,6 +88,8 @@ export const useGlobalState = createGlobalState(
             fetched: false,
             enable: false,
             enableMailVerify: false,
+            /** @type {string[]} */
+            allowedDomains: [],
             /** @type {{ clientID: string, name: string, icon?: string }[]} */
             oauth2ClientIDs: [],
         });

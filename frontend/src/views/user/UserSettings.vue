@@ -1,238 +1,103 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useMessage } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
-import { startRegistration } from '@simplewebauthn/browser';
-import { NButton, NPopconfirm } from 'naive-ui'
 
 import { useGlobalState } from '../../store'
-import { api } from '../../api'
 
-const { userJwt, userSettings, } = useGlobalState()
+const { userJwt, userSettings, userOpenSettings } = useGlobalState()
 const message = useMessage()
-
 const showLogout = ref(false)
-const showCreatePasskey = ref(false)
-const passkeyName = ref('')
-const showPasskeyList = ref(false)
-const showRenamePasskey = ref(false)
-const currentPasskeyId = ref(null)
-const currentPasskeyName = ref('')
 
 const { t } = useI18n({
     messages: {
         en: {
+            accountCenter: 'Account Center',
+            accountEmail: 'Employee Account',
+            mailboxPolicyTitle: 'Mailbox Assignment',
+            mailboxPolicy: 'Mailbox addresses are assigned and managed by administrators. Employees cannot create or bind addresses themselves.',
+            resetPolicyTitle: 'Password Reset',
+            resetPolicyEnabled: 'Password reset is available through company email verification.',
+            resetPolicyDisabled: 'Password reset is temporarily unavailable because email verification is disabled.',
+            allowedDomainsTitle: 'Company Domains',
             logout: 'Logout',
             logoutConfirm: 'Are you sure you want to logout?',
-            passordTip: 'The server will only receive the hash value of the password, and will not receive the plaintext password, so it cannot view or retrieve your password. If the administrator enables email verification, you can reset the password in incognito mode',
-            createPasskey: 'Create Passkey',
-            showPasskeyList: 'Show Passkey List',
-            passkeyCreated: 'Passkey created successfully',
-            passkeyNamePlaceholder: 'Please enter the passkey name or leave it empty to generate a random one',
-            renamePasskey: 'Rename Passkey',
-            deletePasskey: 'Delete Passkey',
-            passkey_name: 'Passkey Name',
-            created_at: 'Created At',
-            updated_at: 'Updated At',
-            actions: 'Actions',
-            renamePasskey: 'Rename Passkey',
-            renamePasskeyNamePlaceholder: 'Please enter the new passkey name',
+            logoutSuccess: 'Logged out successfully.',
         },
         zh: {
+            accountCenter: '账户中心',
+            accountEmail: '员工账号',
+            mailboxPolicyTitle: '邮箱分配规则',
+            mailboxPolicy: '邮箱地址由管理员统一分配和管理，员工不能自行创建或绑定邮箱地址。',
+            resetPolicyTitle: '密码重置',
+            resetPolicyEnabled: '当前支持通过公司邮箱验证码重置密码。',
+            resetPolicyDisabled: '当前未开启邮箱验证，暂时无法通过邮箱验证码重置密码。',
+            allowedDomainsTitle: '公司域名',
             logout: '退出登录',
-            logoutConfirm: '确定要退出登录吗？',
-            passordTip: '服务器只会接收到密码的哈希值，不会接收到明文密码，因此无法查看或者找回您的密码, 如果管理员启用了邮件验证您可以在无痕模式重置密码',
-            createPasskey: '创建 Passkey',
-            showPasskeyList: '查看 Passkey 列表',
-            passkeyCreated: 'Passkey 创建成功',
-            passkeyNamePlaceholder: '请输入 Passkey 名称或者留空自动生成',
-            renamePasskey: '重命名 Passkey',
-            deletePasskey: '删除 Passkey',
-            passkey_name: 'Passkey 名称',
-            created_at: '创建时间',
-            updated_at: '更新时间',
-            actions: '操作',
-            renamePasskey: '重命名 Passkey',
-            renamePasskeyNamePlaceholder: '请输入新的 Passkey 名称',
+            logoutConfirm: '确认退出当前登录状态吗？',
+            logoutSuccess: '已退出登录。',
         }
     }
-});
+})
 
+const allowedDomainsText = computed(() =>
+    Array.isArray(userOpenSettings.value.allowedDomains)
+        ? userOpenSettings.value.allowedDomains.join(', ')
+        : ''
+)
 
 const logout = async () => {
-    userJwt.value = '';
-    location.reload()
-}
-
-const createPasskey = async () => {
-    try {
-        const options = await api.fetch(`/user_api/passkey/register_request`, {
-            method: 'POST',
-            body: JSON.stringify({
-                domain: location.hostname,
-            })
-        })
-        const credential = await startRegistration({ optionsJSON: options })
-
-        // Send the result to the server and return the promise.
-        await api.fetch(`/user_api/passkey/register_response`, {
-            method: 'POST',
-            body: JSON.stringify({
-                origin: location.origin,
-                passkey_name: passkeyName.value || (
-                    (window.navigator.userAgentData?.platform || "Unknown")
-                    + ": " + Math.random().toString(36).substring(7)
-                ),
-                credential
-            })
-        })
-        message.success(t('passkeyCreated'));
-    } catch (e) {
-        console.error(e)
-        message.error(e.message)
-    } finally {
-        passkeyName.value = ''
-        showCreatePasskey.value = false
-    }
-}
-
-const passkeyColumns = [
-    {
-        title: "Passkey ID",
-        key: "passkey_id"
-    },
-    {
-        title: t('passkey_name'),
-        key: "passkey_name"
-    },
-    {
-        title: t('created_at'),
-        key: "created_at"
-    },
-    {
-        title: t('updated_at'),
-        key: "updated_at"
-    },
-    {
-        title: t('actions'),
-        key: 'actions',
-        render(row) {
-            return h('div', [
-                [
-                    h(NButton,
-                        {
-                            tertiary: true,
-                            type: "primary",
-                            onClick: () => {
-                                showRenamePasskey.value = true;
-                                currentPasskeyId.value = row.passkey_id;
-                            }
-                        },
-                        { default: () => t('renamePasskey') }
-                    ),
-                    h(NPopconfirm,
-                        {
-                            onPositiveClick: async () => {
-                                try {
-                                    await api.fetch(`/user_api/passkey/${row.passkey_id}`, {
-                                        method: 'DELETE'
-                                    })
-                                    await fetchPasskeyList()
-                                } catch (e) {
-                                    console.error(e)
-                                    message.error(e.message)
-                                }
-                            }
-                        },
-                        {
-                            trigger: () => h(NButton,
-                                {
-                                    tertiary: true,
-                                    type: "error",
-                                },
-                                { default: () => t('deletePasskey') }
-                            ),
-                            default: () => `${t('deletePasskey')}?`
-                        }
-                    ),
-                ]
-            ])
-        }
-    }
-]
-
-const passkeyData = ref([])
-
-const fetchPasskeyList = async () => {
-    try {
-        const data = await api.fetch(`/user_api/passkey`)
-        passkeyData.value = data
-    } catch (e) {
-        console.error(e)
-        message.error(e.message)
-    }
-}
-
-const renamePasskey = async () => {
-    try {
-        await api.fetch(`/user_api/passkey/rename`, {
-            method: 'POST',
-            body: JSON.stringify({
-                passkey_name: currentPasskeyName.value,
-                passkey_id: currentPasskeyId.value
-            })
-        })
-        await fetchPasskeyList()
-    } catch (e) {
-        console.error(e)
-        message.error(e.message)
-    } finally {
-        currentPasskeyName.value = ''
-        showRenamePasskey.value = false
-    }
+    userJwt.value = ''
+    message.success(t('logoutSuccess'))
+    location.href = '/'
 }
 </script>
 
 <template>
     <div class="center" v-if="userSettings.user_email">
-        <n-card :bordered="false" embedded>
-            <n-button @click="showPasskeyList = true; fetchPasskeyList();" secondary block strong>
-                {{ t('showPasskeyList') }}
-            </n-button>
-            <n-button @click="showCreatePasskey = true" type="primary" secondary block strong>
-                {{ t('createPasskey') }}
-            </n-button>
-            <n-alert :show-icon="false" :bordered="false">
-                <span>
-                    {{ t('passordTip') }}
-                </span>
-            </n-alert>
-            <n-button @click="showLogout = true" secondary block strong>
-                {{ t('logout') }}
-            </n-button>
+        <n-card embedded :bordered="false">
+            <n-space vertical size="large">
+                <n-page-header>
+                    <template #title>
+                        {{ t('accountCenter') }}
+                    </template>
+                </n-page-header>
+
+                <n-descriptions bordered :column="1" label-placement="left">
+                    <n-descriptions-item :label="t('accountEmail')">
+                        {{ userSettings.user_email }}
+                    </n-descriptions-item>
+                    <n-descriptions-item :label="t('allowedDomainsTitle')">
+                        {{ allowedDomainsText || '-' }}
+                    </n-descriptions-item>
+                </n-descriptions>
+
+                <n-alert type="info" :show-icon="false" :bordered="false">
+                    <strong>{{ t('mailboxPolicyTitle') }}</strong>
+                    <div class="setting-detail">{{ t('mailboxPolicy') }}</div>
+                </n-alert>
+
+                <n-alert
+                    :type="userOpenSettings.enableMailVerify ? 'success' : 'warning'"
+                    :show-icon="false"
+                    :bordered="false"
+                >
+                    <strong>{{ t('resetPolicyTitle') }}</strong>
+                    <div class="setting-detail">
+                        {{ userOpenSettings.enableMailVerify ? t('resetPolicyEnabled') : t('resetPolicyDisabled') }}
+                    </div>
+                </n-alert>
+
+                <n-button type="warning" secondary block strong @click="showLogout = true">
+                    {{ t('logout') }}
+                </n-button>
+            </n-space>
         </n-card>
-        <n-modal v-model:show="showCreatePasskey" preset="dialog" :title="t('createPasskey')">
-            <n-input v-model:value="passkeyName" :placeholder="t('passkeyNamePlaceholder')" />
-            <template #action>
-                <n-button :loading="loading" @click="createPasskey" size="small" tertiary type="primary">
-                    {{ t('createPasskey') }}
-                </n-button>
-            </template>
-        </n-modal>
-        <n-modal v-model:show="showRenamePasskey" preset="dialog" :title="t('renamePasskey')">
-            <n-input v-model:value="currentPasskeyName" :placeholder="t('renamePasskeyNamePlaceholder')" />
-            <template #action>
-                <n-button :loading="loading" @click="renamePasskey" size="small" tertiary type="primary">
-                    {{ t('renamePasskey') }}
-                </n-button>
-            </template>
-        </n-modal>
-        <n-modal v-model:show="showPasskeyList" preset="card" :title="t('showPasskeyList')">
-            <n-data-table :columns="passkeyColumns" :data="passkeyData" :bordered="false" embedded />
-        </n-modal>
+
         <n-modal v-model:show="showLogout" preset="dialog" :title="t('logout')">
             <p>{{ t('logoutConfirm') }}</p>
             <template #action>
-                <n-button :loading="loading" @click="logout" size="small" tertiary type="warning">
+                <n-button tertiary type="warning" @click="logout">
                     {{ t('logout') }}
                 </n-button>
             </template>
@@ -246,14 +111,13 @@ const renamePasskey = async () => {
     justify-content: center;
 }
 
-
 .n-card {
     max-width: 800px;
+    width: 100%;
     text-align: left;
 }
 
-.n-button {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.setting-detail {
+    margin-top: 8px;
 }
 </style>

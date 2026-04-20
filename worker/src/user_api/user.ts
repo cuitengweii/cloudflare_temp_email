@@ -2,30 +2,58 @@ import { Context } from 'hono';
 import { Jwt } from 'hono/utils/jwt'
 
 import i18n from '../i18n';
-import utils, { checkCfTurnstile, getJsonSetting, checkUserPassword, getUserRoles, getStringValue } from "../utils"
+import utils, { checkCfTurnstile, getDomains, getJsonSetting, checkUserPassword, getUserRoles, getStringValue } from "../utils"
 import { CONSTANTS } from "../constants";
 import { GeoData, UserInfo, UserSettings } from "../models";
 import { sendMail } from "../mails_api/send_mail_api";
+
+const MAIL_VERIFY_REQUIRED_MSG = "Employee registration requires email verification to be enabled";
+
+const getAllowedEmployeeDomains = (
+    c: Context<HonoCustomType>,
+    settings: UserSettings
+): string[] => {
+    if (settings.enableMailAllowList && settings.mailAllowList?.length) {
+        return settings.mailAllowList
+            .map((domain) => String(domain || "").trim().toLowerCase())
+            .filter((domain) => domain.length > 0);
+    }
+    return getDomains(c)
+        .map((domain) => String(domain || "").trim().toLowerCase())
+        .filter((domain) => domain.length > 0);
+};
+
+const validateEmployeeEmailDomain = (
+    email: string,
+    allowedDomains: string[],
+    msgs: ReturnType<typeof i18n.getMessagesbyContext>
+) => {
+    const mailDomain = String(email || "").split("@")[1]?.trim().toLowerCase();
+    if (!mailDomain || !allowedDomains.includes(mailDomain)) {
+        return `${msgs.UserMailDomainMustInMsg} ${JSON.stringify(allowedDomains, null, 2)}`;
+    }
+    return null;
+};
 
 export default {
     verifyCode: async (c: Context<HonoCustomType>) => {
         const { email, cf_token } = await c.req.json();
         const msgs = i18n.getMessagesbyContext(c);
+        const value = await getJsonSetting(c, CONSTANTS.USER_SETTINGS_KEY);
+        const settings = new UserSettings(value)
+        if (!settings.enableMailVerify) {
+            return c.text(MAIL_VERIFY_REQUIRED_MSG, 403)
+        }
+        const allowedDomains = getAllowedEmployeeDomains(c, settings);
+        const emailDomainError = validateEmployeeEmailDomain(email, allowedDomains, msgs);
+        if (emailDomainError) {
+            return c.text(emailDomainError, 400)
+        }
         // check cf turnstile
         try {
             await checkCfTurnstile(c, cf_token);
         } catch (error) {
             return c.text(msgs.TurnstileCheckFailedMsg, 400)
-        }
-        const value = await getJsonSetting(c, CONSTANTS.USER_SETTINGS_KEY);
-        const settings = new UserSettings(value)
-        // check mail domain allow list
-        const mailDomain = email.split("@")[1];
-        if (settings.enableMailAllowList
-            && settings.mailAllowList
-            && !settings.mailAllowList.includes(mailDomain)
-        ) {
-            return c.text(`${msgs.UserMailDomainMustInMsg} ${JSON.stringify(settings.mailAllowList, null, 2)}`, 400)
         }
         // check email regex
         if (settings.enableEmailCheckRegex && settings.emailCheckRegex) {
@@ -51,11 +79,11 @@ export default {
         // send code to email
         try {
             await sendMail(c, settings.verifyMailSender, {
-                from_name: "Temp Mail Verify",
+                from_name: "Employee Mail",
                 to_name: '',
                 to_mail: email as string,
-                subject: "Temp Mail Verify code",
-                content: `Your verify code is ${code}`,
+                subject: "Employee Mail Verification Code",
+                content: `Your employee email verification code is ${code}`,
                 is_html: false,
             })
         } catch (e) {
@@ -76,31 +104,27 @@ export default {
         if (!settings.enable) {
             return c.text(msgs.UserRegistrationDisabledMsg, 403);
         }
+        if (!settings.enableMailVerify) {
+            return c.text(MAIL_VERIFY_REQUIRED_MSG, 403);
+        }
         // check request
         const { email, password, code, cf_token } = await c.req.json();
         if (!email || !password) {
             return c.text(msgs.InvalidEmailOrPasswordMsg, 400)
         }
         checkUserPassword(password);
-        // check cf turnstile only when mail verify is disabled
-        // (when enabled, verify_code endpoint already checks turnstile)
-        if (!settings.enableMailVerify) {
-            try {
-                await checkCfTurnstile(c, cf_token);
-            } catch (error) {
-                return c.text(msgs.TurnstileCheckFailedMsg, 400)
-            }
+        try {
+            await checkCfTurnstile(c, cf_token);
+        } catch (error) {
+            return c.text(msgs.TurnstileCheckFailedMsg, 400)
         }
-        if (settings.enableMailVerify && !code) {
+        if (!code) {
             return c.text(msgs.InvalidVerifyCodeMsg, 400)
         }
-        // check mail domain allow list
-        const mailDomain = email.split("@")[1];
-        if (settings.enableMailAllowList
-            && settings.mailAllowList
-            && !settings.mailAllowList.includes(mailDomain)
-        ) {
-            return c.text(`${msgs.UserMailDomainMustInMsg} ${JSON.stringify(settings.mailAllowList, null, 2)}`, 400)
+        const allowedDomains = getAllowedEmployeeDomains(c, settings);
+        const emailDomainError = validateEmployeeEmailDomain(email, allowedDomains, msgs);
+        if (emailDomainError) {
+            return c.text(emailDomainError, 400)
         }
         // check email regex
         if (settings.enableEmailCheckRegex && settings.emailCheckRegex) {
@@ -114,38 +138,14 @@ export default {
             }
         }
         // check code
-        if (settings.enableMailVerify) {
-            const verifyCode = await c.env.KV.get(`temp-mail:${email}`)
-            if (verifyCode != code) {
-                return c.text(msgs.InvalidVerifyCodeMsg, 400)
-            }
+        const verifyCode = await c.env.KV.get(`temp-mail:${email}`)
+        if (verifyCode != code) {
+            return c.text(msgs.InvalidVerifyCodeMsg, 400)
         }
         // geo data
         const reqIp = c.req.raw.headers.get("cf-connecting-ip")
         const geoData = new GeoData(reqIp, c.req.raw.cf as any);
         const userInfo = new UserInfo(geoData, email);
-        // if not enable mail verify, do not on conflict update
-        if (!settings.enableMailVerify) {
-            try {
-                const { success } = await c.env.DB.prepare(
-                    `INSERT INTO users (user_email, password, user_info)`
-                    + ` VALUES (?, ?, ?)`
-                ).bind(
-                    email, password, JSON.stringify(userInfo)
-                ).run();
-                if (!success) {
-                    return c.text(msgs.FailedToRegisterMsg, 500)
-                }
-            } catch (e) {
-                const error = e as Error;
-                if (error.message && error.message.includes("UNIQUE")) {
-                    return c.text(msgs.UserAlreadyExistsMsg, 400)
-                }
-                return c.text(`${msgs.FailedToRegisterMsg}: ${error.message}`, 500)
-            }
-            return c.json({ success: true })
-        }
-        // if enable mail verify, on conflict update
         const { success } = await c.env.DB.prepare(
             `INSERT INTO users (user_email, password, user_info)`
             + ` VALUES (?, ?, ?)`

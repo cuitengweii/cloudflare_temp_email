@@ -1,21 +1,15 @@
 <script setup>
+import { computed, ref } from 'vue'
 import { useMessage } from 'naive-ui'
-import { onMounted, ref } from "vue";
 import { useI18n } from 'vue-i18n'
-import { KeyFilled } from '@vicons/material'
 
-import { api } from '../../api';
+import { api } from '../../api'
 import { useGlobalState } from '../../store'
-import { hashPassword } from '../../utils';
-import { startAuthentication } from '@simplewebauthn/browser';
+import { hashPassword } from '../../utils'
+import Turnstile from '../../components/Turnstile.vue'
 
-import Turnstile from '../../components/Turnstile.vue';
-
-const {
-    userJwt, userOpenSettings, openSettings,
-    userOauth2SessionState, userOauth2SessionClientID
-} = useGlobalState()
-const message = useMessage();
+const { userJwt, userOpenSettings, openSettings } = useGlobalState()
+const message = useMessage()
 
 const { t } = useI18n({
     messages: {
@@ -25,19 +19,22 @@ const { t } = useI18n({
             email: 'Email',
             password: 'Password',
             verifyCode: 'Verification Code',
-            verifyCodeSent: 'Verification Code Sent, expires in {timeout} seconds',
-            waitforVerifyCode: 'Wait for {timeout} seconds',
+            verifyCodeSent: 'Verification code sent and will expire in {timeout} seconds.',
+            waitforVerifyCode: 'Wait {timeout}s',
             sendVerificationCode: 'Send Verification Code',
             forgotPassword: 'Forgot Password',
-            cannotForgotPassword: 'Mail verification is disabled or register is disabled, cannot reset password, please contact administrator',
+            cannotForgotPassword: 'Email verification is not available. Please contact your administrator.',
             resetPassword: 'Reset Password',
-            pleaseInput: 'Please input email and password',
-            pleaseInputEmail: 'Please input email',
-            pleaseInputCode: 'Please input code',
-            pleaseCompleteTurnstile: 'Please complete turnstile',
-            pleaseLogin: 'Please login',
-            loginWithPasskey: 'Login with Passkey',
-            loginWith: 'Login with {provider}',
+            pleaseInput: 'Please input email and password.',
+            pleaseInputEmail: 'Please input email.',
+            pleaseInputCode: 'Please input verification code.',
+            pleaseCompleteTurnstile: 'Please complete turnstile verification.',
+            pleaseLogin: 'Registration complete. Please login.',
+            invalidCompanyEmail: 'Only company email domains are allowed: {domains}',
+            employeeRegisterTip: 'Registration only creates an employee account. Mailboxes are assigned by the administrator.',
+            allowedDomainsTip: 'Allowed company domains: {domains}',
+            verificationUnavailableTip: 'Registration and password reset are disabled until email verification is enabled by the administrator.',
+            passwordResetSuccess: 'Password reset complete. Please login with the new password.',
         },
         zh: {
             login: '登录',
@@ -45,185 +42,204 @@ const { t } = useI18n({
             email: '邮箱',
             password: '密码',
             verifyCode: '验证码',
+            verifyCodeSent: '验证码已发送，{timeout} 秒后失效。',
+            waitforVerifyCode: '等待 {timeout} 秒',
             sendVerificationCode: '发送验证码',
-            verifyCodeSent: '验证码已发送, {timeout} 秒后失效',
-            waitforVerifyCode: '等待{timeout}秒',
             forgotPassword: '忘记密码',
-            cannotForgotPassword: '未开启邮箱验证或未开启注册功能，无法重置密码，请联系管理员',
+            cannotForgotPassword: '当前未启用邮箱验证，请联系管理员处理。',
             resetPassword: '重置密码',
-            pleaseInput: '请输入邮箱和密码',
-            pleaseInputEmail: '请输入邮箱',
-            pleaseInputCode: '请输入验证码',
-            pleaseCompleteTurnstile: '请完成人机验证',
-            pleaseLogin: '请登录',
-            loginWithPasskey: '使用 Passkey 登录',
-            loginWith: '使用 {provider} 登录',
+            pleaseInput: '请输入邮箱和密码。',
+            pleaseInputEmail: '请输入邮箱。',
+            pleaseInputCode: '请输入验证码。',
+            pleaseCompleteTurnstile: '请完成人机验证。',
+            pleaseLogin: '注册完成，请登录。',
+            invalidCompanyEmail: '仅允许使用公司邮箱域名：{domains}',
+            employeeRegisterTip: '注册只会创建员工账号，邮箱地址需要由管理员分配。',
+            allowedDomainsTip: '允许注册的公司域名：{domains}',
+            verificationUnavailableTip: '管理员尚未开启邮箱验证，当前无法注册或重置密码。',
+            passwordResetSuccess: '密码已重置，请使用新密码登录。',
         }
     }
-});
+})
 
-const tabValue = ref("signin");
-const showModal = ref(false);
+const tabValue = ref('signin')
+const showResetModal = ref(false)
 const user = ref({
-    email: "",
-    password: "",
-    code: ""
-});
-const signupCfToken = ref("")
-const resetCfToken = ref("")
-const loginCfToken = ref("")
+    email: '',
+    password: '',
+    code: '',
+})
+
+const signupCfToken = ref('')
+const resetCfToken = ref('')
+const loginCfToken = ref('')
 const signupTurnstileRef = ref(null)
 const resetTurnstileRef = ref(null)
 const loginTurnstileRef = ref(null)
 
-const emailLogin = async () => {
-    if (!user.value.email || !user.value.password) {
-        message.error(t('pleaseInput'));
-        return;
-    }
-    try {
-        const res = await api.fetch(`/user_api/login`, {
-            method: "POST",
-            body: JSON.stringify({
-                email: user.value.email,
-                // hash password
-                password: await hashPassword(user.value.password),
-                cf_token: loginCfToken.value
-            })
-        });
-        userJwt.value = res.jwt;
-        location.reload();
-    } catch (error) {
-        message.error(error.message || "login failed");
-        loginTurnstileRef.value?.refresh?.();
-    }
-};
+const verifyCodeExpire = ref(0)
+const verifyCodeTimeout = ref(0)
 
-const verifyCodeExpire = ref(0);
-const verifyCodeTimeout = ref(0);
+const canUseEmployeeRegistration = computed(() =>
+    userOpenSettings.value.enable && userOpenSettings.value.enableMailVerify
+)
+const allowedDomainsText = computed(() =>
+    Array.isArray(userOpenSettings.value.allowedDomains)
+        ? userOpenSettings.value.allowedDomains.join(', ')
+        : ''
+)
 
 const getVerifyCodeTimeout = () => {
-    if (!verifyCodeExpire.value || verifyCodeExpire.value < new Date().getTime()) return 0;
-    return Math.round((verifyCodeExpire.value - new Date().getTime()) / 1000);
-};
+    if (!verifyCodeExpire.value || verifyCodeExpire.value < Date.now()) return 0
+    return Math.round((verifyCodeExpire.value - Date.now()) / 1000)
+}
+
+const validateCompanyEmail = () => {
+    if (!user.value.email) {
+        return t('pleaseInputEmail')
+    }
+    const allowedDomains = Array.isArray(userOpenSettings.value.allowedDomains)
+        ? userOpenSettings.value.allowedDomains
+        : []
+    if (!allowedDomains.length) {
+        return ''
+    }
+    const mailDomain = String(user.value.email).split('@')[1]?.trim().toLowerCase()
+    if (!mailDomain || !allowedDomains.includes(mailDomain)) {
+        return t('invalidCompanyEmail', { domains: allowedDomainsText.value })
+    }
+    return ''
+}
+
+const resetVerifyCodeCountdown = (expirationTtl) => {
+    verifyCodeExpire.value = Date.now() + expirationTtl * 1000
+    verifyCodeTimeout.value = expirationTtl
+    const intervalId = setInterval(() => {
+        verifyCodeTimeout.value = getVerifyCodeTimeout()
+        if (verifyCodeTimeout.value <= 0) {
+            clearInterval(intervalId)
+            verifyCodeTimeout.value = 0
+        }
+    }, 1000)
+}
+
+const openResetPasswordModal = () => {
+    if (!canUseEmployeeRegistration.value) {
+        message.error(t('cannotForgotPassword'))
+        return
+    }
+    user.value.code = ''
+    showResetModal.value = true
+}
+
+const emailLogin = async () => {
+    if (!user.value.email || !user.value.password) {
+        message.error(t('pleaseInput'))
+        return
+    }
+    try {
+        const res = await api.fetch('/user_api/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: user.value.email,
+                password: await hashPassword(user.value.password),
+                cf_token: loginCfToken.value,
+            })
+        })
+        userJwt.value = res.jwt
+        location.reload()
+    } catch (error) {
+        message.error(error.message || 'login failed')
+        loginTurnstileRef.value?.refresh?.()
+    }
+}
 
 const sendVerificationCode = async () => {
-    if (!user.value.email) {
-        message.error(t('pleaseInputEmail'));
-        return;
+    if (!canUseEmployeeRegistration.value) {
+        message.error(t('cannotForgotPassword'))
+        return
     }
-    const currentCfToken = showModal.value ? resetCfToken.value : signupCfToken.value;
-    if (openSettings.value.cfTurnstileSiteKey && !currentCfToken && userOpenSettings.value.enableMailVerify) {
-        message.error(t('pleaseCompleteTurnstile'));
-        return;
+    const emailError = validateCompanyEmail()
+    if (emailError) {
+        message.error(emailError)
+        return
+    }
+    const currentCfToken = showResetModal.value ? resetCfToken.value : signupCfToken.value
+    if (openSettings.value.enableGlobalTurnstileCheck && !currentCfToken) {
+        message.error(t('pleaseCompleteTurnstile'))
+        return
     }
     try {
-        const res = await api.fetch(`/user_api/verify_code`, {
-            method: "POST",
+        const res = await api.fetch('/user_api/verify_code', {
+            method: 'POST',
             body: JSON.stringify({
                 email: user.value.email,
-                cf_token: currentCfToken
+                cf_token: currentCfToken,
             })
-        });
-        if (res && res.expirationTtl) {
-            message.success(t('verifyCodeSent', { timeout: res.expirationTtl }));
-            verifyCodeExpire.value = new Date().getTime() + res.expirationTtl * 1000;
-            const intervalId = setInterval(() => {
-                verifyCodeTimeout.value = getVerifyCodeTimeout();
-                if (verifyCodeTimeout.value <= 0) {
-                    clearInterval(intervalId);
-                    verifyCodeTimeout.value = 0;
-                }
-            }, 1000);
+        })
+        if (res?.expirationTtl) {
+            message.success(t('verifyCodeSent', { timeout: res.expirationTtl }))
+            resetVerifyCodeCountdown(res.expirationTtl)
         }
     } catch (error) {
-        message.error(error.message || "send verification code failed");
+        message.error(error.message || 'send verification code failed')
     }
-    if (showModal.value) {
-        resetTurnstileRef.value?.refresh?.();
+    if (showResetModal.value) {
+        resetTurnstileRef.value?.refresh?.()
     } else {
-        signupTurnstileRef.value?.refresh?.();
+        signupTurnstileRef.value?.refresh?.()
     }
-};
+}
 
-const emailSignup = async () => {
-    if (!user.value.email || !user.value.password) {
-        message.error(t('pleaseInput'));
-        return;
+const submitEmployeeCredential = async (isPasswordReset = false) => {
+    if (!canUseEmployeeRegistration.value) {
+        message.error(t('cannotForgotPassword'))
+        return
     }
-    if (!user.value.code && userOpenSettings.value.enableMailVerify) {
-        message.error(t('pleaseInputCode'));
-        return;
+    if (!user.value.email || !user.value.password) {
+        message.error(t('pleaseInput'))
+        return
+    }
+    const emailError = validateCompanyEmail()
+    if (emailError) {
+        message.error(emailError)
+        return
+    }
+    if (!user.value.code) {
+        message.error(t('pleaseInputCode'))
+        return
+    }
+    const currentCfToken = isPasswordReset ? resetCfToken.value : signupCfToken.value
+    if (openSettings.value.enableGlobalTurnstileCheck && !currentCfToken) {
+        message.error(t('pleaseCompleteTurnstile'))
+        return
     }
     try {
-        const res = await api.fetch(`/user_api/register`, {
-            method: "POST",
+        await api.fetch('/user_api/register', {
+            method: 'POST',
             body: JSON.stringify({
                 email: user.value.email,
-                // hash password
                 password: await hashPassword(user.value.password),
                 code: user.value.code,
-                cf_token: showModal.value ? resetCfToken.value : signupCfToken.value
+                cf_token: currentCfToken,
             }),
-            message: message
-        });
-        if (res) {
-            tabValue.value = "signin";
-            message.success(t('pleaseLogin'));
-        }
-        showModal.value = false;
-    } catch (error) {
-        message.error(error.message || "register failed");
-    }
-};
-
-const passkeyLogin = async () => {
-    try {
-        const options = await api.fetch(`/user_api/passkey/authenticate_request`, {
-            method: 'POST',
-            body: JSON.stringify({
-                domain: location.hostname,
-            })
+            message,
         })
-        const credential = await startAuthentication({ optionsJSON: options })
-
-        // Send the result to the server and return the promise.
-        const res = await api.fetch(`/user_api/passkey/authenticate_response`, {
-            method: 'POST',
-            body: JSON.stringify({
-                origin: location.origin,
-                domain: location.hostname,
-                credential
-            })
-        })
-        userJwt.value = res.jwt;
-        location.reload();
-    } catch (e) {
-        console.error(e)
-        message.error(e.message)
-    }
-};
-
-const oauth2Login = async (clientID) => {
-    try {
-        userOauth2SessionClientID.value = clientID;
-        userOauth2SessionState.value = Math.random().toString(36).substring(2);
-        const res = await api.fetch(`/user_api/oauth2/login_url?clientID=${clientID}&state=${userOauth2SessionState.value}`);
-        // redirect to oauth2 login page
-        location.href = res.url;
+        user.value.code = ''
+        user.value.password = ''
+        showResetModal.value = false
+        tabValue.value = 'signin'
+        message.success(isPasswordReset ? t('passwordResetSuccess') : t('pleaseLogin'))
     } catch (error) {
-        message.error(error.message || "login failed");
+        message.error(error.message || 'register failed')
     }
-};
-
-onMounted(async () => {
-
-});
+}
 </script>
 
 <template>
     <div class="center">
-        <n-tabs v-model:value="tabValue" size="large" v-if="userOpenSettings.fetched" justify-content="space-evenly">
+        <n-skeleton v-if="!userOpenSettings.fetched" style="height: 320px; width: 100%;" />
+        <n-tabs v-else v-model:value="tabValue" size="large" justify-content="space-evenly">
             <n-tab-pane name="signin" :tab="t('login')">
                 <n-form>
                     <n-form-item-row :label="t('email')" required>
@@ -232,109 +248,128 @@ onMounted(async () => {
                     <n-form-item-row :label="t('password')" required>
                         <n-input v-model:value="user.password" type="password" show-password-on="click" />
                     </n-form-item-row>
-                    <Turnstile ref="loginTurnstileRef" v-if="openSettings.enableGlobalTurnstileCheck" v-model:value="loginCfToken" />
+                    <Turnstile
+                        v-if="openSettings.enableGlobalTurnstileCheck"
+                        ref="loginTurnstileRef"
+                        v-model:value="loginCfToken"
+                    />
                     <n-button @click="emailLogin" type="primary" block secondary strong>
                         {{ t('login') }}
                     </n-button>
-                    <n-button @click="showModal = true" type="info" quaternary size="tiny">
+                    <n-button @click="openResetPasswordModal" type="info" quaternary size="tiny">
                         {{ t('forgotPassword') }}
                     </n-button>
-                    <n-divider />
-                    <n-button @click="passkeyLogin" type="primary" block secondary strong>
-                        <template #icon>
-                            <n-icon :component="KeyFilled" />
-                        </template>
-                        {{ t('loginWithPasskey') }}
-                    </n-button>
-                    <n-button @click="oauth2Login(item.clientID)" v-for="item in userOpenSettings.oauth2ClientIDs"
-                        :key="item.clientID" block secondary strong>
-                        <template #icon v-if="item.icon">
-                            <span class="oauth2-icon" v-html="item.icon"></span>
-                        </template>
-                        {{ t('loginWith', { provider: item.name }) }}
-                    </n-button>
+                    <n-alert
+                        v-if="!canUseEmployeeRegistration"
+                        type="warning"
+                        :show-icon="false"
+                        :bordered="false"
+                        style="margin-top: 16px;"
+                    >
+                        {{ t('verificationUnavailableTip') }}
+                    </n-alert>
                 </n-form>
             </n-tab-pane>
-            <n-tab-pane v-if="userOpenSettings.enable" name="signup" :tab="t('register')">
+
+            <n-tab-pane v-if="canUseEmployeeRegistration" name="signup" :tab="t('register')">
                 <n-form>
+                    <n-alert type="info" :show-icon="false" :bordered="false" style="margin-bottom: 16px;">
+                        <div>{{ t('employeeRegisterTip') }}</div>
+                        <div v-if="allowedDomainsText" class="domain-hint">
+                            {{ t('allowedDomainsTip', { domains: allowedDomainsText }) }}
+                        </div>
+                    </n-alert>
                     <n-form-item-row :label="t('email')" required>
                         <n-input v-model:value="user.email" />
                     </n-form-item-row>
                     <n-form-item-row :label="t('password')" required>
                         <n-input v-model:value="user.password" type="password" show-password-on="click" />
                     </n-form-item-row>
-                    <Turnstile ref="signupTurnstileRef" v-if="userOpenSettings.enableMailVerify" v-model:value="signupCfToken" />
-                    <n-form-item-row v-if="userOpenSettings.enableMailVerify" :label="t('verifyCode')" required>
+                    <n-form-item-row :label="t('verifyCode')" required>
                         <n-input-group>
                             <n-input v-model:value="user.code" />
-                            <n-button @click="sendVerificationCode" style="margin-bottom: 0" type="primary" ghost
-                                :disabled="verifyCodeTimeout > 0">
-                                {{ verifyCodeTimeout > 0 ? t('waitforVerifyCode', { timeout: verifyCodeTimeout })
-                                    : t('sendVerificationCode') }}
+                            <n-button
+                                type="primary"
+                                secondary
+                                strong
+                                :disabled="verifyCodeTimeout > 0"
+                                @click="sendVerificationCode"
+                            >
+                                {{
+                                    verifyCodeTimeout > 0
+                                        ? t('waitforVerifyCode', { timeout: verifyCodeTimeout })
+                                        : t('sendVerificationCode')
+                                }}
                             </n-button>
                         </n-input-group>
                     </n-form-item-row>
-                    <Turnstile ref="signupTurnstileRef" v-if="!userOpenSettings.enableMailVerify" v-model:value="signupCfToken" />
+                    <Turnstile
+                        v-if="openSettings.enableGlobalTurnstileCheck"
+                        ref="signupTurnstileRef"
+                        v-model:value="signupCfToken"
+                    />
+                    <n-button @click="submitEmployeeCredential(false)" type="primary" block secondary strong>
+                        {{ t('register') }}
+                    </n-button>
                 </n-form>
-                <n-button @click="emailSignup" type="primary" block secondary strong>
-                    {{ t('register') }}
-                </n-button>
             </n-tab-pane>
         </n-tabs>
-        <n-modal v-model:show="showModal" style="max-width: 600px;" preset="card" :title="t('forgotPassword')">
-            <n-form v-if="userOpenSettings.enable && userOpenSettings.enableMailVerify">
+
+        <n-modal v-model:show="showResetModal" preset="dialog" :title="t('resetPassword')">
+            <n-space vertical>
+                <n-alert
+                    v-if="allowedDomainsText"
+                    type="info"
+                    :show-icon="false"
+                    :bordered="false"
+                >
+                    {{ t('allowedDomainsTip', { domains: allowedDomainsText }) }}
+                </n-alert>
                 <n-form-item-row :label="t('email')" required>
                     <n-input v-model:value="user.email" />
                 </n-form-item-row>
                 <n-form-item-row :label="t('password')" required>
                     <n-input v-model:value="user.password" type="password" show-password-on="click" />
                 </n-form-item-row>
-                <Turnstile ref="resetTurnstileRef" v-model:value="resetCfToken" />
                 <n-form-item-row :label="t('verifyCode')" required>
                     <n-input-group>
                         <n-input v-model:value="user.code" />
-                        <n-button @click="sendVerificationCode" style="margin-bottom: 0" type="primary" ghost
-                            :disabled="verifyCodeTimeout > 0">
-                            {{ verifyCodeTimeout > 0 ? t('waitforVerifyCode', { timeout: verifyCodeTimeout })
-                                : t('sendVerificationCode') }}
+                        <n-button
+                            type="primary"
+                            secondary
+                            strong
+                            :disabled="verifyCodeTimeout > 0"
+                            @click="sendVerificationCode"
+                        >
+                            {{
+                                verifyCodeTimeout > 0
+                                    ? t('waitforVerifyCode', { timeout: verifyCodeTimeout })
+                                    : t('sendVerificationCode')
+                            }}
                         </n-button>
                     </n-input-group>
                 </n-form-item-row>
-                <n-button @click="emailSignup" type="primary" block secondary strong>
+                <Turnstile
+                    v-if="openSettings.enableGlobalTurnstileCheck"
+                    ref="resetTurnstileRef"
+                    v-model:value="resetCfToken"
+                />
+            </n-space>
+            <template #action>
+                <n-button type="primary" @click="submitEmployeeCredential(true)">
                     {{ t('resetPassword') }}
                 </n-button>
-            </n-form>
-            <n-alert v-else :show-icon="false" :bordered="false">
-                <span>
-                    {{ t('cannotForgotPassword') }}
-                </span>
-            </n-alert>
+            </template>
         </n-modal>
     </div>
 </template>
 
 <style scoped>
 .center {
-    display: flex;
-    text-align: center;
-    place-items: center;
-    justify-content: center;
-}
-
-.n-button {
-    margin-top: 10px;
-}
-
-.oauth2-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-}
-
-.oauth2-icon :deep(svg) {
     width: 100%;
-    height: 100%;
+}
+
+.domain-hint {
+    margin-top: 8px;
 }
 </style>

@@ -2,10 +2,24 @@ import { Context } from "hono";
 
 import i18n from "../i18n";
 import { UserOauth2Settings, UserSettings } from "../models";
-import { getJsonSetting, getUserRoles } from "../utils"
+import { getDomains, getJsonSetting, getUserRoles } from "../utils"
 import { CONSTANTS } from "../constants";
 import { commonGetUserRole } from "../common";
 import { Jwt } from "hono/utils/jwt";
+
+const getAllowedEmployeeDomains = (
+    c: Context<HonoCustomType>,
+    settings: UserSettings
+): string[] => {
+    if (settings.enableMailAllowList && settings.mailAllowList?.length) {
+        return settings.mailAllowList
+            .map((domain) => String(domain || "").trim().toLowerCase())
+            .filter((domain) => domain.length > 0);
+    }
+    return getDomains(c)
+        .map((domain) => String(domain || "").trim().toLowerCase())
+        .filter((domain) => domain.length > 0);
+};
 
 export default {
     openSettings: async (c: Context<HonoCustomType>) => {
@@ -27,6 +41,7 @@ export default {
         return c.json({
             enable: settings.enable,
             enableMailVerify: settings.enableMailVerify,
+            allowedDomains: getAllowedEmployeeDomains(c, settings),
             oauth2ClientIDs: oauth2ClientIDs,
         })
     },
