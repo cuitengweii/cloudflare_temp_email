@@ -5,10 +5,9 @@ import { useHead } from '@unhead/vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { useIsMobile } from '../utils/composables'
 import {
-    DarkModeFilled, LightModeFilled, MenuFilled,
-    AdminPanelSettingsFilled, MonitorHeartFilled
+    MenuFilled, MonitorHeartFilled
 } from '@vicons/material'
-import { GithubAlt, Language, User, Home } from '@vicons/fa'
+import { Language, User, Home } from '@vicons/fa'
 
 import { useGlobalState } from '../store'
 import { api } from '../api'
@@ -19,7 +18,7 @@ const message = useMessage()
 const notification = useNotification()
 
 const {
-    toggleDark, isDark, isTelegram, showAdminPage,
+    isTelegram,
     showAuth, auth, loading, openSettings, userSettings
 } = useGlobalState()
 const route = useRoute()
@@ -101,8 +100,6 @@ const siteTitle = computed(() => {
     return cleaned || fallbackTitle.value;
 });
 
-const version = import.meta.env.PACKAGE_VERSION ? `v${import.meta.env.PACKAGE_VERSION}` : "";
-
 const menuOptions = computed(() => [
     {
         label: () => t('home'),
@@ -117,17 +114,6 @@ const menuOptions = computed(() => [
         show: !isTelegram.value,
     },
     {
-        label: () => "Admin",
-        key: "admin",
-        icon: () => h(NIcon, { component: AdminPanelSettingsFilled }),
-        show: showAdminPage.value,
-    },
-    {
-        label: () => isDark.value ? t('light') : t('dark'),
-        key: "theme",
-        icon: () => h(NIcon, { component: isDark.value ? LightModeFilled : DarkModeFilled }),
-    },
-    {
         label: () => locale.value == 'zh' ? "English" : "中文",
         key: "lang",
         icon: () => h(NIcon, { component: Language }),
@@ -137,12 +123,6 @@ const menuOptions = computed(() => [
         key: "status",
         icon: () => h(NIcon, { component: MonitorHeartFilled }),
         show: !!openSettings.value?.statusUrl,
-    },
-    {
-        label: () => version || "Github",
-        key: "github",
-        icon: () => h(NIcon, { component: GithubAlt }),
-        show: openSettings.value?.showGithub,
     }
 ]);
 
@@ -152,18 +132,10 @@ const handleMenuUpdate = async (key) => {
         await router.push(getRouterPathWithLang('/', locale.value));
     } else if (key === 'user') {
         await router.push(getRouterPathWithLang("/user", locale.value));
-    } else if (key === 'admin') {
-        loading.value = true;
-        await router.push(getRouterPathWithLang('/admin', locale.value));
-        loading.value = false;
-    } else if (key === 'theme') {
-        toggleDark();
     } else if (key === 'lang') {
         locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh');
     } else if (key === 'status') {
         window.open(openSettings.value?.statusUrl, '_blank');
-    } else if (key === 'github') {
-        window.open("https://github.com/dreamhunter2333/cloudflare_temp_email", '_blank');
     }
 };
 
