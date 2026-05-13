@@ -7,8 +7,12 @@ export default {
         const { user_id } = c.get("userPayload");
         const { address, limit, offset } = c.req.query();
         const bindedAddressList = await UserBindAddressModule.getBindedAddressListById(c, user_id);
-        const addressList = address ? bindedAddressList.filter((item) => item == address) : bindedAddressList;
-        const addressQuery = `address IN (${addressList.map(() => "?").join(",")})`;
+        const normalizedAddress = typeof address === "string" ? address.trim().toLowerCase() : "";
+        const addressList = (normalizedAddress
+            ? bindedAddressList.filter((item) => item.toLowerCase() === normalizedAddress)
+            : bindedAddressList
+        ).map((item) => item.toLowerCase());
+        const addressQuery = `LOWER(address) IN (${addressList.map(() => "?").join(",")})`;
         const addressParams = addressList;
 
         // user must have at least one binded address to query mails
@@ -28,10 +32,11 @@ export default {
     deleteMail: async (c: Context<HonoCustomType>) => {
         const { id } = c.req.param();
         const { user_id } = c.get("userPayload");
-        const bindedAddressList = await UserBindAddressModule.getBindedAddressListById(c, user_id);
+        const bindedAddressList = (await UserBindAddressModule.getBindedAddressListById(c, user_id))
+            .map((item) => item.toLowerCase());
         const { success } = await c.env.DB.prepare(
             `DELETE FROM raw_mails WHERE id = ?`
-            + ` and address IN (${bindedAddressList.map(() => "?").join(",")})`
+            + ` and LOWER(address) IN (${bindedAddressList.map(() => "?").join(",")})`
         ).bind(id, ...bindedAddressList).run();
         return c.json({
             success: success

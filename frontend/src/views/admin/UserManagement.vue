@@ -28,7 +28,8 @@ const { t } = useI18n({
             deleteUser: 'Delete User',
             delete: 'Delete',
             deleteUserTip: 'Are you sure you want to delete this user?',
-            resetPassword: 'Reset Password',
+            resetPassword: 'Admin Reset Password',
+            resetPasswordTip: 'Generate a new temporary password and send it to the employee.',
             pleaseInput: 'Please input complete information',
             createUser: 'Create User',
             email: 'Email',
@@ -39,6 +40,8 @@ const { t } = useI18n({
             employeeCredentials: 'Employee Credentials',
             employeeCredentialsTip: 'Send this email and password to the employee for first login.',
             copyCredentials: 'Copy Credentials',
+            resetCredentials: 'Reset Credentials',
+            resetCredentialsTip: 'Password reset complete. Send this new temporary password to the employee.',
             changeRole: 'Change Role',
             prefix: 'Prefix',
             domains: 'Domains',
@@ -58,7 +61,8 @@ const { t } = useI18n({
             deleteUser: '\u5220\u9664\u7528\u6237',
             delete: '\u5220\u9664',
             deleteUserTip: '\u786e\u5b9a\u8981\u5220\u9664\u6b64\u7528\u6237\u5417\uff1f',
-            resetPassword: '\u91cd\u7f6e\u5bc6\u7801',
+            resetPassword: '\u7ba1\u7406\u5458\u91cd\u7f6e\u5bc6\u7801',
+            resetPasswordTip: '\u751f\u6210\u65b0\u7684\u4e34\u65f6\u5bc6\u7801\u5e76\u4e0b\u53d1\u7ed9\u5458\u5de5\u3002',
             pleaseInput: '\u8bf7\u8f93\u5165\u5b8c\u6574\u4fe1\u606f',
             createUser: '\u521b\u5efa\u7528\u6237',
             email: '\u90ae\u7bb1',
@@ -69,6 +73,8 @@ const { t } = useI18n({
             employeeCredentials: '\u5458\u5de5\u767b\u5f55\u4fe1\u606f',
             employeeCredentialsTip: '\u8bf7\u5c06\u8fd9\u4e2a\u90ae\u7bb1\u548c\u968f\u673a\u5bc6\u7801\u53d1\u7ed9\u5458\u5de5\uff0c\u4f5c\u4e3a\u9996\u6b21\u767b\u5f55\u51ed\u8bc1\u3002',
             copyCredentials: '\u590d\u5236\u767b\u5f55\u4fe1\u606f',
+            resetCredentials: '\u91cd\u7f6e\u540e\u7684\u767b\u5f55\u4fe1\u606f',
+            resetCredentialsTip: '\u5bc6\u7801\u5df2\u91cd\u7f6e\uff0c\u8bf7\u5c06\u65b0\u4e34\u65f6\u5bc6\u7801\u4e0b\u53d1\u7ed9\u5458\u5de5\u3002',
             changeRole: '\u66f4\u6539\u89d2\u8272',
             prefix: '\u524d\u7f00',
             domains: '\u57df\u540d',
@@ -86,8 +92,14 @@ const pageSize = ref(20);
 const userQuery = ref('');
 const showResetPassword = ref(false);
 const newResetPassword = ref('');
+const resetCredential = ref({
+    email: '',
+    password: ''
+});
+const showResetCredential = ref(false);
 const showDeleteUser = ref(false);
 const curUserId = ref(0);
+const curUserEmail = ref('');
 const showCreateUser = ref(false);
 const showCreatedCredential = ref(false);
 const user = ref({
@@ -172,19 +184,21 @@ const fetchData = async () => {
 };
 
 const resetPassword = async () => {
-    if (!newResetPassword.value) {
-        message.error(t('pleaseInput'));
-        return;
-    }
+    const nextPassword = newResetPassword.value || generateRandomPassword();
     try {
         await api.fetch(`/admin/users/${curUserId.value}/reset_password`, {
             method: 'POST',
             body: JSON.stringify({
-                password: await hashPassword(newResetPassword.value)
+                password: await hashPassword(nextPassword)
             })
         });
+        resetCredential.value = {
+            email: curUserEmail.value,
+            password: nextPassword
+        };
         message.success(t('success'));
         showResetPassword.value = false;
+        showResetCredential.value = true;
     } catch (error) {
         console.log(error);
         message.error(error.message || 'error');
@@ -220,6 +234,10 @@ const createUser = async () => {
         console.log(error);
         message.error(error.message || 'error');
     }
+};
+
+const regenerateResetPassword = () => {
+    newResetPassword.value = generateRandomPassword();
 };
 
 const deleteUser = async () => {
@@ -337,11 +355,12 @@ const columns = [
                                 {
                                     label: () => h(NButton, {
                                         text: true,
-                                        onClick: () => {
-                                            curUserId.value = row.id;
-                                            newResetPassword.value = '';
-                                            showResetPassword.value = true;
-                                        }
+                                            onClick: () => {
+                                                curUserId.value = row.id;
+                                                curUserEmail.value = row.user_email;
+                                                newResetPassword.value = generateRandomPassword();
+                                                showResetPassword.value = true;
+                                            }
                                     }, { default: () => t('resetPassword') })
                                 },
                                 {
@@ -438,12 +457,49 @@ onMounted(async () => {
             </template>
         </n-modal>
         <n-modal v-model:show="showResetPassword" preset="dialog" :title="t('resetPassword')">
-            <n-form-item-row :label="t('password')" required>
-                <n-input v-model:value="newResetPassword" type="password" show-password-on="click" />
-            </n-form-item-row>
+            <n-form>
+                <n-form-item-row :label="t('email')">
+                    <n-input :value="curUserEmail" readonly />
+                </n-form-item-row>
+                <n-form-item-row :label="t('generatedPassword')" required>
+                    <n-input-group>
+                        <n-input v-model:value="newResetPassword" readonly />
+                        <n-button @click="regenerateResetPassword" tertiary type="primary">
+                            {{ t('regeneratePassword') }}
+                        </n-button>
+                        <n-button @click="copyText(newResetPassword)" tertiary type="primary">
+                            {{ t('copyPassword') }}
+                        </n-button>
+                    </n-input-group>
+                </n-form-item-row>
+                <n-alert type="warning" :show-icon="false" :bordered="false">
+                    {{ t('resetPasswordTip') }}
+                </n-alert>
+            </n-form>
             <template #action>
                 <n-button :loading="loading" @click="resetPassword" size="small" tertiary type="primary">
                     {{ t('resetPassword') }}
+                </n-button>
+            </template>
+        </n-modal>
+        <n-modal v-model:show="showResetCredential" preset="dialog" :title="t('resetCredentials')">
+            <n-space vertical>
+                <n-alert type="success" :show-icon="false" :bordered="false">
+                    {{ t('resetCredentialsTip') }}
+                </n-alert>
+                <n-form-item-row :label="t('email')">
+                    <n-input :value="resetCredential.email" readonly />
+                </n-form-item-row>
+                <n-form-item-row :label="t('generatedPassword')">
+                    <n-input :value="resetCredential.password" readonly />
+                </n-form-item-row>
+            </n-space>
+            <template #action>
+                <n-button size="small" tertiary type="primary" @click="copyText(`Email: ${resetCredential.email}\nPassword: ${resetCredential.password}`)">
+                    {{ t('copyCredentials') }}
+                </n-button>
+                <n-button size="small" tertiary @click="showResetCredential = false">
+                    OK
                 </n-button>
             </template>
         </n-modal>

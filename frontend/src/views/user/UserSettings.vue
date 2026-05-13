@@ -16,9 +16,8 @@ const { t } = useI18n({
             accountEmail: 'Employee Account',
             mailboxPolicyTitle: 'Mailbox Assignment',
             mailboxPolicy: 'Mailbox addresses are assigned and managed by administrators. Employees cannot create or bind addresses themselves.',
-            resetPolicyTitle: 'Password Reset',
-            resetPolicyEnabled: 'Password reset is available through company email verification.',
-            resetPolicyDisabled: 'Password reset is temporarily unavailable because email verification is disabled.',
+            resetPolicyTitle: 'Forgotten Passwords',
+            resetPolicy: 'If you forget your password, contact the administrator to reset it and send you a new temporary password. After logging in, you can still change your password yourself from the account page.',
             allowedDomainsTitle: 'Company Domains',
             logout: 'Logout',
             logoutConfirm: 'Are you sure you want to logout?',
@@ -28,10 +27,9 @@ const { t } = useI18n({
             accountCenter: '账户中心',
             accountEmail: '员工账号',
             mailboxPolicyTitle: '邮箱分配规则',
-            mailboxPolicy: '邮箱地址由管理员统一分配和管理，员工不能自行创建或绑定邮箱地址。',
-            resetPolicyTitle: '密码重置',
-            resetPolicyEnabled: '当前支持通过公司邮箱验证码重置密码。',
-            resetPolicyDisabled: '当前未开启邮箱验证，暂时无法通过邮箱验证码重置密码。',
+            mailboxPolicy: '邮箱地址由管理员统一分配和管理，员工不能自行创建或绑定地址。',
+            resetPolicyTitle: '忘记密码处理',
+            resetPolicy: '如果遗忘密码，请联系管理员重置并重新下发临时密码。员工登录后仍可在账户页自行修改密码。',
             allowedDomainsTitle: '公司域名',
             logout: '退出登录',
             logoutConfirm: '确认退出当前登录状态吗？',
@@ -77,15 +75,9 @@ const logout = async () => {
                     <div class="setting-detail">{{ t('mailboxPolicy') }}</div>
                 </n-alert>
 
-                <n-alert
-                    :type="userOpenSettings.enableMailVerify ? 'success' : 'warning'"
-                    :show-icon="false"
-                    :bordered="false"
-                >
+                <n-alert type="warning" :show-icon="false" :bordered="false">
                     <strong>{{ t('resetPolicyTitle') }}</strong>
-                    <div class="setting-detail">
-                        {{ userOpenSettings.enableMailVerify ? t('resetPolicyEnabled') : t('resetPolicyDisabled') }}
-                    </div>
+                    <div class="setting-detail">{{ t('resetPolicy') }}</div>
                 </n-alert>
 
                 <n-button type="warning" secondary block strong @click="showLogout = true">

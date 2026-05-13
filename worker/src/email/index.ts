@@ -15,6 +15,7 @@ import { compressText } from "../gzip";
 
 
 async function email(message: ForwardableEmailMessage, env: Bindings, ctx: ExecutionContext) {
+    const normalizedTo = message.to.trim().toLowerCase();
     if (await isBlocked(message.from, env)) {
         message.setReject("Reject from address");
         console.log(`Reject message from ${message.from} to ${message.to}`);
@@ -45,7 +46,7 @@ async function email(message: ForwardableEmailMessage, env: Bindings, ctx: Execu
         if (emailRuleSettings?.blockReceiveUnknowAddressEmail) {
             const db_address_id = await env.DB.prepare(
                 `SELECT id FROM address where name = ? `
-            ).bind(message.to).first("id");
+            ).bind(normalizedTo).first("id");
             if (!db_address_id) {
                 message.setReject("Unknown address");
                 console.log(`Unknown address mail from ${message.from} to ${message.to}`);
@@ -79,7 +80,7 @@ async function email(message: ForwardableEmailMessage, env: Bindings, ctx: Execu
                     ({ success } = await env.DB.prepare(
                         `INSERT INTO raw_mails (source, address, raw_blob, message_id) VALUES (?, ?, ?, ?)`
                     ).bind(
-                        message.from, message.to, compressed, message_id
+                        message.from, normalizedTo, compressed, message_id
                     ).run());
                 } catch (dbError) {
                     // Fallback to plaintext only if raw_blob column is missing (migration not applied)
@@ -89,7 +90,7 @@ async function email(message: ForwardableEmailMessage, env: Bindings, ctx: Execu
                         ({ success } = await env.DB.prepare(
                             `INSERT INTO raw_mails (source, address, raw, message_id) VALUES (?, ?, ?, ?)`
                         ).bind(
-                            message.from, message.to, parsedEmailContext.rawEmail, message_id
+                            message.from, normalizedTo, parsedEmailContext.rawEmail, message_id
                         ).run());
                     } else {
                         throw dbError;
@@ -99,14 +100,14 @@ async function email(message: ForwardableEmailMessage, env: Bindings, ctx: Execu
                 ({ success } = await env.DB.prepare(
                     `INSERT INTO raw_mails (source, address, raw, message_id) VALUES (?, ?, ?, ?)`
                 ).bind(
-                    message.from, message.to, parsedEmailContext.rawEmail, message_id
+                    message.from, normalizedTo, parsedEmailContext.rawEmail, message_id
                 ).run());
             }
         } else {
             ({ success } = await env.DB.prepare(
                 `INSERT INTO raw_mails (source, address, raw, message_id) VALUES (?, ?, ?, ?)`
             ).bind(
-                message.from, message.to, parsedEmailContext.rawEmail, message_id
+                message.from, normalizedTo, parsedEmailContext.rawEmail, message_id
             ).run());
         }
         if (!success) {
