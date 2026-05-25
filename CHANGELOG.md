@@ -20,6 +20,8 @@
 
 - fix: |User UI| 恢复 GasGx 定制的 `/user` 页面布局，移除临时“去发送邮件”提示条与跳转逻辑
 
+- fix: |Branding/UI| 将前端页头、页脚和站点标题切换为 GasGx 品牌，避免仍显示 Cloudflare Temp Email / Dream Hunter 旧名称
+
 ### Improvements
 
 ## v1.5.0(main)

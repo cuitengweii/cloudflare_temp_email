@@ -32,7 +32,7 @@ export const useGlobalState = createGlobalState(
             randomSubdomainDomains: [],
             /** @type {Array<{label: string, value: string}>} */
             domains: [],
-            copyright: 'Dream Hunter',
+            copyright: 'GasGx',
             cfTurnstileSiteKey: '',
             enableWebhook: false,
             isS3Enabled: false,

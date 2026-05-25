@@ -2,7 +2,7 @@
 import { ref, h, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useHead } from '@unhead/vue'
-import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useIsMobile } from '../utils/composables'
 import {
     DarkModeFilled, LightModeFilled, MenuFilled,
@@ -28,10 +28,10 @@ const isMobile = useIsMobile()
 
 const showMobileMenu = ref(false)
 const menuValue = computed(() => {
-    if (route.path.includes("user")) return "user";
-    if (route.path.includes("admin")) return "admin";
-    return "home";
-});
+    if (route.path.includes('user')) return 'user'
+    if (route.path.includes('admin')) return 'admin'
+    return 'home'
+})
 
 const cfToken = ref('')
 const turnstileRef = ref(null)
@@ -44,26 +44,26 @@ const authFunc = async () => {
                 password: await hashPassword(auth.value),
                 cf_token: cfToken.value
             })
-        });
+        })
         location.reload()
     } catch (error) {
-        message.error(error.message || "error");
-        turnstileRef.value?.refresh?.();
+        message.error(error.message || 'error')
+        turnstileRef.value?.refresh?.()
     }
 }
 
 const changeLocale = async (lang) => {
     if (lang == 'zh') {
-        await router.push(route.fullPath.replace('/en', ''));
+        await router.push(route.fullPath.replace('/en', ''))
     } else {
-        await router.push(`/${lang}${route.fullPath}`);
+        await router.push(`/${lang}${route.fullPath}`)
     }
 }
 
 const { locale, t } = useI18n({
     messages: {
         en: {
-            title: 'Cloudflare Temp Email',
+            title: 'GasGx Temp Email',
             dark: 'Dark',
             light: 'Light',
             accessHeader: 'Access Password',
@@ -75,11 +75,11 @@ const { locale, t } = useI18n({
             ok: 'OK',
         },
         zh: {
-            title: 'Cloudflare 临时邮件',
+            title: 'GasGx 临时邮件',
             dark: '暗色',
             light: '亮色',
             accessHeader: '访问密码',
-            accessTip: '请输入站点访问密码',
+            accessTip: '请输入正确的站点访问密码',
             home: '主页',
             menu: '菜单',
             user: '用户',
@@ -87,40 +87,40 @@ const { locale, t } = useI18n({
             ok: '确定',
         }
     }
-});
+})
 
-const version = import.meta.env.PACKAGE_VERSION ? `v${import.meta.env.PACKAGE_VERSION}` : "";
+const version = import.meta.env.PACKAGE_VERSION ? `v${import.meta.env.PACKAGE_VERSION}` : ''
 
 const menuOptions = computed(() => [
     {
         label: () => h(NButton,
             {
                 text: true,
-                size: "small",
-                type: menuValue.value == "home" ? "primary" : "default",
-                style: "width: 100%",
+                size: 'small',
+                type: menuValue.value == 'home' ? 'primary' : 'default',
+                style: 'width: 100%',
                 onClick: async () => {
-                    await router.push(getRouterPathWithLang('/', locale.value));
-                    showMobileMenu.value = false;
+                    await router.push(getRouterPathWithLang('/', locale.value))
+                    showMobileMenu.value = false
                 }
             },
             {
                 default: () => t('home'),
                 icon: () => h(NIcon, { component: Home })
             }),
-        key: "home"
+        key: 'home'
     },
     {
         label: () => h(
             NButton,
             {
                 text: true,
-                size: "small",
-                type: menuValue.value == "user" ? "primary" : "default",
-                style: "width: 100%",
+                size: 'small',
+                type: menuValue.value == 'user' ? 'primary' : 'default',
+                style: 'width: 100%',
                 onClick: async () => {
-                    await router.push(getRouterPathWithLang("/user", locale.value));
-                    showMobileMenu.value = false;
+                    await router.push(getRouterPathWithLang('/user', locale.value))
+                    showMobileMenu.value = false
                 }
             },
             {
@@ -128,7 +128,7 @@ const menuOptions = computed(() => [
                 icon: () => h(NIcon, { component: User }),
             }
         ),
-        key: "user",
+        key: 'user',
         show: !isTelegram.value
     },
     {
@@ -136,31 +136,31 @@ const menuOptions = computed(() => [
             NButton,
             {
                 text: true,
-                size: "small",
-                type: menuValue.value == "admin" ? "primary" : "default",
-                style: "width: 100%",
+                size: 'small',
+                type: menuValue.value == 'admin' ? 'primary' : 'default',
+                style: 'width: 100%',
                 onClick: async () => {
-                    loading.value = true;
-                    await router.push(getRouterPathWithLang('/admin', locale.value));
-                    loading.value = false;
-                    showMobileMenu.value = false;
+                    loading.value = true
+                    await router.push(getRouterPathWithLang('/admin', locale.value))
+                    loading.value = false
+                    showMobileMenu.value = false
                 }
             },
             {
-                default: () => "Admin",
+                default: () => 'Admin',
                 icon: () => h(NIcon, { component: AdminPanelSettingsFilled }),
             }
         ),
         show: showAdminPage.value,
-        key: "admin"
+        key: 'admin'
     },
     {
         label: () => h(
             NButton,
             {
                 text: true,
-                size: "small",
-                style: "width: 100%",
+                size: 'small',
+                style: 'width: 100%',
                 onClick: () => { toggleDark(); showMobileMenu.value = false; }
             },
             {
@@ -170,38 +170,36 @@ const menuOptions = computed(() => [
                 )
             }
         ),
-        key: "theme"
+        key: 'theme'
     },
     {
         label: () => h(
             NButton,
             {
                 text: true,
-                size: "small",
-                style: "width: 100%",
+                size: 'small',
+                style: 'width: 100%',
                 onClick: async () => {
-                    locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh');
-                    showMobileMenu.value = false;
+                    locale.value == 'zh' ? await changeLocale('en') : await changeLocale('zh')
+                    showMobileMenu.value = false
                 }
             },
             {
-                default: () => locale.value == 'zh' ? "English" : "中文",
-                icon: () => h(
-                    NIcon, { component: Language }
-                )
+                default: () => locale.value == 'zh' ? 'English' : '中文',
+                icon: () => h(NIcon, { component: Language })
             }
         ),
-        key: "lang"
+        key: 'lang'
     },
     {
         label: () => h(
             NButton,
             {
                 text: true,
-                size: "small",
-                style: "width: 100%",
-                tag: "a",
-                target: "_blank",
+                size: 'small',
+                style: 'width: 100%',
+                tag: 'a',
+                target: '_blank',
                 href: openSettings.value?.statusUrl,
             },
             {
@@ -210,61 +208,60 @@ const menuOptions = computed(() => [
             }
         ),
         show: !!openSettings.value?.statusUrl,
-        key: "status"
+        key: 'status'
     },
     {
         label: () => h(
             NButton,
             {
                 text: true,
-                size: "small",
-                style: "width: 100%",
-                tag: "a",
-                target: "_blank",
-                href: "https://github.com/dreamhunter2333/cloudflare_temp_email",
+                size: 'small',
+                style: 'width: 100%',
+                tag: 'a',
+                target: '_blank',
+                href: 'https://github.com/dreamhunter2333/cloudflare_temp_email',
             },
             {
-                default: () => version || "Github",
+                default: () => version || 'Github',
                 icon: () => h(NIcon, { component: GithubAlt })
             }
         ),
         show: openSettings.value?.showGithub,
-        key: "github"
+        key: 'github'
     }
-]);
+])
 
 useHead({
     title: () => openSettings.value.title || t('title'),
     meta: [
-        { name: "description", content: openSettings.value.description || t('title') },
+        { name: 'description', content: openSettings.value.description || t('title') },
     ]
-});
+})
 
-const logoClickCount = ref(0);
+const logoClickCount = ref(0)
 const logoClick = async () => {
-    if (route.path.includes("admin")) {
-        logoClickCount.value = 0;
-        return;
+    if (route.path.includes('admin')) {
+        logoClickCount.value = 0
+        return
     }
     if (logoClickCount.value >= 5) {
-        logoClickCount.value = 0;
-        message.info("Change to admin Page");
-        loading.value = true;
-        await router.push(getRouterPathWithLang('/admin', locale.value));
-        loading.value = false;
+        logoClickCount.value = 0
+        message.info('Change to admin Page')
+        loading.value = true
+        await router.push(getRouterPathWithLang('/admin', locale.value))
+        loading.value = false
     } else {
-        logoClickCount.value++;
+        logoClickCount.value++
     }
     if (logoClickCount.value > 0) {
-        message.info(`Click ${5 - logoClickCount.value + 1} times to enter the admin page`);
+        message.info(`Click ${5 - logoClickCount.value + 1} times to enter the admin page`)
     }
 }
 
 onMounted(async () => {
-    await api.getOpenSettings(message, notification);
-    // make sure user_id is fetched
-    if (!userSettings.value.user_id) await api.getUserSettings(message);
-});
+    await api.getOpenSettings(message, notification)
+    if (!userSettings.value.user_id) await api.getUserSettings(message)
+})
 </script>
 
 <template>

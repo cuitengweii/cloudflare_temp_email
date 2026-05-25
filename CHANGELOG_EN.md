@@ -19,6 +19,8 @@
 - fix: |User UI| Revert embedded send panel in `/user` and switch to a stable "Go to Send Mail" entry that jumps to the main send page to avoid layout breakage
 - fix: |User UI| Restore GasGx customized `/user` page layout and remove the temporary send-entry alert/redirect bar
 
+- fix: |Branding/UI| Switch the frontend header, footer, and site title to GasGx branding so the old Cloudflare Temp Email / Dream Hunter labels no longer appear
+
 ### Improvements
 
 ## v1.5.0(main)
