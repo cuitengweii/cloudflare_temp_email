@@ -12,7 +12,11 @@
 
 ### Bug Fixes
 
+- fix: |用户| 移除邮箱管理页的手动“切换邮箱”按钮
+
 ### Improvements
+
+- style: |用户| 将发邮件界面改为更接近 Gmail 的写信窗排版
 
 ## v1.5.0(main)
 

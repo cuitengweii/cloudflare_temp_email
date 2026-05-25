@@ -12,7 +12,11 @@
 
 ### Bug Fixes
 
+- fix: |User| Remove the manual "Switch mailbox" button from the mailbox management page
+
 ### Improvements
+
+- style: |User| Restyle the send-mail screen into a Gmail-like compose window
 
 ## v1.5.0(main)
 
