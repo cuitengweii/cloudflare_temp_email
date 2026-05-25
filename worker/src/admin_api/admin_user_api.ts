@@ -70,15 +70,20 @@ export default {
         const reqIp = c.req.raw.headers.get("cf-connecting-ip")
         const geoData = new GeoData(reqIp, c.req.raw.cf as any);
         const userInfo = new UserInfo(geoData, email);
+        let userId = 0;
         try {
             checkUserPassword(password);
-            const { success } = await c.env.DB.prepare(
+            const insertResult = await c.env.DB.prepare(
                 `INSERT INTO users (user_email, password, user_info)`
                 + ` VALUES (?, ?, ?)`
             ).bind(
                 email, password, JSON.stringify(userInfo)
             ).run();
-            if (!success) {
+            if (!insertResult.success) {
+                return c.text(msgs.FailedToRegisterMsg, 500)
+            }
+            userId = Number((insertResult as any)?.meta?.last_row_id || 0);
+            if (userId <= 0) {
                 return c.text(msgs.FailedToRegisterMsg, 500)
             }
         } catch (e) {
@@ -87,6 +92,43 @@ export default {
                 return c.text(msgs.UserAlreadyExistsMsg, 400)
             }
             return c.text(`${msgs.FailedToRegisterMsg}: ${errorMsg}`, 500)
+        }
+
+        try {
+            const defaultBalance = 10;
+            let mailbox = await c.env.DB.prepare(
+                `SELECT id, name FROM address WHERE LOWER(name) = LOWER(?) LIMIT 1`
+            ).bind(email).first<{ id: number; name: string }>();
+
+            if (!mailbox?.id) {
+                await c.env.DB.prepare(
+                    `INSERT INTO address (name, source_meta) VALUES (?, ?)`
+                ).bind(email, 'admin_user_auto').run();
+                mailbox = await c.env.DB.prepare(
+                    `SELECT id, name FROM address WHERE LOWER(name) = LOWER(?) LIMIT 1`
+                ).bind(email).first<{ id: number; name: string }>();
+            }
+
+            if (!mailbox?.id || !mailbox?.name) {
+                throw new Error('failed to initialize mailbox');
+            }
+
+            await c.env.DB.prepare(
+                `INSERT INTO users_address (user_id, address_id) VALUES (?, ?)`
+                + ` ON CONFLICT DO NOTHING`
+            ).bind(userId, mailbox.id).run();
+
+            await c.env.DB.prepare(
+                `INSERT INTO address_sender (address, balance, enabled) VALUES (?, ?, 1)`
+                + ` ON CONFLICT(address) DO UPDATE SET `
+                + ` enabled = 1, `
+                + ` balance = CASE WHEN address_sender.balance < excluded.balance THEN excluded.balance ELSE address_sender.balance END`
+            ).bind(mailbox.name, defaultBalance).run();
+        } catch (e) {
+            await c.env.DB.prepare(
+                `DELETE FROM users WHERE id = ?`
+            ).bind(userId).run();
+            return c.text(`${msgs.FailedToRegisterMsg}: ${(e as Error).message}`, 500)
         }
         return c.json({ success: true })
     },

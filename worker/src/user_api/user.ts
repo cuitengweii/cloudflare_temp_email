@@ -203,6 +203,30 @@ export default {
         if (dbPassword != password) {
             return c.text(msgs.InvalidEmailOrPasswordMsg, 400)
         }
+        const defaultBalance = 10;
+        let mailbox = await c.env.DB.prepare(
+            `SELECT id, name FROM address WHERE LOWER(name) = LOWER(?) LIMIT 1`
+        ).bind(email).first<{ id: number; name: string }>();
+        if (!mailbox?.id) {
+            await c.env.DB.prepare(
+                `INSERT INTO address (name, source_meta) VALUES (?, ?)`
+            ).bind(email, 'user_login_auto').run();
+            mailbox = await c.env.DB.prepare(
+                `SELECT id, name FROM address WHERE LOWER(name) = LOWER(?) LIMIT 1`
+            ).bind(email).first<{ id: number; name: string }>();
+        }
+        if (mailbox?.id && mailbox?.name) {
+            await c.env.DB.prepare(
+                `INSERT INTO users_address (user_id, address_id) VALUES (?, ?)`
+                + ` ON CONFLICT DO NOTHING`
+            ).bind(user_id, mailbox.id).run();
+            await c.env.DB.prepare(
+                `INSERT INTO address_sender (address, balance, enabled) VALUES (?, ?, 1)`
+                + ` ON CONFLICT(address) DO UPDATE SET `
+                + ` enabled = 1, `
+                + ` balance = CASE WHEN address_sender.balance < excluded.balance THEN excluded.balance ELSE address_sender.balance END`
+            ).bind(mailbox.name, defaultBalance).run();
+        }
         // create jwt
         const jwt = await Jwt.sign({
             user_email: email,
@@ -211,8 +235,19 @@ export default {
             exp: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
             iat: Math.floor(Date.now() / 1000),
         }, c.env.JWT_SECRET, "HS256")
+        const firstAddress = await c.env.DB.prepare(
+            `SELECT a.id, a.name FROM address a`
+            + ` JOIN users_address ua ON ua.address_id = a.id`
+            + ` WHERE ua.user_id = ?`
+            + ` ORDER BY ua.id ASC LIMIT 1`
+        ).bind(user_id).first<{ id: number; name: string }>();
+        const address_jwt = firstAddress?.name ? await Jwt.sign({
+            address: firstAddress.name,
+            address_id: firstAddress.id
+        }, c.env.JWT_SECRET, "HS256") : null;
         return c.json({
-            jwt: jwt
+            jwt: jwt,
+            address_jwt: address_jwt
         })
     },
 }

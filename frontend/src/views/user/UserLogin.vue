@@ -12,7 +12,7 @@ import { startAuthentication } from '@simplewebauthn/browser';
 import Turnstile from '../../components/Turnstile.vue';
 
 const {
-    userJwt, userOpenSettings, openSettings,
+    userJwt, userOpenSettings, openSettings, jwt,
     userOauth2SessionState, userOauth2SessionClientID
 } = useGlobalState()
 const message = useMessage();
@@ -92,6 +92,10 @@ const emailLogin = async () => {
             })
         });
         userJwt.value = res.jwt;
+        if (res.address_jwt) {
+            jwt.value = res.address_jwt;
+            await api.getSettings();
+        }
         location.reload();
     } catch (error) {
         message.error(error.message || "login failed");

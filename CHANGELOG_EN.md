@@ -14,6 +14,9 @@
 
 - fix: |UI| Fixed low text contrast in dark mode across multiple components, improved styling for n-text, pre, links and other elements
 
+- fix: |Admin/User| Admin-created employee accounts now auto-provision mailbox binding and sender permission with a default daily send quota of 10
+- fix: |User Login| Employee login now returns `address_jwt` and self-heals mailbox/sender linkage to prevent missing send/receive entry or insufficient-balance errors on first use
+
 ### Improvements
 
 ## v1.5.0(main)
