@@ -18,6 +18,8 @@
 - fix: |User Login| 员工登录成功后自动下发 `address_jwt` 并补齐地址与发件能力，避免新账号登录后收发入口缺失或提示余额不足
 - fix: |User UI| 回退 `/user` 页内嵌发送面板，改为稳定的“去发送邮件”入口跳转主页面发送页，避免布局错乱
 
+- fix: |User UI| 恢复 GasGx 定制的 `/user` 页面布局，移除临时“去发送邮件”提示条与跳转逻辑
+
 ### Improvements
 
 ## v1.5.0(main)

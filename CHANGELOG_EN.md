@@ -17,6 +17,7 @@
 - fix: |Admin/User| Admin-created employee accounts now auto-provision mailbox binding and sender permission with a default daily send quota of 10
 - fix: |User Login| Employee login now returns `address_jwt` and self-heals mailbox/sender linkage to prevent missing send/receive entry or insufficient-balance errors on first use
 - fix: |User UI| Revert embedded send panel in `/user` and switch to a stable "Go to Send Mail" entry that jumps to the main send page to avoid layout breakage
+- fix: |User UI| Restore GasGx customized `/user` page layout and remove the temporary send-entry alert/redirect bar
 
 ### Improvements
 
